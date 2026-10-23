@@ -26,7 +26,7 @@ header{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-
 #nl{height:38px;width:auto;aspect-ratio:1336/2136;transition:transform .5s var(--e)}.brand:hover #nl{transform:rotate(-8deg) scale(1.1)}
 #nav{display:flex;gap:4px}#nav a{padding:6px 12px;border-radius:99px;text-decoration:none;font-weight:600;font-size:15px;transition:background .2s}#nav a:hover{background:#fff}#nav a.on{background:var(--ink);color:#fff}
 .acts{display:flex;gap:8px;align-items:center}#burger{display:none;border:2px solid var(--ink);background:#fff;border-radius:10px;font-size:18px;padding:4px 10px;cursor:pointer}
-.btn{border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:99px;padding:.65em 1.25em;font-family:inherit;font-weight:600;font-size:15px;line-height:1.2;cursor:pointer;box-shadow:var(--sh);transition:transform .15s,box-shadow .15s,background .2s;text-decoration:none;display:inline-block}
+.btn{border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:99px;padding:.65em 1.25em;font:600 15px/1.2 inherit;font-family:inherit;cursor:pointer;box-shadow:var(--sh);transition:transform .15s,box-shadow .15s,background .2s;text-decoration:none;display:inline-block}
 .btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}.btn:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
 .pri{background:var(--c)}.sm{padding:.45em .95em;font-size:14px;box-shadow:3px 3px 0 var(--ink)}.btn[disabled]{opacity:.4;pointer-events:none}
 .busy{position:relative;color:transparent!important;pointer-events:none}.busy::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border:3px solid var(--ink);border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite}
@@ -179,7 +179,7 @@ dialog form{display:grid;gap:12px}
 [data-theme=neo] #nav{flex-direction:row;position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));top:auto;right:auto;transform:translateX(-50%);z-index:30;display:flex;align-items:center;gap:4px;padding:8px;border-radius:99px;background:var(--bg);border:0;box-shadow:var(--raise);max-width:calc(100vw - 20px);overflow-x:auto;scrollbar-width:none;transition:none}
 [data-theme=neo] #nav a{display:flex;align-items:center;gap:8px;flex:none;padding:11px 16px;border-radius:99px;font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);background:none;transition:box-shadow .35s,color .25s,transform .45s var(--sp)}
 [data-theme=neo] #nav a::before{font-size:16px;letter-spacing:0;color:var(--mut);transition:color .25s}
-[data-theme=neo] #nav a[href="#/games"]::before{content:"✦"}[data-theme=neo] #nav a[href="#/ludo"]::before{content:"⚄"}[data-theme=neo] #nav a[href="#/convert"]::before{content:"⇄"}[data-theme=neo] #nav a[href="#/social"]::before{content:"☺"}[data-theme=neo] #nav a[href="#/void"]::before{content:"❖"}[data-theme=neo] #nav a[href="#/pricing"]::before{content:"$"}[data-theme=neo] #nav a[href="#/about"]::before{content:"i"}
+[data-theme=neo] #nav a[href="#/games"]::before{content:"✦"}[data-theme=neo] #nav a[href="#/ludo"]::before{content:"⚄"}[data-theme=neo] #nav a[href="#/dice"]::before{content:"⚀"}[data-theme=neo] #nav a[href="#/killudo"]::before{content:"☠"}[data-theme=neo] #nav a[href="#/convert"]::before{content:"⇄"}[data-theme=neo] #nav a[href="#/social"]::before{content:"☺"}[data-theme=neo] #nav a[href="#/void"]::before{content:"❖"}[data-theme=neo] #nav a[href="#/pricing"]::before{content:"$"}[data-theme=neo] #nav a[href="#/about"]::before{content:"i"}
 [data-theme=neo] #nav a:hover{background:none;color:var(--ink);box-shadow:var(--raise-s);transform:translateY(-2px)}
 [data-theme=neo] #nav a.on{background:none;color:var(--c);box-shadow:var(--press);transform:none}[data-theme=neo] #nav a.on::before{color:var(--c)}
 [data-theme=neo] main{max-width:1180px;margin:0 auto;padding:0 clamp(16px,4vw,40px);transition:opacity .25s,transform .3s,filter .25s}[data-theme=neo] main.out{opacity:0;transform:scale(.97);filter:blur(8px)}
@@ -331,7 +331,7 @@ dialog form{display:grid;gap:12px}
 [data-theme=aero] #nav::-webkit-scrollbar{display:none}
 [data-theme=aero] #nav a{position:relative;flex:none;display:flex;align-items:center;gap:7px;padding:8px 18px 7px;border-radius:14px 14px 0 0;border:1px solid #6aaed4;border-bottom:0;background:linear-gradient(rgba(255,255,255,.75),rgba(170,225,250,.55) 50%,rgba(120,205,245,.62));color:#1c5d86;font-weight:600;font-size:14px;overflow:hidden;transition:transform .25s var(--e),filter .25s}
 [data-theme=aero] #nav a::before{font-size:15px;line-height:1}
-[data-theme=aero] #nav a:nth-child(1)::before{content:"🎮"}[data-theme=aero] #nav a:nth-child(2)::before{content:"🎲"}[data-theme=aero] #nav a:nth-child(3)::before{content:"🔄"}[data-theme=aero] #nav a:nth-child(4)::before{content:"💬"}[data-theme=aero] #nav a:nth-child(5)::before{content:"♻️"}[data-theme=aero] #nav a:nth-child(6)::before{content:"🏷️"}[data-theme=aero] #nav a:nth-child(7)::before{content:"🌍"}
+[data-theme=aero] #nav a:nth-child(1)::before{content:"🎮"}[data-theme=aero] #nav a:nth-child(2)::before{content:"🎲"}[data-theme=aero] #nav a:nth-child(3)::before{content:"🎯"}[data-theme=aero] #nav a:nth-child(4)::before{content:"⚔️"}[data-theme=aero] #nav a:nth-child(5)::before{content:"🔄"}[data-theme=aero] #nav a:nth-child(6)::before{content:"💬"}[data-theme=aero] #nav a:nth-child(7)::before{content:"♻️"}[data-theme=aero] #nav a:nth-child(8)::before{content:"🏷️"}[data-theme=aero] #nav a:nth-child(9)::before{content:"🌍"}
 [data-theme=aero] #nav a::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.9),transparent);transform:skewX(-20deg);transition:left .5s}
 [data-theme=aero] #nav a:hover{background:linear-gradient(rgba(255,255,255,.9),rgba(190,236,255,.7));transform:translateY(-3px)}[data-theme=aero] #nav a:hover::after{left:130%}
 [data-theme=aero] #nav a.on{background:linear-gradient(#fff,#f2fcff);color:#23800f;padding-top:12px;box-shadow:inset 0 4px 0 #6cc72f;transform-origin:bottom;animation:aetab .45s var(--e)}
@@ -404,7 +404,7 @@ html,body{overscroll-behavior-y:none}
 .lb .bgr{fill:var(--bgr);stroke:var(--cln);stroke-width:var(--clw)}.lb .bb{fill:var(--pc);stroke:var(--cln);stroke-width:var(--clw)}.lb .bi{fill:var(--cell);stroke:var(--cln);stroke-width:var(--clw)}
 .lb .bs{fill:var(--pc);fill-opacity:.35;stroke:var(--pc);stroke-width:.06}.lb .bc{fill:var(--cell);stroke:var(--cln);stroke-width:var(--clw)}.lb .bc[class*=" c"]{fill:var(--pc)}
 .lb .sf{font-size:.72px;text-anchor:middle;dominant-baseline:central;fill:var(--cln);opacity:.8}.lb .ctr polygon{fill:var(--pc);stroke:var(--cln);stroke-width:var(--clw)}
-.lb .base.on .bi{fill:var(--pc);fill-opacity:.3}.lb .base.off{opacity:.25}
+.lb .base.on .bi{fill:var(--pc);fill-opacity:.3}.lb .base.off{opacity:.25}.lb .bc.shut{opacity:.3}
 .lb .tk{transition:transform .38s cubic-bezier(.3,.8,.3,1);pointer-events:none}.lb.nt .tk{transition:none}.lb .tk.go{pointer-events:auto;cursor:pointer}
 .lb .tb{fill:var(--pc);stroke:var(--tks);stroke-width:var(--tkw)}.lb .th{fill:#fff;opacity:var(--tkh)}
 .lb .tk.go .tb{transform-box:fill-box;transform-origin:center;animation:lgo .55s ease-in-out infinite alternate}@keyframes lgo{to{transform:scale(1.28)}}
@@ -414,32 +414,24 @@ html,body{overscroll-behavior-y:none}
 .die{width:68px;height:68px;flex:none;display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);gap:5px;padding:11px;background:var(--dbg);border:var(--dbd);border-radius:var(--dr);box-shadow:var(--dsh);color:var(--dfg);user-select:none;-webkit-user-select:none}
 .die i{border-radius:50%}.die i.on{background:currentColor}
 .die.act{cursor:pointer;animation:dpul .7s ease-in-out infinite alternate}@keyframes dpul{to{transform:translateY(-4px) scale(1.07)}}
-.die.roll{animation:dshk .5s}@keyframes dshk{20%{transform:rotate(-18deg) scale(1.1)}45%{transform:rotate(14deg)}70%{transform:rotate(-8deg)}}
-.chat{height:210px;overflow:auto;overflow-x:hidden;overscroll-behavior:contain;display:flex;flex-direction:column;gap:6px;padding:10px;margin-bottom:10px;border:var(--lb);border-radius:var(--lr);background:var(--lbg)}.cm{font-size:14px;word-break:break-word}
+.die.rolling{animation:dshk .3s infinite}.die.roll{animation:dshk .5s}@keyframes dshk{20%{transform:rotate(-18deg) scale(1.1)}45%{transform:rotate(14deg)}70%{transform:rotate(-8deg)}}
+.chat{height:210px;overflow:auto;display:flex;flex-direction:column;gap:6px;padding:10px;margin-bottom:10px;border:var(--lb);border-radius:var(--lr);background:var(--lbg)}.cm{font-size:14px;word-break:break-word}
 .crow{display:flex;gap:8px}.crow input{flex:1;min-width:0}
-
-/* Ludo chat pop-up: slides up from the bottom, then goes back */
-#cpop{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:92;width:max-content;max-width:min(420px,calc(100vw - 28px));display:flex;align-items:flex-start;gap:9px;padding:11px 18px;background:var(--ink);color:#fff;border-radius:14px;font-size:14px;line-height:1.35;font-weight:600;word-break:break-word;pointer-events:none;opacity:0;transform:translate(-50%,140%);transition:transform .45s var(--e),opacity .35s}
-#cpop.show{opacity:1;transform:translate(-50%,0)}
-#cpop .dot{flex:none;margin-top:3px;border-color:#fff}#cpop b{font-weight:800;white-space:nowrap}#cpop span{min-width:0}
-@media(max-width:600px){#cpop{bottom:calc(92px + env(safe-area-inset-bottom,0px))}}
-[data-theme=metal] #cpop{background:#0b1d3a;color:#8fe3ff;border:1px solid #35c8ff;border-radius:6px;font-family:var(--mono);font-size:13px;box-shadow:0 0 14px rgba(53,200,255,.5)}[data-theme=metal] #cpop .dot{border-color:#0b1d3a}
-[data-theme=neo] #cpop{background:var(--bg);color:var(--ink);border-radius:22px;box-shadow:var(--raise);font-weight:700;bottom:calc(96px + env(safe-area-inset-bottom,0px))}[data-theme=neo] #cpop .dot{border-color:var(--bg)}
-[data-theme=holo] #cpop{background:linear-gradient(90deg,#ff5b2a,#ff8a3d);color:#1a0600;border-radius:0;font-weight:700;letter-spacing:.06em;font-size:12px;box-shadow:0 0 20px rgba(255,106,43,.5);bottom:calc(70px + env(safe-area-inset-bottom,0px))}[data-theme=holo] #cpop .dot{border-color:#1a0600}
-[data-theme=aero] #cpop{background:var(--gb);color:#14577f;border:1px solid #5aa6d2;border-radius:22px;box-shadow:0 4px 12px rgba(10,80,140,.35)}[data-theme=aero] #cpop .dot{border-color:#fff}
-@media(prefers-reduced-motion:reduce){#cpop{transition-duration:.01ms}}
+.sbh{font-size:15px;margin-bottom:14px;text-align:center}.sbh b{font-size:34px;display:block;line-height:1.1}
+.srow{margin-bottom:14px}.sscore{font-size:34px;font-weight:800;line-height:1}
+.sbar{height:20px;margin-top:6px;border:var(--lb);border-radius:var(--lr);background:var(--lbg);overflow:hidden}.sbar i{display:block;height:100%;background:var(--pc);transition:width .5s}
 </style>
 </head>
 <body>
 <div id="intro"><svg id="logo" viewBox="620 220 1336 2136" role="img" aria-label="schlerium logo"><g id="g"></g></svg><div class="wm">schlerium</div><div class="sk">tap to skip</div></div>
 <header><div class="aeronav"><button class="orb" id="ob" aria-label="Back">‹</button><button class="orb" id="of" aria-label="Forward">›</button></div><a class="brand" href="#/" id="brand"><svg id="nl" viewBox="620 220 1336 2136" aria-hidden="true"></svg><span>schlerium</span></a>
-<nav id="nav"><a href="#/games">Games</a><a href="#/ludo">Ludo</a><a href="#/convert">Convert</a><a href="#/social">Social</a><a href="#/void">Scrap Yard</a><a href="#/pricing">Pricing</a><a href="#/about">About</a></nav>
+<nav id="nav"><a href="#/games">Games</a><a href="#/ludo">Ludo</a><a href="#/dice">Dice</a><a href="#/killudo">Killudo</a><a href="#/convert">Convert</a><a href="#/social">Social</a><a href="#/void">Scrap Yard</a><a href="#/pricing">Pricing</a><a href="#/about">About</a></nav>
 <div class="addr" id="addr"></div>
 <div class="acts"><button class="btn sm tbtn" id="tbtn"></button><button class="btn sm" id="authBtn">Log in</button><button id="burger" aria-label="Menu">☰</button></div></header>
 <main id="app"></main>
 <footer><div class="wrap"><div class="fg"><div><b style="font-size:20px">schlerium</b><p class="mut" style="margin:8px 0 14px;max-width:280px">The leftover multiverse, in one calm place. A dummy project for learning. Zero ads.</p>
 <form id="news" style="display:flex;gap:8px"><input type="email" required placeholder="you@void.com" aria-label="Email"><button class="btn sm pri">Join</button></form></div>
-<div><h4>Realms</h4><a href="#/games">Daily Games</a><a href="#/ludo">Live Ludo</a><a href="#/convert">Convert</a><a href="#/social">Social</a><a href="#/void">Scrap Yard</a></div>
+<div><h4>Realms</h4><a href="#/games">Daily Games</a><a href="#/ludo">Live Ludo</a><a href="#/dice">Dice Race</a><a href="#/killudo">Killudo</a><a href="#/convert">Convert</a><a href="#/social">Social</a><a href="#/void">Scrap Yard</a></div>
 <div><h4>Company</h4><a href="#/about">About</a><a href="#/pricing">Pricing</a><a href="#/about" data-s="contact">Contact</a><a href="#" id="replay">Replay intro</a></div>
 <div><h4>Legal</h4><a href="#/privacy">Privacy</a><a href="#/terms">Terms</a><a href="#/terms">Cookies</a></div></div>
 <div class="small"><span>© 2026 schlerium Labs. Fictional company, real learning.</span><span>● All systems dummy</span></div></div></footer>
@@ -453,7 +445,7 @@ html,body{overscroll-behavior-y:none}
 <button class="pc" data-t="aero"><div class="pv p5"><i class="a"></i><i class="b"></i><i class="c"></i><i class="e"></i><i class="d"></i></div><b>Frutiger Aero Eco</b><span>Glass browser window, sky and grass, glossy orbs, floating bubbles, folder tabs.</span><em></em></button>
 <button class="pc" data-t="neo"><div class="pv p3"><i class="a"></i><i class="b"></i><i class="c"></i><i class="d"></i></div><b>Neo Clay</b><span>Soft raised shapes, light that follows you, springy bento cards.</span><em></em></button>
 <button class="pc" data-t="default"><div class="pv p1"><i class="a"></i><i class="b"></i><i class="c"></i></div><b>Scrap Paper</b><span>Bold outlines, hard shadows, taped-together scraps.</span><em></em></button></div></div>
-<div id="toasts"></div><div id="cpop" role="status" aria-live="polite"></div>
+<div id="toasts"></div>
 <div id="cookie" class="card hidden"><b>Cookies, but make it dummy.</b><p class="mut" style="font-size:14px;margin:6px 0 12px">We only store a few preferences in your browser. No trackers, no ads.</p><button class="btn sm pri" data-ck="1">Accept</button> <button class="btn sm" data-ck="0">Decline</button></div>
 <script>
 // ===== logo animation (from Logo_Loader.html) =====
@@ -641,7 +633,7 @@ ludo:{t:'Ludo · schlerium',h:()=>`<div class="wrap ludo"><div class="pagehead">
 <div class="split lg"><div class="card"><div id="bwrap"></div><div class="dice-row"><div class="die" id="die" role="button" aria-label="Dice"></div><div><b id="gmsg"></b><div class="mut sm2" id="glg"></div><div class="mut sm2" id="gtm"></div></div></div><div class="cta" id="gctl"></div></div>
 <div class="gside"><div class="card"><h3>Players</h3><div id="gpl" class="lst" style="margin-top:12px"></div></div><div class="card"><h3>Room chat</h3><p class="mut sm2" style="margin:4px 0 10px">Temporary: wiped when you leave.</p><div class="chat" id="chat"></div><form id="chf" class="crow"><input type="text" id="chi" maxlength="120" placeholder="Say something…" autocomplete="off"><button class="btn sm pri">Send</button></form></div></div></div></div></div>`,
  i(){ludoInit()}},
-games:{t:'Daily Games · schlerium',h:()=>`<div class="wrap"><div class="pagehead"><p class="eyebrow">Resets in <span id="cd">--:--:--</span></p><h1>Daily Games</h1><p>Small puzzles, fresh every midnight. Only the first one is playable. The rest are slots to design.</p><a class="btn sm pri" href="#/ludo" style="margin-top:16px">🎲 Live Ludo: play with others</a></div>
+games:{t:'Daily Games · schlerium',h:()=>`<div class="wrap"><div class="pagehead"><p class="eyebrow">Resets in <span id="cd">--:--:--</span></p><h1>Daily Games</h1><p>Small puzzles, fresh every midnight. Only the first one is playable. The rest are slots to design.</p><a class="btn sm pri" href="#/ludo" style="margin-top:16px">🎲 Live Ludo: play with others</a> <a class="btn sm" href="#/dice" style="margin-top:16px">🎯 Dice race</a> <a class="btn sm" href="#/killudo" style="margin-top:16px">⚔️ Killudo</a></div>
 <div class="split" style="margin-top:26px"><div class="card rv"><div class="row"><h3>Daily Pulse</h3><span class="mut">Best: <b id="pb">0</b></span></div><p class="mut">Watch the pattern, repeat it. It grows by one every round.</p><div class="pads">${[0,1,2,3].map(i=>`<button class="pad" aria-label="Pad ${i+1}"></button>`).join('')}</div><div class="row"><span id="pst" class="mut">Press start</span><span class="big" id="psc">0</span></div><button class="btn pri" id="pgo" style="margin-top:14px">Start</button></div>
 <div class="grid" style="grid-template-columns:1fr">${[['Scrapword','5 letters, 6 tries'],['Gravity Doodle','Draw a path, drop a ball'],['Tap Rush','30 seconds of chaos']].map(([a,b],i)=>`<div class="card lock rv" style="--d:${(i+1)*.1}s"><div class="row"><div><h3>${a}</h3><p class="mut">${b}</p></div><button class="btn sm" data-soon>Notify me</button></div></div>`).join('')}</div></div></div>`,
  i(){const clock=()=>{const n=new Date(),m=new Date(n);m.setHours(24,0,0,0);const s=Math.floor((m-n)/1e3),p=x=>String(x).padStart(2,'0');$('#cd').textContent=`${p(s/3600|0)}:${p(s/60%60|0)}:${p(s%60)}`};clock();timers.push(setInterval(clock,1000));
@@ -707,7 +699,7 @@ terms:legal('Terms of Use',[['The deal','Use schlerium to learn and play. Do not
 404:{t:'Lost · schlerium',h:()=>`<div class="wrap hero"><p class="eyebrow">Error 404</p><h1>This page fell out of the multiverse.</h1><p class="lead">It happens to the best scraps.</p><a class="btn pri" href="#/">Take me home</a></div>`}};
 
 // ===== Ludo (live multiplayer over a free public MQTT broker; falls back to same-device tabs) =====
-const LBT='schlerium/v1/',BRK=['wss://broker.emqx.io:8084/mqtt','wss://broker.hivemq.com:8884/mqtt'],MQTT_SRC='https://cdn.jsdelivr.net/npm/mqtt@5.10.1/dist/mqtt.min.js';
+let LBT='schlerium/v1/',GAME='ludo';const BRK=['wss://broker.emqx.io:8084/mqtt','wss://broker.hivemq.com:8884/mqtt'],MQTT_SRC='https://cdn.jsdelivr.net/npm/mqtt@5.10.1/dist/mqtt.min.js';
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const rid=n=>{const a='abcdefghjkmnpqrstuvwxyz23456789';let s='';for(let i=0;i<n;i++)s+=a[rnd(a.length)];return s};
 const TRACK=(()=>{const t=[],a=(c,r)=>t.push([c,r]);for(let c=1;c<=5;c++)a(c,6);for(let r=5;r>=0;r--)a(6,r);a(7,0);a(8,0);for(let r=1;r<=5;r++)a(8,r);for(let c=9;c<=14;c++)a(c,6);a(14,7);a(14,8);for(let c=13;c>=9;c--)a(c,8);for(let r=9;r<=14;r++)a(8,r);a(7,14);a(6,14);for(let r=13;r>=9;r--)a(6,r);for(let c=5;c>=0;c--)a(c,8);a(0,7);a(0,6);return t})();
@@ -715,14 +707,17 @@ const HC=[[1,2,3,4,5].map(x=>[x,7]),[1,2,3,4,5].map(y=>[7,y]),[13,12,11,10,9].ma
 const SAFE=new Set([0,8,13,21,26,34,39,47]),CN=['Red','Green','Yellow','Blue'],BOFF=[[0,0],[9,0],[9,9],[0,9]],FIN=[[6.55,7.5],[7.5,6.55],[8.45,7.5],[7.5,8.45]],BN=['Pixel','Orbit','Nimbus','Sprocket','Zephyr','Comet'];
 const absOf=(c,p)=>(c*13+p)%52,newTk=()=>({0:[-1,-1,-1,-1],1:[-1,-1,-1,-1],2:[-1,-1,-1,-1],3:[-1,-1,-1,-1]});
 const nmOf=(S,c)=>(S.seats.find(s=>s.c===c)||{n:CN[c]}).n;
-const canMove=(S,c,i,r)=>{const p=S.tk[c][i];return p<0?r===6:p+r<=56};
+const shut=(S,c)=>S.g==='killudo'&&!(S.kl&&S.kl[c]);
+const land=(S,c,p,r)=>{if(p<0)return 0;const n=p+r;return shut(S,c)&&n>50?n%51:n};
+const canMove=(S,c,i,r)=>{const p=S.tk[c][i];return p<0?r===6:shut(S,c)||p+r<=56};
 const movable=(S,c,r)=>[0,1,2,3].filter(i=>canMove(S,c,i,r));
 const nextC=(S,c)=>{for(let k=1;k<=4;k++){const n=(c+k)%4;if(S.seats.some(s=>s.c===n))return n}return c};
 const setPh=(S,ph)=>{S.ph=ph;S.at=Date.now()};
-function score(S,c,i,r){const p=S.tk[c][i],np=p<0?0:p+r;let s=np;if(p<0)s+=60;if(np===56)s+=80;if(np<=50){const a=absOf(c,np);if(SAFE.has(a))s+=25;else S.seats.forEach(o=>{if(o.c!==c)S.tk[o.c].forEach(q=>{if(q>=0&&q<=50&&absOf(o.c,q)===a)s+=100})})}return s}
+function score(S,c,i,r){const p=S.tk[c][i],np=land(S,c,p,r);let s=p<0?0:p+r;if(p<0)s+=60;if(np===56)s+=80;if(np<=50){const a=absOf(c,np);if(SAFE.has(a))s+=25;else S.seats.forEach(o=>{if(o.c!==c)S.tk[o.c].forEach(q=>{if(q>=0&&q<=50&&absOf(o.c,q)===a)s+=100})})}return s}
 const pickMove=(S,c,r)=>movable(S,c,r).sort((a,b)=>score(S,c,b,r)-score(S,c,a,r))[0];
 const PP={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
 const pips=n=>[...Array(9).keys()].map(i=>'<i'+((PP[n]||[]).includes(i)?' class="on"':'')+'></i>').join('');
+const inLG=()=>['#/ludo','#/dice','#/killudo'].includes(location.hash);
 let uid=rid(10),L=null,R=null,LT=[],lsig='';
 
 // ---- transport ----
@@ -748,31 +743,38 @@ function dropSeat(S,u){const i=S.seats.findIndex(s=>s.u===u);if(i<0)return;const
 function hRoll(){const S=R.S,c=S.tn,r=1+rnd(6);S.r=r;S.rv++;S.sx=r===6?S.sx+1:0;
  if(S.sx>=3){S.sx=0;S.lg=nmOf(S,c)+' rolled a third 6: turn lost';return setPh(S,'skip')}
  if(!movable(S,c,r).length){S.lg=nmOf(S,c)+' rolled '+r+': no moves';setPh(S,'skip')}else{S.lg=nmOf(S,c)+' rolled '+r;setPh(S,'move')}}
-function hMove(i){const S=R.S,c=S.tn,r=S.r,p=S.tk[c][i],np=p<0?0:p+r;S.tk[c][i]=np;let cap=0;
+function hMove(i){const S=R.S,c=S.tn,r=S.r,p=S.tk[c][i],np=land(S,c,p,r);S.tk[c][i]=np;let cap=0;
  if(np<=50){const a=absOf(c,np);if(!SAFE.has(a))S.seats.forEach(o=>{if(o.c!==c)S.tk[o.c].forEach((q,j)=>{if(q>=0&&q<=50&&absOf(o.c,q)===a){S.tk[o.c][j]=-1;cap++}})})}
- const fin=np===56;
+ const fin=np===56;let op=0;if(S.g==='killudo'&&cap&&!S.kl[c]){S.kl[c]=true;op=1}
  if(S.tk[c].every(q=>q===56)){S.st='done';S.wn=c;S.ph='';S.lg=nmOf(S,c)+' got all four home!';return}
- S.lg=nmOf(S,c)+(cap?' captured '+cap+(cap>1?' tokens!':' token!'):fin?' brought a token home!':' moved');
+ S.lg=nmOf(S,c)+(cap?' captured '+cap+(cap>1?' tokens!':' token!')+(op?' 🔓 Gate opens!':''):fin?' brought a token home!':' moved');
  if(r===6||cap||fin){if(r!==6)S.sx=0;setPh(S,'roll')}else{S.tn=nextC(S,c);S.sx=0;setPh(S,'roll')}}
+const newSc=()=>({0:0,1:0,2:0,3:0}),newKl=()=>({0:false,1:false,2:false,3:false});
+function dRoll(){const S=R.S,c=S.tn,r=1+rnd(6);S.r=r;S.rv++;const t=(S.sc[c]||0)+r;
+ if(t>S.tg)S.lg=nmOf(S,c)+' rolled '+r+': too high, stays at '+(S.sc[c]||0)+' (needs '+(S.tg-(S.sc[c]||0))+' or less)';
+ else{S.sc[c]=t;if(t===S.tg){S.st='done';S.wn=c;S.ph='';S.lg=nmOf(S,c)+' hit exactly '+t+' and wins!';return}
+ S.lg=nmOf(S,c)+' rolled '+r+' (total '+t+')'}S.tn=nextC(S,c);setPh(S,'roll');S.at=Date.now()+3000}
+function renderScores(S){$('#bwrap').innerHTML=`<div class="sbh">First to <b>${S.tg}</b></div>`+S.seats.slice().sort((a,b)=>a.c-b.c).map(s=>{const v=S.sc[s.c]||0;return `<div class="srow"><div class="row"><span><i class="dot c${s.c}"></i> <b>${esc(s.n)}</b>${S.tn===s.c&&S.st==='play'?' ◀':''}</span><span class="sscore">${v}</span></div><div class="sbar"><i class="c${s.c}" style="width:${Math.min(100,v/S.tg*100)}%"></i></div></div>`}).join('')}
 function hostAct(a){const S=R&&R.S;if(!S)return;const u=a.u;R.seen[u]=Date.now();
  if(a.t==='join'){if(S.st==='lobby'&&S.seats.length<4&&!S.seats.some(s=>s.u===u)&&typeof a.n==='string')addSeat(S,u,a.n.slice(0,12),false)}
  else if(a.t==='leave')dropSeat(S,u);
- else if(S.st==='play'){const s=S.seats.find(s=>s.c===S.tn);if(!s||s.u!==u)return;if(a.t==='roll'&&S.ph==='roll')hRoll();else if(a.t==='move'&&S.ph==='move'&&movable(S,S.tn,S.r).includes(a.i))hMove(a.i)}
+ else if(S.st==='play'){const s=S.seats.find(s=>s.c===S.tn);if(!s||s.u!==u)return;if(a.t==='roll'&&S.ph==='roll'&&Date.now()>=S.at)S.g==='dice'?dRoll():hRoll();else if(a.t==='move'&&S.ph==='move'&&movable(S,S.tn,S.r).includes(a.i))hMove(a.i)}
  pubState()}
-function hostCtl(t){const S=R.S;
+function hostCtl(t,v){const S=R.S;
  if(t==='bot'&&S.st==='lobby'&&S.seats.length<4){const used=S.seats.map(s=>s.n),f=BN.filter(n=>!used.includes(n));addSeat(S,'bot'+rid(3),f[rnd(f.length)],true)}
- else if(t==='start'&&S.st==='lobby'&&S.seats.length>=2){S.st='play';S.tk=newTk();S.tn=Math.min(...S.seats.map(s=>s.c));S.sx=0;S.r=0;S.lg='Game on!';setPh(S,'roll')}
- else if(t==='again'&&S.st==='done'){S.seats=S.seats.filter(s=>!(s.b&&s.l));S.st='lobby';S.tk=newTk();S.lg='Rematch lobby'}
+ else if(t==='start'&&S.st==='lobby'&&S.seats.length>=2){S.st='play';S.tk=newTk();S.sc=newSc();S.kl=newKl();S.tn=Math.min(...S.seats.map(s=>s.c));S.sx=0;S.r=0;S.lg='Game on!';setPh(S,'roll')}
+ else if(t==='target'&&S.st==='lobby')S.tg=Math.max(10,Math.min(500,Math.round(+v)||50));
+ else if(t==='again'&&S.st==='done'){S.seats=S.seats.filter(s=>!(s.b&&s.l));S.st='lobby';S.tk=newTk();S.sc=newSc();S.kl=newKl();S.lg='Rematch lobby'}
  pubState()}
 function hostTick(){if(!R||!R.host||!R.S)return;const S=R.S,now=Date.now();let ch=false;
  S.seats.slice().forEach(s=>{if(!s.b&&s.u!==uid&&now-(R.seen[s.u]||R.t0)>22000){dropSeat(S,s.u);ch=true}});
  if(S.st==='play'){const s=S.seats.find(x=>x.c===S.tn);if(s){const el=now-S.at;
   if(S.ph==='skip'){if(el>1300){S.tn=nextC(S,S.tn);S.sx=0;setPh(S,'roll');ch=true}}
-  else if(S.ph==='roll'){if(el>(s.b?900:S.lim)){hRoll();ch=true}}
+  else if(S.ph==='roll'){if(el>(s.b?900:S.lim)){S.g==='dice'?dRoll():hRoll();ch=true}}
   else if(S.ph==='move'){const m=movable(S,S.tn,S.r);if(el>(s.b?900:m.length===1?700:S.lim)){hMove(pickMove(S,S.tn,S.r));ch=true}}}}
  if(ch)pubState()}
-function pubState(){const S=R.S,now=Date.now();S.rem=S.st==='play'&&(S.ph==='roll'||S.ph==='move')?Math.max(0,S.lim-(now-S.at)):0;R.dl=now+S.rem;Net.pub(LBT+'g/'+R.id,{k:'s',S});advert();onState()}
-function advert(){const S=R.S,r={k:'rm',id:R.id,nm:S.nm,h:uid,hn:L.me,n:S.seats.length,st:S.st,cs:S.seats.map(s=>s.c)};Net.pub(LBT+'lobby',r);L.rm.set(R.id,{...r,u:uid,seen:Date.now()})}
+function pubState(){const S=R.S,now=Date.now();S.rem=S.st==='play'&&(S.ph==='roll'||S.ph==='move')?Math.min(S.lim,Math.max(0,S.lim-(now-S.at))):0;R.dl=now+S.rem;Net.pub(LBT+'g/'+R.id,{k:'s',S});advert();onState()}
+function advert(){const S=R.S,r={k:'rm',id:R.id,nm:S.nm,h:uid,hn:L.me,n:S.seats.length,st:S.st,cs:S.seats.map(s=>s.c),tg:S.g==='dice'?S.tg:0};Net.pub(LBT+'lobby',r);L.rm.set(R.id,{...r,u:uid,seen:Date.now()})}
 
 // ---- lobby / session ----
 function beat(){if(!L||!Net.mode)return;const now=Date.now();Net.pub(LBT+'lobby',{k:'p',n:L.me,r:R?R.id:null});L.pl.set(uid,{n:L.me,r:R?R.id:null,seen:now});
@@ -781,7 +783,7 @@ function onNet(tp,m){if(!m||m.u===uid||!L)return;const now=Date.now();
  if(tp===LBT+'lobby'){
   if(m.k==='p'&&typeof m.n==='string'){L.pl.set(m.u,{n:m.n.slice(0,12),r:m.r||null,seen:now});if(R&&R.host)R.seen[m.u]=now;
    if(m.n===L.me&&m.u<uid&&!R){const b=L.me.slice(0,-4);L.me=b+(1000+rnd(9000));store.set('ldU',L.me);setUser();toast('Name was taken, you are now '+L.me)}}
-  else if(m.k==='rm'&&typeof m.id==='string'&&/^[a-z0-9]{5}$/.test(m.id)){L.rm.set(m.id,{k:'rm',id:m.id,nm:String(m.nm).slice(0,16),h:m.u,hn:String(m.hn).slice(0,12),n:+m.n||0,st:m.st==='lobby'?'lobby':'play',cs:Array.isArray(m.cs)?m.cs.slice(0,4):[],seen:now})}
+  else if(m.k==='rm'&&typeof m.id==='string'&&/^[a-z0-9]{5}$/.test(m.id)){L.rm.set(m.id,{k:'rm',id:m.id,nm:String(m.nm).slice(0,16),h:m.u,hn:String(m.hn).slice(0,12),n:+m.n||0,st:m.st==='lobby'?'lobby':'play',cs:Array.isArray(m.cs)?m.cs.slice(0,4):[],tg:+m.tg||0,seen:now})}
   else if(m.k==='q')setTimeout(beat,rnd(600));
   else if(m.k==='bye'){L.pl.delete(m.u);[...L.rm].forEach(([id,r])=>{if(r.h===m.u)L.rm.delete(id)});if(R&&!R.host&&R.hu===m.u)leaveRoom('Host left the room')}
   else if(m.k==='rx'){L.rm.delete(m.id);if(R&&!R.host&&R.id===m.id)leaveRoom('Host closed the room')}
@@ -792,30 +794,30 @@ function onNet(tp,m){if(!m||m.u===uid||!L)return;const now=Date.now();
 function renderLobby(){if(!L||!$('#rooms'))return;const now=Date.now();
  for(const [u,p] of L.pl)if(now-p.seen>14000)L.pl.delete(u);
  for(const [id,r] of L.rm)if(now-r.seen>14000)L.rm.delete(id);
- const pl=[...L.pl.values()].sort((a,b)=>a.n.localeCompare(b.n)),rm=[...L.rm.values()].sort((a,b)=>a.id<b.id?-1:1),sig=JSON.stringify([pl.map(p=>[p.n,p.r]),rm.map(r=>[r.id,r.nm,r.n,r.st,r.hn,r.cs])]);
+ const pl=[...L.pl.values()].sort((a,b)=>a.n.localeCompare(b.n)),rm=[...L.rm.values()].sort((a,b)=>a.id<b.id?-1:1),sig=JSON.stringify([pl.map(p=>[p.n,p.r]),rm.map(r=>[r.id,r.nm,r.n,r.st,r.hn,r.cs,r.tg])]);
  $('#lcnt').textContent=pl.length;if(sig===lsig)return;lsig=sig;
- $('#rooms').innerHTML=rm.length?rm.map(r=>`<div class="lrow"><div><b>${esc(r.nm)}</b><div class="mut sm2">host ${esc(r.hn)} · ${r.n}/4 · ${r.st==='lobby'?'open':'in game'}</div><div class="dots">${r.cs.map(c=>`<i class="dot c${+c%4}"></i>`).join('')}</div></div><button class="btn sm pri" data-join="${r.id}"${r.st!=='lobby'||r.n>=4?' disabled':''}>${r.st!=='lobby'?'Live':r.n>=4?'Full':'Join'}</button></div>`).join(''):'<p class="mut">No rooms yet. Create the first one!</p>';
+ $('#rooms').innerHTML=rm.length?rm.map(r=>`<div class="lrow"><div><b>${esc(r.nm)}</b><div class="mut sm2">host ${esc(r.hn)} · ${r.n}/4 · ${r.st==='lobby'?'open':'in game'}${r.tg?' · first to '+r.tg:''}</div><div class="dots">${r.cs.map(c=>`<i class="dot c${+c%4}"></i>`).join('')}</div></div><button class="btn sm pri" data-join="${r.id}"${r.st!=='lobby'||r.n>=4?' disabled':''}>${r.st!=='lobby'?'Live':r.n>=4?'Full':'Join'}</button></div>`).join(''):'<p class="mut">No rooms yet. Create the first one!</p>';
  $('#plist').innerHTML=pl.map(p=>`<div class="lrow"><span><i class="dot on"></i> <b>${esc(p.n)}</b>${p.n===L.me?' (you)':''}</span><span class="mut sm2">${p.r?'in a game':'in lobby'}</span></div>`).join('')}
-function ludoInit(){const me=store.get('ldU');
+function ludoInit(){GAME={'#/dice':'dice','#/killudo':'killudo'}[location.hash]||'ludo';LBT='schlerium/v1/'+(GAME==='ludo'?'':GAME+'/');const me=store.get('ldU');
  if(!me){$('#lneed').classList.remove('hidden');$('#lname').onclick=openAuth;$('#lnet').textContent='name needed';return}
  $('#lobby').classList.remove('hidden');L={pl:new Map(),rm:new Map(),me};R=null;lsig='';
  $('#lme').textContent=me;
- Net.h=onNet;Net.onlost=()=>{toast('Connection lost. Reconnecting…');ludoStop();setTimeout(()=>{if(location.hash==='#/ludo')route(true)},900)};
+ Net.h=onNet;Net.onlost=()=>{toast('Connection lost. Reconnecting…');ludoStop();setTimeout(()=>{if(inLG())route(true)},900)};
  loadMqtt(()=>{if(!L)return;Net.start(mode=>{if(!L)return;
   $('#lnet').textContent=mode==='mqtt'?'live · public lobby':mode==='local'?'offline · tabs on this device only':'unavailable';
   Net.sub(LBT+'lobby');Net.pub(LBT+'lobby',{k:'q'});beat();
   LT.push(setInterval(beat,4000),setInterval(()=>{renderLobby();hostTick();clock()},400))})});
  $('#lmk').onclick=createRoom;$('#rooms').onclick=e=>{const b=e.target.closest('[data-join]');if(b&&!b.disabled)joinRoom(b.dataset.join)};
- $('#gl').onclick=()=>leaveRoom();$('#gctl').onclick=e=>{const b=e.target.closest('[data-g]');if(b&&R&&R.host)hostCtl(b.dataset.g)};
+ $('#gl').onclick=()=>leaveRoom();$('#gctl').onchange=e=>{if(e.target.id==='tgi'&&R&&R.host)hostCtl('target',e.target.value)};$('#gctl').onclick=e=>{const b=e.target.closest('[data-g]');if(b&&R&&R.host)hostCtl(b.dataset.g)};
  $('#bwrap').onclick=e=>{const g=e.target.closest('.tk.go');if(g&&R)act('move',{i:+g.dataset.i})};
  $('#die').onclick=()=>{if($('#die').classList.contains('act'))act('roll')};
  $('#chf').onsubmit=e=>{e.preventDefault();const i=$('#chi'),v=i.value.trim().slice(0,120);if(!v||!R||Date.now()-(R.lc||0)<400)return;R.lc=Date.now();i.value='';const me=R.S&&R.S.seats.find(s=>s.u===uid),m={k:'c',n:L.me,c:me?me.c:0,m:v};Net.pub(LBT+'g/'+R.id,m);addChat(m)}}
-function ludoStop(){if(R)leaveRoom();const cp=$('#cpop');if(cp)cp.classList.remove('show');if(L&&Net.mode)Net.pub(LBT+'lobby',{k:'bye'});Net.stop();LT.forEach(clearInterval);LT=[];L=null;R=null;lsig=''}
+function ludoStop(){if(R)leaveRoom();if(L&&Net.mode)Net.pub(LBT+'lobby',{k:'bye'});Net.stop();LT.forEach(clearInterval);LT=[];L=null;R=null;lsig=''}
 addEventListener('pagehide',()=>{if(L&&Net.mode){if(R&&R.host)Net.pub(LBT+'lobby',{k:'rx',id:R.id});Net.pub(LBT+'lobby',{k:'bye'})}});
 const act=(t,x)=>{if(!R)return;if(R.host)hostAct({u:uid,t,...(x||{})});else Net.pub(LBT+'g/'+R.id,{k:'a',t,...(x||{})})};
 function showGame(on){$('#lobby').classList.toggle('hidden',on);$('#game').classList.toggle('hidden',!on)}
 function createRoom(){if(R||!L)return;const id=rid(5),v=($('#rname').value.trim().replace(/\s+/g,' ').slice(0,16))||(L.me+"'s room");
- R={id,host:true,hu:uid,rx:Date.now(),dl:0,seen:{},t0:Date.now(),in:true,S:{nm:v,st:'lobby',seats:[{u:uid,n:L.me,c:0,b:false}],tk:newTk(),tn:0,r:0,rv:0,sx:0,ph:'',lg:'Room open: invite players or add bots',lim:30000,at:Date.now(),rem:0}};
+ R={id,host:true,hu:uid,rx:Date.now(),dl:0,seen:{},t0:Date.now(),in:true,S:{g:GAME,sc:newSc(),kl:newKl(),tg:50,nm:v,st:'lobby',seats:[{u:uid,n:L.me,c:0,b:false}],tk:newTk(),tn:0,r:0,rv:0,sx:0,ph:'',lg:'Room open: invite players or add bots',lim:30000,at:Date.now(),rem:0}};
  Net.sub(LBT+'g/'+id);showGame(true);buildBoard();$('#chat').innerHTML='';pubState();beat()}
 function joinRoom(id){if(R||!L)return;const r=L.rm.get(id);if(!r||r.st!=='lobby'||r.n>=4){toast('That room is not open');return}
  R={id,host:false,hu:r.h,S:null,rx:Date.now(),dl:0,in:false};Net.sub(LBT+'g/'+id);showGame(true);buildBoard();$('#chat').innerHTML='';$('#gt').textContent=r.nm;$('#gs').textContent='Joining…';
@@ -823,18 +825,18 @@ function joinRoom(id){if(R||!L)return;const r=L.rm.get(id);if(!r||r.st!=='lobby'
 function leaveRoom(msg){if(!R)return;const r=R;R=null;clearTimeout(r.jt);
  if(r.host)Net.pub(LBT+'lobby',{k:'rx',id:r.id});else Net.pub(LBT+'g/'+r.id,{k:'a',t:'leave'});
  Net.unsub(LBT+'g/'+r.id);if(L)L.rm.delete(r.id);
- if($('#game')){showGame(false);$('#chat').innerHTML='';$('#bwrap').innerHTML=''}const cp=$('#cpop');if(cp)cp.classList.remove('show');
+ if($('#game')){showGame(false);$('#chat').innerHTML='';$('#bwrap').innerHTML=''}
  if(msg)toast(msg);lsig='';beat()}
 
 // ---- board + panels ----
 function boardSVG(){let s='<svg viewBox="0 0 15 15" class="lb nt" role="img" aria-label="Ludo board"><rect class="bgr" width="15" height="15" rx=".6"/>';
  BOFF.forEach(([x,y],c)=>{s+=`<g class="base c${c}"><rect class="bb" x="${x}" y="${y}" width="6" height="6" rx=".35"/><rect class="bi" x="${x+1}" y="${y+1}" width="4" height="4" rx=".3"/>`+[[2,2],[4,2],[2,4],[4,4]].map(([a,b])=>`<circle class="bs" cx="${x+a}" cy="${y+b}" r=".44"/>`).join('')+'</g>'});
  TRACK.forEach(([c,r],i)=>{const st=[0,13,26,39].indexOf(i);s+=`<rect class="bc${st>=0?' c'+st:''}" x="${c}" y="${r}" width="1" height="1"/>`+(SAFE.has(i)&&st<0?`<text class="sf" x="${c+.5}" y="${r+.52}">★</text>`:'')});
- HC.forEach((h,c)=>h.forEach(([x,y])=>s+=`<rect class="bc c${c}" x="${x}" y="${y}" width="1" height="1"/>`));
+ HC.forEach((h,c)=>h.forEach(([x,y])=>s+=`<rect class="bc hc c${c}" data-c="${c}" x="${x}" y="${y}" width="1" height="1"/>`));
  s+='<g class="ctr"><polygon class="c0" points="6,6 7.5,7.5 6,9"/><polygon class="c1" points="6,6 7.5,7.5 9,6"/><polygon class="c2" points="9,6 7.5,7.5 9,9"/><polygon class="c3" points="6,9 7.5,7.5 9,9"/></g>';
  for(let c=0;c<4;c++)for(let i=0;i<4;i++)s+=`<g class="tk c${c}" data-c="${c}" data-i="${i}" style="display:none"><circle class="tb" r=".36"/><circle class="th" cx="-.11" cy="-.13" r=".12"/></g>`;
  return s+'</svg>'}
-function buildBoard(){$('#bwrap').innerHTML=boardSVG();const svg=$('#bwrap svg');R.tg=[0,1,2,3].map(c=>[0,1,2,3].map(i=>svg.querySelector(`.tk[data-c="${c}"][data-i="${i}"]`)));R.cache={}}
+function buildBoard(){if(GAME==='dice'){$('#bwrap').innerHTML='';R.cache={};return}$('#bwrap').innerHTML=boardSVG();const svg=$('#bwrap svg');R.tg=[0,1,2,3].map(c=>[0,1,2,3].map(i=>svg.querySelector(`.tk[data-c="${c}"][data-i="${i}"]`)));R.cache={}}
 function updateBoard(){const S=R.S,svg=$('#bwrap svg');if(!svg||!R.tg)return;const me=S.seats.find(s=>s.u===uid),go=me&&S.st==='play'&&S.ph==='move'&&S.tn===me.c?movable(S,me.c,S.r):[],cells={},P=[];
  R.tg.forEach(a=>a.forEach(e=>e.style.display='none'));
  S.seats.forEach(s=>{for(let i=0;i<4;i++){const p=S.tk[s.c][i];let k,x,y,f=0;
@@ -845,34 +847,40 @@ function updateBoard(){const S=R.S,svg=$('#bwrap svg');if(!svg||!R.tg)return;con
   const t={c:s.c,i,k,x,y,f};P.push(t);(cells[k]=cells[k]||[]).push(t)}});
  P.forEach(t=>{const g=cells[t.k],j=g.indexOf(t);let dx=0,dy=0,sc=t.f?.5:1;if(g.length>1&&!t.f){const o=[[-.2,-.2],[.2,-.2],[-.2,.2],[.2,.2]][j%4];dx=o[0];dy=o[1];sc=.68}
   const el=R.tg[t.c][t.i];el.style.display='';el.style.transform=`translate(${t.x+dx}px,${t.y+dy}px) scale(${sc})`;el.classList.toggle('go',!!me&&t.c===me.c&&go.includes(t.i))});
- svg.querySelectorAll('.base').forEach((b,c)=>{b.classList.toggle('on',S.st==='play'&&S.tn===c);b.classList.toggle('off',!S.seats.some(s=>s.c===c))});
+ svg.querySelectorAll('.hc').forEach(e=>e.classList.toggle('shut',shut(S,+e.dataset.c)));svg.querySelectorAll('.base').forEach((b,c)=>{b.classList.toggle('on',S.st==='play'&&S.tn===c);b.classList.toggle('off',!S.seats.some(s=>s.c===c))});
  if(svg.classList.contains('nt'))setTimeout(()=>svg.classList.remove('nt'),80)}
-function onState(){if(!R||!R.S||!$('#game'))return;const S=R.S,me=S.seats.find(s=>s.u===uid);
+function dAnim(v){const r=R,d=$('#die');if(!d)return;d.classList.add('rolling');
+ const iv=setInterval(()=>{const e=$('#die');if(e)e.innerHTML=pips(1+rnd(6))},110);
+ setTimeout(()=>{clearInterval(iv);const e=$('#die');if(e){e.classList.remove('rolling');e.innerHTML=pips(v)}},2000);
+ setTimeout(()=>{if(R!==r)return;r.hold=false;r.snap=null;onState()},3000)}
+function onState(){if(!R||!R.S||!$('#game'))return;const N=R.S;
+ if(N.g==='dice'&&R.prv!==undefined&&N.rv!==R.prv&&N.rv>0&&R.last&&!R.hold){R.snap=R.last;R.hold=true;dAnim(N.r)}
+ R.prv=N.rv;const S=R.hold&&R.snap?R.snap:N,me=S.seats.find(s=>s.u===uid);
  if(!R.host){if(me){R.in=true;clearTimeout(R.jt)}else if(R.in)return leaveRoom('You were removed from the room');else if(S.st!=='lobby'||S.seats.length>=4)return leaveRoom('Room is full or already started')}
  $('#gt').textContent=S.nm;$('#gs').textContent=S.st==='lobby'?'Waiting · '+S.seats.length+'/4':S.st==='play'?'In game':'Finished';
- updateBoard();
+ updateBoard();if(S.g==='dice')renderScores(S);
  const my=!!me&&S.st==='play'&&S.tn===me.c,d=$('#die');
- if(R.rv!==S.rv){R.rv=S.rv;d.classList.remove('roll');void d.offsetWidth;if(S.rv)d.classList.add('roll')}
- d.innerHTML=pips(S.r);d.classList.toggle('act',my&&S.ph==='roll');
- let m;if(S.st==='lobby')m=R.host?(S.seats.length<2?'Add a bot or wait for players':'Ready. Start when you like'):'Waiting for the host to start';
+ if(S.g==='dice'){if(!R.hold){R.rv=S.rv;d.innerHTML=pips(S.r)}}
+ else{if(R.rv!==S.rv){R.rv=S.rv;d.classList.remove('roll');void d.offsetWidth;if(S.rv)d.classList.add('roll')}d.innerHTML=pips(S.r)}
+ d.classList.toggle('act',my&&S.ph==='roll'&&!R.hold);
+ let m;if(S.st==='lobby')m=R.host?(S.seats.length<2?'Add a bot or wait for players':'Ready. Start when you like'):'Waiting for the host to start'+(S.g==='dice'?' · first to '+S.tg:'')+(S.g==='killudo'?' · capture to unlock your gate':'');
  else if(S.st==='done')m='🏆 '+nmOf(S,S.wn)+' wins!';
  else if(my)m=S.ph==='roll'?'Your turn: tap the dice':S.ph==='move'?'Pick a glowing token':'No moves';
  else m=nmOf(S,S.tn)+"'s turn";
- $('#gmsg').textContent=m;$('#glg').textContent=S.lg||'';
+ if(R.hold)m='Rolling…';$('#gmsg').textContent=m;$('#glg').textContent=S.lg||'';
  const pl=[0,1,2,3].map(c=>{const s=S.seats.find(x=>x.c===c);if(!s)return S.st==='lobby'?`<div class="lrow open"><span><i class="dot c${c}"></i> <span class="mut">open seat</span></span></div>`:'';
-  return `<div class="lrow${S.st==='play'&&S.tn===c?' turn':''}"><span><i class="dot c${c}"></i> <b>${esc(s.n)}</b>${s.b?' 🤖':''}${s.u===uid?' (you)':''}</span><span class="mut sm2">${S.tk[c].filter(q=>q===56).length}/4 home</span></div>`}).join('');
+  return `<div class="lrow${S.st==='play'&&S.tn===c?' turn':''}"><span><i class="dot c${c}"></i> <b>${esc(s.n)}</b>${s.b?' 🤖':''}${s.u===uid?' (you)':''}${S.g==='killudo'?(S.kl&&S.kl[c]?' 🔓':' 🔒'):''}</span><span class="mut sm2">${S.g==='dice'?(S.sc[c]||0)+' / '+S.tg:S.tk[c].filter(q=>q===56).length+'/4 home'}</span></div>`}).join('');
  if(R.cache.pl!==pl){R.cache.pl=pl;$('#gpl').innerHTML=pl}
- const h=[];if(R.host&&S.st==='lobby'){if(S.seats.length<4)h.push('<button class="btn sm" data-g="bot">+ Add bot</button>');if(S.seats.length>=2)h.push('<button class="btn sm pri" data-g="start">Start game</button>')}
+ const h=[];if(R.host&&S.st==='lobby'){if(S.g==='dice')h.push('<label class="sm2">Target score <input type="number" id="tgi" min="10" max="500" step="5" value="'+S.tg+'" style="width:90px"></label>');if(S.seats.length<4)h.push('<button class="btn sm" data-g="bot">+ Add bot</button>');if(S.seats.length>=2)h.push('<button class="btn sm pri" data-g="start">Start game</button>')}
  if(R.host&&S.st==='done')h.push('<button class="btn sm pri" data-g="again">Play again</button>');
- const hs=h.join(' ');if(R.cache.ct!==hs){R.cache.ct=hs;$('#gctl').innerHTML=hs}}
+ const hs=h.join(' ');if(R.cache.ct!==hs){R.cache.ct=hs;$('#gctl').innerHTML=hs}
+ if(S.g==='dice'&&!R.hold)R.last=JSON.parse(JSON.stringify(S))}
 function clock(){if(!R||!R.S||!$('#gtm'))return;const S=R.S,s=S.seats.find(x=>x.c===S.tn);$('#gtm').textContent=S.st==='play'&&s&&!s.b&&S.rem?'⏱ '+Math.max(0,Math.ceil((R.dl-Date.now())/1000))+'s':''}
 function addChat(m){const box=$('#chat');if(!box||!m||typeof m.m!=='string')return;const c=[0,1,2,3].includes(m.c)?m.c:0,d=document.createElement('div');d.className='cm';
- d.innerHTML=`<i class="dot c${c}"></i> <b>${esc(String(m.n).slice(0,12))}</b> ${esc(m.m.slice(0,120))}`;box.append(d);while(box.children.length>60)box.firstChild.remove();box.scrollTop=box.scrollHeight;chatPop(c,m.n,m.m)}
-let cpT=0,cpT2=0;
-function chatPop(c,n,t){const p=$('#cpop');if(!p)return;clearTimeout(cpT);clearTimeout(cpT2);
- p.innerHTML=`<i class="dot c${c}"></i><span><b>${esc(String(n).slice(0,12))}</b> ${esc(t.slice(0,120))}</span>`;
- p.classList.remove('show');void p.offsetWidth;p.classList.add('show');cpT=setTimeout(()=>p.classList.remove('show'),2800)}
+ d.innerHTML=`<i class="dot c${c}"></i> <b>${esc(String(m.n).slice(0,12))}</b> ${esc(m.m.slice(0,120))}`;box.append(d);while(box.children.length>60)box.firstChild.remove();box.scrollTop=box.scrollHeight}
 
+V.killudo={t:'Killudo · schlerium',h:()=>V.ludo.h().replace('<h1>Ludo</h1>','<h1>Killudo</h1>').replace('Public rooms, live.','Your home gate stays locked until you capture an opponent pawn. Keep circling, hunt one down, then bring all four pawns home to win. Public rooms, live.'),i(){ludoInit()}};
+V.dice={t:'Dice · schlerium',h:()=>V.ludo.h().replace('<h1>Ludo</h1>','<h1>Dice</h1>').replace('Public rooms, live.','Roll to reach the target exactly, first one there wins. Public rooms, live.'),i(){ludoInit()}};
 // ---- router ----
 let first=true;
 function reveal(){const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;io.unobserve(e.target);e.target.classList.add('on');const n=$('[data-n]',e.target);if(n){const T=+n.dataset.n,d=+n.dataset.d;tween(1400,t=>n.textContent=(T*(1-Math.pow(1-t,3))).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d}))}}),{threshold:.15});$$('.rv',app).forEach(e=>io.observe(e))}
@@ -889,11 +897,11 @@ const setUser=()=>{const u=store.get('ldU');$('#authBtn').textContent=u?`Log out
 const nameVal=()=>$('#an').value.replace(/[^A-Za-z0-9_]/g,'').slice(0,8);
 const closeAuth=()=>{if(auth.open)auth.close()};
 function openAuth(){sfx=String(1000+rnd(9000));$('#an').value='';$('#apv').innerHTML='Your name: <b>…'+sfx+'</b>';if(!auth.open)auth.showModal();setTimeout(()=>$('#an').focus(),60)}
-$('#authBtn').onclick=()=>{if(store.get('ldU')){store.del('ldU');setUser();toast('Logged out');if(location.hash==='#/ludo')route(true)}else openAuth()};
+$('#authBtn').onclick=()=>{if(store.get('ldU')){store.del('ldU');setUser();toast('Logged out');if(inLG())route(true)}else openAuth()};
 $('#ax').addEventListener('click',closeAuth);$('#ax').addEventListener('touchend',e=>{e.preventDefault();closeAuth()});
 auth.addEventListener('click',e=>{if(e.target===auth)closeAuth()});
 $('#an').oninput=()=>{const v=nameVal();$('#an').value=v;$('#apv').innerHTML='Your name: <b>'+esc(v||'…')+sfx+'</b>'};
-$('#af').onsubmit=e=>{e.preventDefault();const v=nameVal();if(!v)return;store.set('ldU',v+sfx);closeAuth();setUser();toast('Welcome, '+v+sfx);if(location.hash==='#/ludo')route(true)};
+$('#af').onsubmit=e=>{e.preventDefault();const v=nameVal();if(!v)return;store.set('ldU',v+sfx);closeAuth();setUser();toast('Welcome, '+v+sfx);if(inLG())route(true)};
 if(!store.get('ldCk'))$('#cookie').classList.remove('hidden');
 $$('[data-ck]').forEach(b=>b.onclick=()=>{store.set('ldCk',b.dataset.ck);$('#cookie').classList.add('hidden');toast(b.dataset.ck==='1'?'Preferences saved':'Declined. Nothing tracked anyway')});
 $('#news').onsubmit=e=>{e.preventDefault();e.target.reset();toast('Subscribed to nothing. Thanks!')};
