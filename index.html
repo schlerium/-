@@ -76,7 +76,7 @@ details{border-bottom:2px solid var(--ink);padding:16px 0}summary{font-weight:70
 footer{margin-top:60px;border-top:2px solid var(--ink);background:#fff;padding:36px 0 calc(24px + env(safe-area-inset-bottom,0px))}
 .fg{display:grid;grid-template-columns:2fr repeat(3,1fr);gap:26px}.fg a{display:block;text-decoration:none;color:var(--mut);padding:3px 0}.fg a:hover{color:var(--ink)}.fg h4{margin:0 0 8px}
 .small{font-size:13px;color:var(--mut);margin-top:26px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-#toasts{position:fixed;right:16px;bottom:16px;z-index:90;display:grid;gap:8px}.t{background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font-weight:600;animation:ti .4s var(--e),to .4s 2.6s forwards}
+#toasts{position:fixed;right:16px;bottom:16px;z-index:90;display:grid;gap:8px;pointer-events:none}.t.cp{display:flex;align-items:center;gap:8px;max-width:min(320px,86vw);word-break:break-word}.t{background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font-weight:600;animation:ti .4s var(--e),to .4s 2.6s forwards}
 @keyframes ti{from{opacity:0;transform:translateX(30px)}}@keyframes to{to{opacity:0;transform:translateY(10px)}}
 #cookie{position:fixed;left:16px;bottom:16px;z-index:80;max-width:340px;animation:pop .6s 1s both}
 dialog{border:2px solid var(--ink);border-radius:var(--r);padding:26px;width:min(400px,92vw);box-shadow:8px 8px 0 var(--ink)}dialog[open]{animation:pop .4s var(--e)}dialog::backdrop{background:rgba(11,11,12,.45);backdrop-filter:blur(3px)}
@@ -721,20 +721,23 @@ const inLG=()=>['#/ludo','#/dice','#/killudo'].includes(location.hash);
 let uid=rid(10),L=null,R=null,LT=[],lsig='';
 
 // ---- transport ----
-const Net={mode:'',c:null,bc:null,subs:new Set(),h:null,onlost:null,
- start(done){const fin=m=>{this.mode=m;done(m)};
+const Net={mode:'',cs:[],bc:null,subs:new Set(),seen:new Set(),sq:0,h:null,onlost:null,onup:null,
+ start(done){let fired=false;const fin=m=>{if(fired)return;fired=true;this.mode=m;done(m)};
   const fb=()=>{try{this.bc=new BroadcastChannel('schlerium-v1');this.bc.onmessage=e=>{const d=e.data;if(d&&this.subs.has(d.t)&&this.h)this.h(d.t,d.m)};fin('local')}catch{fin('none')}};
-  const go=k=>{if(!window.mqtt||k>=BRK.length)return fb();let ok=false,dead=false,c;
-   try{c=mqtt.connect(BRK[k],{clientId:'sch_'+uid+'_'+rid(4),clean:true,connectTimeout:5000,reconnectPeriod:0,keepalive:30,will:{topic:LBT+'lobby',payload:JSON.stringify({k:'bye',u:uid}),qos:0,retain:false}})}catch{return go(k+1)}
-   const fail=()=>{if(ok||dead)return;dead=true;clearTimeout(t);try{c.end(true)}catch{}go(k+1)},t=setTimeout(fail,6500);
-   c.on('connect',()=>{if(ok||dead)return;ok=true;clearTimeout(t);this.c=c;fin('mqtt')});
-   c.on('message',(tp,p)=>{try{const m=JSON.parse(p.toString());if(this.h&&this.subs.has(tp))this.h(tp,m)}catch{}});
-   c.on('error',fail);c.on('close',()=>{if(!ok)fail();else if(this.c===c&&this.onlost)this.onlost()})};
-  go(0)},
- sub(tp){this.subs.add(tp);if(this.c)this.c.subscribe(tp)},
- unsub(tp){this.subs.delete(tp);if(this.c)this.c.unsubscribe(tp)},
- pub(tp,m){m={...m,u:uid};if(this.c)this.c.publish(tp,JSON.stringify(m));else if(this.bc)this.bc.postMessage({t:tp,m})},
- stop(){this.subs.clear();const c=this.c;this.c=null;if(c){try{c.end(false)}catch{}}if(this.bc){try{this.bc.close()}catch{}this.bc=null}this.mode=''}};
+  if(!window.mqtt)return fb();
+  let pend=BRK.length;const settle=()=>{if(--pend===0&&!fired)fb()};
+  BRK.forEach(url=>{let ok=false,dead=false,c,t;
+   try{c=mqtt.connect(url,{clientId:'sch_'+uid+'_'+rid(4),clean:true,connectTimeout:5000,reconnectPeriod:0,keepalive:30,will:{topic:LBT+'lobby',payload:JSON.stringify({k:'bye',u:uid}),qos:0,retain:false}})}catch{return settle()}
+   const fail=()=>{if(ok||dead)return;dead=true;clearTimeout(t);try{c.end(true)}catch{}settle()};
+   t=setTimeout(fail,6500);
+   c.on('connect',()=>{if(ok||dead)return;ok=true;clearTimeout(t);this.cs.push(c);this.subs.forEach(tp=>c.subscribe(tp));const late=fired;fin('mqtt');settle();if(late&&this.onup)this.onup()});
+   c.on('message',(tp,p)=>{try{const m=JSON.parse(p.toString());if(m.i){if(this.seen.has(m.i))return;this.seen.add(m.i);if(this.seen.size>400)this.seen.delete(this.seen.values().next().value)}if(this.h&&this.subs.has(tp))this.h(tp,m)}catch(e){console.error(e)}});
+   c.on('error',fail);
+   c.on('close',()=>{if(!ok)fail();else if(this.cs.includes(c)){this.cs=this.cs.filter(x=>x!==c);if(!this.cs.length&&this.onlost)this.onlost()}})})},
+ sub(tp){this.subs.add(tp);this.cs.forEach(c=>c.subscribe(tp))},
+ unsub(tp){this.subs.delete(tp);this.cs.forEach(c=>c.unsubscribe(tp))},
+ pub(tp,m){m={...m,u:uid,i:uid+'.'+(++this.sq)};if(this.cs.length)this.cs.forEach(c=>c.publish(tp,JSON.stringify(m)));else if(this.bc)this.bc.postMessage({t:tp,m})},
+ stop(){this.subs.clear();const cs=this.cs;this.cs=[];cs.forEach(c=>{try{c.end(false)}catch{}});if(this.bc){try{this.bc.close()}catch{}this.bc=null}this.mode=''}};
 function loadMqtt(cb){if(window.mqtt)return cb();let d=false;const f=()=>{if(!d){d=true;cb()}};const s=document.createElement('script');s.src=MQTT_SRC;s.onload=f;s.onerror=f;document.head.append(s);setTimeout(f,6000)}
 
 // ---- host-side rules ----
@@ -790,7 +793,7 @@ function onNet(tp,m){if(!m||m.u===uid||!L)return;const now=Date.now();
  }else if(R&&tp===LBT+'g/'+R.id){
   if(m.k==='s'&&!R.host&&m.u===R.hu&&m.S&&m.S.seats&&m.S.tk){R.S=m.S;R.rx=now;R.dl=now+(m.S.rem||0);onState()}
   else if(m.k==='a'&&R.host)hostAct(m);
-  else if(m.k==='c')addChat(m)}}
+  else if(m.k==='c')addChat(m,true)}}
 function renderLobby(){if(!L||!$('#rooms'))return;const now=Date.now();
  for(const [u,p] of L.pl)if(now-p.seen>14000)L.pl.delete(u);
  for(const [id,r] of L.rm)if(now-r.seen>14000)L.rm.delete(id);
@@ -802,7 +805,7 @@ function ludoInit(){GAME={'#/dice':'dice','#/killudo':'killudo'}[location.hash]|
  if(!me){$('#lneed').classList.remove('hidden');$('#lname').onclick=openAuth;$('#lnet').textContent='name needed';return}
  $('#lobby').classList.remove('hidden');L={pl:new Map(),rm:new Map(),me};R=null;lsig='';
  $('#lme').textContent=me;
- Net.h=onNet;Net.onlost=()=>{toast('Connection lost. Reconnecting…');ludoStop();setTimeout(()=>{if(inLG())route(true)},900)};
+ Net.h=onNet;Net.onup=()=>{if(L)setTimeout(beat,200)};Net.onlost=()=>{toast('Connection lost. Reconnecting…');ludoStop();setTimeout(()=>{if(inLG())route(true)},900)};
  loadMqtt(()=>{if(!L)return;Net.start(mode=>{if(!L)return;
   $('#lnet').textContent=mode==='mqtt'?'live · public lobby':mode==='local'?'offline · tabs on this device only':'unavailable';
   Net.sub(LBT+'lobby');Net.pub(LBT+'lobby',{k:'q'});beat();
@@ -821,8 +824,8 @@ function createRoom(){if(R||!L)return;const id=rid(5),v=($('#rname').value.trim(
  Net.sub(LBT+'g/'+id);showGame(true);buildBoard();$('#chat').innerHTML='';pubState();beat()}
 function joinRoom(id){if(R||!L)return;const r=L.rm.get(id);if(!r||r.st!=='lobby'||r.n>=4){toast('That room is not open');return}
  R={id,host:false,hu:r.h,S:null,rx:Date.now(),dl:0,in:false};Net.sub(LBT+'g/'+id);showGame(true);buildBoard();$('#chat').innerHTML='';$('#gt').textContent=r.nm;$('#gs').textContent='Joining…';
- Net.pub(LBT+'g/'+id,{k:'a',t:'join',n:L.me});R.jt=setTimeout(()=>{if(R&&!R.S)leaveRoom('Room did not respond')},6000)}
-function leaveRoom(msg){if(!R)return;const r=R;R=null;clearTimeout(r.jt);
+ const r0=R,sj=()=>Net.pub(LBT+'g/'+id,{k:'a',t:'join',n:L.me});sj();r0.jr=setInterval(()=>{if(R===r0&&!r0.in)sj();else clearInterval(r0.jr)},1200);r0.jt=setTimeout(()=>{if(R===r0&&!r0.in)leaveRoom('Room did not respond')},9000)}
+function leaveRoom(msg){if(!R)return;const r=R;R=null;clearTimeout(r.jt);clearInterval(r.jr);
  if(r.host)Net.pub(LBT+'lobby',{k:'rx',id:r.id});else Net.pub(LBT+'g/'+r.id,{k:'a',t:'leave'});
  Net.unsub(LBT+'g/'+r.id);if(L)L.rm.delete(r.id);
  if($('#game')){showGame(false);$('#chat').innerHTML='';$('#bwrap').innerHTML=''}
@@ -856,7 +859,7 @@ function dAnim(v){const r=R,d=$('#die');if(!d)return;d.classList.add('rolling');
 function onState(){if(!R||!R.S||!$('#game'))return;const N=R.S;
  if(N.g==='dice'&&R.prv!==undefined&&N.rv!==R.prv&&N.rv>0&&R.last&&!R.hold){R.snap=R.last;R.hold=true;dAnim(N.r)}
  R.prv=N.rv;const S=R.hold&&R.snap?R.snap:N,me=S.seats.find(s=>s.u===uid);
- if(!R.host){if(me){R.in=true;clearTimeout(R.jt)}else if(R.in)return leaveRoom('You were removed from the room');else if(S.st!=='lobby'||S.seats.length>=4)return leaveRoom('Room is full or already started')}
+ if(!R.host){if(me){R.in=true;clearTimeout(R.jt);clearInterval(R.jr)}else if(R.in)return leaveRoom('You were removed from the room');else if(S.st!=='lobby'||S.seats.length>=4)return leaveRoom('Room is full or already started')}
  $('#gt').textContent=S.nm;$('#gs').textContent=S.st==='lobby'?'Waiting · '+S.seats.length+'/4':S.st==='play'?'In game':'Finished';
  updateBoard();if(S.g==='dice')renderScores(S);
  const my=!!me&&S.st==='play'&&S.tn===me.c,d=$('#die');
@@ -876,8 +879,9 @@ function onState(){if(!R||!R.S||!$('#game'))return;const N=R.S;
  const hs=h.join(' ');if(R.cache.ct!==hs){R.cache.ct=hs;$('#gctl').innerHTML=hs}
  if(S.g==='dice'&&!R.hold)R.last=JSON.parse(JSON.stringify(S))}
 function clock(){if(!R||!R.S||!$('#gtm'))return;const S=R.S,s=S.seats.find(x=>x.c===S.tn);$('#gtm').textContent=S.st==='play'&&s&&!s.b&&S.rem?'⏱ '+Math.max(0,Math.ceil((R.dl-Date.now())/1000))+'s':''}
-function addChat(m){const box=$('#chat');if(!box||!m||typeof m.m!=='string')return;const c=[0,1,2,3].includes(m.c)?m.c:0,d=document.createElement('div');d.className='cm';
- d.innerHTML=`<i class="dot c${c}"></i> <b>${esc(String(m.n).slice(0,12))}</b> ${esc(m.m.slice(0,120))}`;box.append(d);while(box.children.length>60)box.firstChild.remove();box.scrollTop=box.scrollHeight}
+function addChat(m,pop){const box=$('#chat');if(!box||!m||typeof m.m!=='string')return;const c=[0,1,2,3].includes(m.c)?m.c:0,d=document.createElement('div');d.className='cm';
+ d.innerHTML=`<i class="dot c${c}"></i> <b>${esc(String(m.n).slice(0,12))}</b> ${esc(m.m.slice(0,120))}`;box.append(d);while(box.children.length>60)box.firstChild.remove();box.scrollTop=box.scrollHeight;if(pop)chatPop(m,c)}
+function chatPop(m,c){const w=$('#toasts');if(!w)return;while(w.children.length>=4)w.firstChild.remove();const t=document.createElement('div');t.className='t cp';t.innerHTML=`<i class="dot c${c}"></i> <b>${esc(String(m.n).slice(0,12))}</b> ${esc(m.m.slice(0,120))}`;w.append(t);setTimeout(()=>t.remove(),3100)}
 
 V.killudo={t:'Killudo · schlerium',h:()=>V.ludo.h().replace('<h1>Ludo</h1>','<h1>Killudo</h1>').replace('Public rooms, live.','Your home gate stays locked until you capture an opponent pawn. Keep circling, hunt one down, then bring all four pawns home to win. Public rooms, live.'),i(){ludoInit()}};
 V.dice={t:'Dice · schlerium',h:()=>V.ludo.h().replace('<h1>Ludo</h1>','<h1>Dice</h1>').replace('Public rooms, live.','Roll to reach the target exactly, first one there wins. Public rooms, live.'),i(){ludoInit()}};
