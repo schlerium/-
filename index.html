@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><!--build:b40-->
+<script>/* auto-update: if a newer build is online, reload once past any stale cache */
+(()=>{const B='b40';try{if(!/^https?:$/.test(location.protocol))return;const k='schl_bld';fetch(location.pathname+'?nc='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(t=>{const m=t.match(/<!--build:(\w+)-->/);if(!m||m[1]===B)return;if(sessionStorage.getItem(k)===m[1])return;sessionStorage.setItem(k,m[1]);location.replace(location.pathname+'?v='+m[1]+location.hash)}).catch(()=>{})}catch(e){}})();
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>schlerium — where the leftover multiverse lands</title>
@@ -1372,16 +1376,25 @@ function reveal(){const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isI
 // ---- global presence (shown on the Games tab) ----
 const PRES='schlerium/v1/presence',PGN={ludo:'Ludo',killudo:'Killudo',dice:'Dice',pipopipette:'La Pipopipette',snake:'Snake & Ladder',buckshot:'Buckshot Roulette',carrom:'Carrom','carrom-classic':'Carrom',karrom:'Karrom'};
 const Pres={m:new Map(),on:false,k:'',last:'',lt:0,tm:0,
- st(){const k=this.k;if(!PGN[k])return{g:'',p:0};const p=['ludo','killudo','dice'].includes(k)?!!R:!!MP.R;return{g:PGN[k],p:p?1:0}},
- pub(f){const me=store.get('ldU');if(!me||!this.on)return;const s=this.st(),sig=s.g+'|'+s.p,now=Date.now();if(!f&&sig===this.last&&now-this.lt<4000)return;this.last=sig;this.lt=now;
-  this.m.set(uid,{n:me,g:s.g,p:s.p,t:now});Bus.pub(PRES,{k:'p',n:me,g:s.g,p:s.p});this.draw()},
- rx(m){if(m.u===uid)return;if(m.k==='p'&&typeof m.n==='string'){this.m.set(m.u,{n:m.n.replace(/[^A-Za-z0-9_]/g,'').slice(0,13),g:PGN[Object.keys(PGN).find(x=>PGN[x]===m.g)]||'',p:m.p?1:0,t:Date.now()})}
+ st(){const k=this.k;if(!PGN[k])return{g:'',p:0};const lu=['ludo','killudo','dice'].includes(k),p=lu?!!R:!!MP.R;let rid='',o=0;
+  try{if(lu){if(R&&R.host&&R.S&&R.S.st==='lobby'&&R.S.seats.length<4){rid=R.id;o=1}}else{const r=MP.R;if(r&&r.host&&r.S&&MP.K&&(r.S.st==='lobby'||(r.S.st==='over'&&MP.K.optsOver))&&r.S.seats.length<MP.K.max){rid=r.id;o=1}}}catch(e){}
+  return{g:PGN[k],p:p?1:0,rk:k,rid:o?rid:'',o}},
+ pub(f){const me=store.get('ldU');if(!me||!this.on)return;const s=this.st(),sig=s.g+'|'+s.p+'|'+s.rid,now=Date.now();if(!f&&sig===this.last&&now-this.lt<4000)return;this.last=sig;this.lt=now;
+  this.m.set(uid,{n:me,g:s.g,p:s.p,t:now,rk:s.rk,rid:s.rid});Bus.pub(PRES,{k:'p',n:me,g:s.g,p:s.p,rk:s.rk,rid:s.rid});this.draw()},
+ rx(m){if(m.u===uid)return;if(m.k==='p'&&typeof m.n==='string'){this.m.set(m.u,{n:m.n.replace(/[^A-Za-z0-9_]/g,'').slice(0,13),g:PGN[Object.keys(PGN).find(x=>PGN[x]===m.g)]||'',p:m.p?1:0,t:Date.now(),rk:(typeof m.rk==='string'&&PGN[m.rk]&&m.rk!=='carrom'&&typeof m.rid==='string'&&/^[\w-]{1,12}$/.test(m.rid))?m.rk:'',rid:(typeof m.rid==='string'&&/^[\w-]{1,12}$/.test(m.rid))?m.rid:''})}
   else if(m.k==='bye')this.m.delete(m.u);else if(m.k==='q')this.pub(true);this.draw()},
  route(k){if(k!=='games'&&!PGN[k]){this.leave();return}this.k=k;if(!this.on){this.on=true;Bus.sub(PRES,m=>this.rx(m));this.tm=setInterval(()=>{const n=Date.now();this.m.forEach((v,u)=>{if(u!==uid&&n-v.t>11000)this.m.delete(u)});this.pub();this.draw()},1500);Bus.pub(PRES,{k:'q'})}this.pub(true)},
+ joinFrom(x){const [rk,id]=String(x).split('|');if(!PGN[rk]||rk==='carrom'||!/^[\w-]{1,12}$/.test(id))return;if(!store.get('ldU')){openAuth();return}
+  if(R||MP.R){toast('Leave your current room first');return}
+  const lu=['ludo','killudo','dice'].includes(rk);location.hash='#/'+rk;const t0=Date.now();
+  const iv=setInterval(()=>{if(location.hash!=='#/'+rk||Date.now()-t0>10000){clearInterval(iv);if(location.hash==='#/'+rk&&!R&&!MP.R)toast('That room is no longer open');return}
+   if(lu){if(L&&!R&&L.rm.has(id)){clearInterval(iv);const r=L.rm.get(id);if(r.st==='lobby'&&r.n<4)joinRoom(id);else toast('That room is not open')}}
+   else if(MP.L&&!MP.R&&MP.L.rm.has(id)){clearInterval(iv);const r=MP.L.rm.get(id);if(r.st==='lobby'&&r.n<r.max)mpJoin(id);else toast('That room is not open')}},300)},
  bye(){if(store.get('ldU'))Bus.pub(PRES,{k:'bye'})},
  leave(){if(!this.on)return;this.bye();clearInterval(this.tm);Bus.unsub(PRES);this.m.clear();this.on=false;this.last=''},
  draw(){const b=$('#plbox');if(!b)return;const a=[...this.m.values()].sort((x,y)=>x.p-y.p||x.n.localeCompare(y.n)),me=store.get('ldU');$('#plcnt').textContent=a.length;
-  b.innerHTML=(a.length?a.map(v=>`<div class="lrow"${v.p?' style="opacity:.5;filter:grayscale(1)"':''}><span><i class="dot ${v.p?'':'on'}"></i> <b class="un" style="--uh:${uhue(v.n)}">${esc(v.n)}</b>${v.n===me?' (you)':''}${v.p&&v.g?' <span class="mut">('+esc(v.g)+')</span>':''}</span></div>`).join(''):'<p class="mut">Nobody here yet.</p>')+(me?'':'<p class="mut sm2" style="margin-top:10px">Log in to show up here too.</p>')}};
+  b.onclick=e=>{const j=e.target.closest('[data-pj]');if(j)Pres.joinFrom(j.dataset.pj)};
+  b.innerHTML=(a.length?a.map(v=>{const oj=v.p&&v.rid&&v.rk&&v.n!==me;return `<div class="lrow"${v.p&&!oj?' style="opacity:.5;filter:grayscale(1)"':''}><span><i class="dot ${v.p?'':'on'}"></i> <b class="un" style="--uh:${uhue(v.n)}">${esc(v.n)}</b>${v.n===me?' (you)':''}${v.p&&v.g?' <span class="mut">('+esc(v.g)+')</span>':''}</span>${oj?`<button class="btn sm pri" data-pj="${esc(v.rk)}|${esc(v.rid)}">Join</button>`:''}</div>`}).join(''):'<p class="mut">Nobody here yet.</p>')+(me?'':'<p class="mut sm2" style="margin-top:10px">Log in to show up here too.</p>')}};
 Bus.ups.add(()=>{if(Pres.on){Bus.pub(PRES,{k:'q'});Pres.pub(true)}});addEventListener('pagehide',()=>{if(Pres.on)Pres.bye()});
 function route(instant){const k=location.hash.replace(/^#\/?/,''),v=V[k]||V[404];app.classList.add('out');
   setTimeout(()=>{ludoStop();mpStop();timers.forEach(clearInterval);timers=[];app.innerHTML=v.h();document.title=v.t;v.i&&v.i();Pres.route(k);document.body.classList.toggle('crm',k==='carrom-classic'||k==='karrom');document.body.classList.toggle('krm',k==='karrom');scrollTo(0,0);app.classList.remove('out');reveal();metalize(k,v.t);holoize(k);aeroize(k);
