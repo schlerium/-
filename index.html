@@ -495,7 +495,7 @@ html,body{overscroll-behavior-y:none}
 .wdmid{margin-top:14px}.wdr{display:flex;gap:5px;justify-content:center;margin:6px 0}
 .wdt{display:grid;place-items:center;width:clamp(30px,10.5vw,42px);aspect-ratio:1;border:3px solid currentColor;border-radius:7px 9px 6px 10px;font:800 clamp(16px,5vw,22px)/1 inherit;font-style:normal;color:inherit}
 .wdt:nth-child(odd){transform:rotate(-1.6deg)}.wdt:nth-child(even){transform:rotate(1.4deg)}
-.wdt.cur{box-shadow:0 3px 0 currentColor}.wdt.g,.wdk .g{background:#9be564;color:#111}.wdt.y,.wdk .y{background:#ecd06a;color:#111}.wdt.b,.wdk .b{background:#86cdf9;color:#111}.wdt.x,.wdk .x{background:#8f938e;color:#111}
+.wdt.cur{box-shadow:0 3px 0 currentColor}.wdt.g,.wdk .g{background:#9be564;color:#111}.wdt.y,.wdk .y{background:#ecd06a;color:#111}.wdt.b,.wdk .b{background:#86cdf9;color:#111}.wdt.h,.wdk .h,.wct.h{background:linear-gradient(90deg,#9be564 50%,#86cdf9 50%);color:#111}.wdt.x,.wdk .x{background:#8f938e;color:#111}
 .wdv{font-weight:800;letter-spacing:.05em;text-transform:uppercase;text-align:center;border:3px solid currentColor;border-radius:9px 7px 10px 6px;padding:8px 10px;margin:0 auto 10px;max-width:420px}
 .wdm{font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin:12px 0 4px;min-height:1.5em}
 .wdr .wdt.rv{animation:wdrv .3s both}@keyframes wdrv{from{opacity:0;scale:.4}to{opacity:1;scale:1}}
@@ -509,6 +509,14 @@ html,body{overscroll-behavior-y:none}
 .wdth.low .wdbulb{animation:wdlow .45s infinite alternate}@keyframes wdlow{to{transform:scale(1.12)}}.wdw{margin:2px 0 6px}
 .wdk{display:flex;gap:4px;justify-content:center;margin:5px 0}.wdk button{flex:1;max-width:34px;min-width:0;height:42px;padding:0;border:2px solid currentColor;border-radius:8px;background:transparent;color:inherit;font:700 14px inherit}.wdk button.w2{max-width:52px}.wdk button:disabled{opacity:.5}
 .wdbt{display:flex;flex-wrap:wrap;align-items:center;gap:8px;justify-content:center;margin:10px 0 4px}.wdcap{font-weight:800;text-transform:uppercase;letter-spacing:.05em;font-size:.8em}.wdbt b{min-width:2ch;text-align:center}
+.wcs{text-align:center}.wch{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:.8rem;margin:8px 0}
+.wcc{display:inline-block;margin:3px;padding:3px 12px;border:2px solid currentColor;border-radius:99px;font-size:.8rem;font-weight:700}
+.wctm{text-align:center;font-weight:800;font-size:1.7rem;letter-spacing:.04em;margin:8px 0 4px}.wcm{max-width:420px;margin:10px auto;padding:10px 14px;border:3px solid currentColor;border-radius:9px 7px 10px 6px;text-align:left}.wcm p{margin:6px 0 0}
+.wcb{margin:14px 0}.wcb>b{display:block;font-size:.8rem;letter-spacing:.08em;margin-bottom:4px}
+.wcr{display:flex;gap:4px;justify-content:center;margin:4px 0}
+.wct{display:grid;place-items:center;width:min(40px,calc((100% - (var(--n,5) - 1)*4px)/var(--n,5)));aspect-ratio:1;border:3px solid currentColor;border-radius:7px 9px 6px 10px;font:800 clamp(12px,4vw,20px)/1 inherit;font-style:normal;color:inherit}
+.wcr.o .wct{width:min(22px,calc((100% - (var(--n,5) - 1)*4px)/var(--n,5)));border-width:2px;border-radius:5px}
+.wct.cur{box-shadow:0 3px 0 currentColor}.wct.g{background:#9be564;color:#111}.wct.y{background:#ecd06a;color:#111}.wct.b{background:#86cdf9;color:#111}.wct.x{background:#8f938e;color:#111}
 .krm .crc{width:min(100vw,calc(100dvh - 230px));max-width:none;margin-left:calc(50% - min(50vw,calc(50dvh - 115px)));border-radius:0}
 .crc{display:block;width:100%;height:auto;aspect-ratio:1/1;margin-top:12px;border-radius:14px;touch-action:none;user-select:none;-webkit-user-select:none;cursor:crosshair}.crs{display:block;width:100%;margin-top:8px;accent-color:currentColor}
 #pick{--cw:min(64vw,calc(40vh*.79),300px);gap:0}
@@ -666,7 +674,7 @@ const tween=(ms,fn)=>new Promise(r=>{const t0=performance.now();(function f(n){c
 const store={get:k=>{try{return localStorage.getItem(k)}catch{return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch{}},del:k=>{try{localStorage.removeItem(k)}catch{}}};
 const toast=m=>{const t=document.createElement('div');t.className='t';t.textContent=m;$('#toasts').append(t);setTimeout(()=>t.remove(),3100)};
 
-// ---- sound effects (Web Audio synth, no files). Word Duel and Buckshot keep their own sounds. ----
+// ---- sound effects (Web Audio synth, no files). Wordle and Buckshot keep their own sounds. ----
 const SFX=(()=>{let ac=null,mu=false;const last={};try{mu=localStorage.getItem('sfx-mute')==='1'}catch(e){}
  const ctx=()=>{if(mu)return null;try{const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ac=ac||new A();if(ac.state==='suspended')ac.resume();return ac}catch(e){return null}};
  const tone=(f,d,o={})=>{const c=ctx();if(!c)return;const t=c.currentTime+(o.at||0),os=c.createOscillator(),g=c.createGain(),v=o.v==null?.12:o.v;os.type=o.type||'sine';os.frequency.setValueAtTime(f,t);if(o.to)os.frequency.exponentialRampToValueAtTime(o.to,t+d);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.0002,v),t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+d);os.connect(g);g.connect(c.destination);os.start(t);os.stop(t+d+.03)};
@@ -702,7 +710,7 @@ const SFX=(()=>{let ac=null,mu=false;const last={};try{mu=localStorage.getItem('
  addEventListener('pointerdown',()=>{ctx()},{once:true,passive:true});return api})();
 (()=>{const b=document.createElement('button');b.id='sfxb';b.type='button';b.setAttribute('aria-label','Sound on or off');const u=()=>{b.textContent=SFX.muted?'🔇':'🔊'};u();b.onclick=()=>{SFX.toggle();u();if(!SFX.muted)SFX.play('turn')};document.body.append(b)})();
 function sfxMp(S,R,me,K){const p=R._sx,sg=a=>a.reduce((n,r)=>n+r.filter(v=>v>=0).length,0),pp=K&&K.name==='La Pipopipette',car=K===CRK||K===KRK;
- const cur={st:S.st,turn:S.turn,ln:pp&&S.H?sg(S.H)+sg(S.V):0,bx:pp&&S.O?sg(S.O):0};R._sx=cur;if(!p||K.wd||K.bs||me<0)return;
+ const cur={st:S.st,turn:S.turn,ln:pp&&S.H?sg(S.H)+sg(S.V):0,bx:pp&&S.O?sg(S.O):0};R._sx=cur;if(!p||K.wd||K.wc||K.bs||me<0)return;
  if(p.st==='play'&&cur.st==='over'){const won=car?me%2===S.win:(typeof S.win==='number'&&S.win>=0)?S.win===me:S.sc?S.sc[me]===Math.max(...S.sc):true;SFX.play(won?'win':'lose');return}
  if(cur.st!=='play')return;
  if(pp&&cur.bx>p.bx)SFX.play('box');else if(pp&&cur.ln>p.ln)SFX.play('line');
@@ -801,7 +809,7 @@ ludo:{t:'Ludo · schlerium',h:()=>`<div class="wrap ludo"><div class="pagehead">
 <div class="gside"><div class="card"><h3>Players</h3><div id="gpl" class="lst" style="margin-top:12px"></div></div><div class="card"><h3>Room chat</h3><p class="mut sm2" style="margin:4px 0 10px">Temporary: wiped when you leave.</p><div class="chat" id="chat"></div><form id="chf" class="crow"><input type="text" id="chi" maxlength="120" placeholder="Say something…" autocomplete="off"><button class="btn sm pri">Send</button></form></div></div></div></div></div>`,
  i(){ludoInit()}},
 games:{t:'Games · schlerium',h:()=>`<div class="wrap"><div class="pagehead"><p class="eyebrow">Play</p><h1>Games</h1><p>Pick a game. Every game has live public rooms. Join one or start your own, bots can fill empty seats.</p></div>
-<details class="card" id="plv" style="margin-top:22px"><summary><b>Players online (<span id="plcnt">0</span>)</b></summary><div id="plbox" class="lst" style="margin-top:12px"></div></details><div class="grid" style="grid-template-columns:1fr;margin-top:26px">${[['Ludo','Race four pawns home. Live public rooms.','ludo'],['Killudo','Capture a pawn to unlock your gate, then race home.','killudo'],['Dice','Roll to hit the target first.','dice'],['La Pipopipette','Dots and boxes. Live rooms for 2 to 4 players.','pipopipette'],['Snake & Ladder','Race to 100. Live rooms for 2 to 4 players.','snake'],['Buckshot Roulette','Shotgun, shells and items. Survive the dealer.','buckshot'],['Carrom','Classic or Karrom (Pakistani style). Pull back and flick the striker, 2 or 4 players.','carrom'],['Word Duel','Wordle head to head. Set a word (4 to 10 letters) and how many tries they get. 6 lives each. Keep your thermometer from running dry.','wordduel']].map(([a,b,h],i)=>`<div class="card rv" style="--d:${i*.1}s"><h3>${a}</h3><p class="mut">${b}</p><a class="btn sm pri" href="#/${h}" style="margin-top:14px;display:inline-flex">Play</a></div>`).join('')}</div></div>`,i(){Pres.draw()}},
+<details class="card" id="plv" style="margin-top:22px"><summary><b>Players online (<span id="plcnt">0</span>)</b></summary><div id="plbox" class="lst" style="margin-top:12px"></div></details><div class="grid" style="grid-template-columns:1fr;margin-top:26px">${[['Ludo','Race four pawns home. Live public rooms.','ludo'],['Killudo','Capture a pawn to unlock your gate, then race home.','killudo'],['Dice','Roll to hit the target first.','dice'],['La Pipopipette','Dots and boxes. Live rooms for 2 to 4 players.','pipopipette'],['Snake & Ladder','Race to 100. Live rooms for 2 to 4 players.','snake'],['Buckshot Roulette','Shotgun, shells and items. Survive the dealer.','buckshot'],['Carrom','Classic or Karrom (Pakistani style). Pull back and flick the striker, 2 or 4 players.','carrom'],['Wordle','Two modes. Duel: Wordle head to head. Set a word (4 to 10 letters) and how many tries they get. 6 lives each. Keep your thermometer from running dry. Chase: race your rival to guess a system word, with meanings and hints.','wordduel']].map(([a,b,h],i)=>`<div class="card rv" style="--d:${i*.1}s"><h3>${a}</h3><p class="mut">${b}</p><a class="btn sm pri" href="#/${h}" style="margin-top:14px;display:inline-flex">Play</a></div>`).join('')}</div></div>`,i(){Pres.draw()}},
 convert:{t:'Convert · schlerium',h:()=>`<div class="wrap"><div class="pagehead"><p class="eyebrow">Pretend-powered</p><h1>Convert anything</h1><p>Pick a tool, drop a file, watch the flow. Nothing leaves your device.</p></div><div class="chips rv" style="margin-top:24px">${['PDF to Word','Word to PDF','Image to PDF','Merge PDFs','Compress'].map((c,i)=>`<button class="chip${i?'':' on'}" data-m="${c}">${c}</button>`).join('')}</div>
 <div id="stage" class="rv" style="--d:.1s"><div id="dz" tabindex="0"><span class="ic">⬆</span><h3 id="dzt" style="margin:10px 0 6px">Drop a file to PDF to Word</h3><p class="mut">or click to browse · up to 50 MB (not enforced)</p><input type="file" id="fi" hidden></div>
 <div id="run" class="card hidden"><div class="row"><b id="rn"></b><span id="rp" class="mut">0%</span></div><div class="bar"><i id="rb"></i></div><ul class="steps" id="rs"></ul></div>
@@ -875,7 +883,7 @@ function score(S,c,i,r){const p=S.tk[c][i],np=land(S,c,p,r);let s=p<0?0:p+r;if(p
 const pickMove=(S,c,r)=>movable(S,c,r).sort((a,b)=>score(S,c,b,r)-score(S,c,a,r))[0];
 const PP={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
 const pips=n=>[...Array(9).keys()].map(i=>'<i'+((PP[n]||[]).includes(i)?' class="on"':'')+'></i>').join('');
-const inLG=()=>['#/ludo','#/dice','#/killudo','#/pipopipette','#/snake','#/carrom','#/carrom-classic','#/karrom','#/wordduel'].includes(location.hash);
+const inLG=()=>['#/ludo','#/dice','#/killudo','#/pipopipette','#/snake','#/carrom','#/carrom-classic','#/karrom','#/wordduel','#/word-duel','#/word-chase'].includes(location.hash);
 let uid=rid(10),L=null,R=null,LT=[],lsig='';
 
 // ---- transport ----
@@ -1158,7 +1166,7 @@ const dummyEmoSvg=n=>'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns="http:
 document.addEventListener('error',e=>{const im=e.target;if(im&&im.tagName==='IMG'&&im.dataset.emo&&!im.dataset.dm){im.dataset.dm='1';im.src=dummyEmoSvg(+im.dataset.emo)}},true);
 // ==== DUMMY-EMOJI-END ====
 const mpTop=(k,s)=>'schlerium/v1/'+k+'/'+s;
-const mpView=(title,desc,back='#/games')=>`<div class="wrap ludo"><div class="pagehead"><p class="eyebrow"><span class="live">●</span> Live multiplayer · <span id="mnet">connecting…</span></p><h1>${title}</h1><p>${desc}</p><a class="btn sm" href="${back}" style="margin-top:16px">‹ ${back==='#/games'?'All games':'Carrom'}</a></div>
+const mpView=(title,desc,back='#/games')=>`<div class="wrap ludo"><div class="pagehead"><p class="eyebrow"><span class="live">●</span> Live multiplayer · <span id="mnet">connecting…</span></p><h1>${title}</h1><p>${desc}</p><a class="btn sm" href="${back}" style="margin-top:16px">‹ ${back==='#/games'?'All games':back==='#/wordduel'?'Wordle':'Carrom'}</a></div>
 <div id="mneed" class="card hidden" style="margin-top:24px"><p>Pick a name to play with others.</p><button class="btn pri" id="mname" style="margin-top:12px">Log in</button></div>
 <div id="mlobby" class="hidden" style="margin-top:24px"><div class="card"><div class="row"><h3>Public rooms</h3><button class="btn sm pri" id="mnew">Create room</button></div><div id="mrooms" style="margin-top:14px"></div></div></div>
 <div id="mroom" class="hidden" style="margin-top:24px"><div class="card" style="max-width:560px;margin:0 auto"><div class="row"><h3 id="mt"></h3><button class="btn sm" id="mleave">Leave</button></div><div id="mseats" style="margin-top:12px"></div><div id="mctl" style="margin-top:8px"></div><div id="mtop" class="mtop hidden"><div id="mlog" class="mut"></div><div id="memo"></div></div><div id="marena" class="arena hidden"></div><div><div id="mboard"></div></div><div id="mchatw" class="hidden" style="margin-top:2px"><div class="mdr"><div><h4>Room chat</h4><p class="mut sm2" style="margin:4px 0 10px">Temporary: wiped when you leave.</p></div><div id="mdice" class="mdice"></div></div><div class="chat" id="mchat"></div><form id="mchf" class="crow"><input type="text" id="mchi" maxlength="120" placeholder="Say something…" autocomplete="off"><button class="btn sm pri">Send</button></form></div></div></div></div>`;
@@ -1172,7 +1180,7 @@ function mpInit(k){const K=KS[k],me=store.get('ldU');MP.k=k;MP.K=K;
  MP.up=mode=>{const e=$('#mnet');if(e)e.textContent=mode==='mqtt'?'live · public lobby':mode==='local'?'offline · tabs on this device only':'connecting…';if(mode){Bus.pub(LB,{k:'q'});if(MP.R&&MP.R.host)mpPub()}};Bus.ups.add(MP.up);MP.up(Bus.mode);
  MP.tm.push(setInterval(mpList,2000));
  $('#mnew').onclick=mpCreate;$('#mleave').onclick=()=>mpLeave();
- $('#mdice').onclick=$('#mctl').onclick=e=>{const b=e.target.closest('button,#sdie.act');if(!b||b.disabled)return;if(b.id==='sdie')mpAct({t:'roll'});else if(b.id==='mbot')mpAct({t:'bot'});else if(b.id==='mgo')mpAct({t:'start'});else if(b.id==='mag')mpAct({t:'again'});else if(b.id==='mroll')mpAct({t:'roll'});else if(b.dataset.n)mpAct({t:'opt',n:+b.dataset.n})};
+ $('#mdice').onclick=$('#mctl').onclick=e=>{const b=e.target.closest('button,#sdie.act');if(!b||b.disabled)return;if(b.id==='sdie')mpAct({t:'roll'});else if(b.id==='mbot')mpAct({t:'bot'});else if(b.id==='mgo')mpAct({t:'start'});else if(b.id==='mag')mpAct({t:'again'});else if(b.id==='mroll')mpAct({t:'roll'});else if(b.id==='mxf')mpAct({t:'xfer'});else if(b.dataset.n)mpAct({t:'opt',n:+b.dataset.n})};
  if(K.social){$('#memo').innerHTML=`<div class="emo">${Array.from({length:EMO.n},(_,i)=>i+1).map(n=>`<button type="button" class="emob" data-e="${n}" title="${n}"><img data-emo="${n}" src="${EMO.url(n)}" alt=""><b>${n}</b></button>`).join('')}</div>`;
   $('#memo').onclick=e=>{const b=e.target.closest('.emob');if(!b||!MP.R)return;const t=Date.now();if(t-(MP.le||0)<700)return;MP.le=t;const n=+b.dataset.e;emoShow(n,MP.R.S?MP.R.S.seats.findIndex(x=>x.u===uid):-1);Bus.pub(mpTop(MP.k,'r/'+MP.R.id),{k:'e',e:n,n:MP.L.me})};
 }
@@ -1196,6 +1204,7 @@ function mpOnRoom(m){const R=MP.R;if(!R)return;
  if(m.k==='g'){if(m.u!==uid)bsIn(m);return}
  if(m.k==='p'){if(m.u!==uid)carAimIn(m);return}
  if(R.host){if(m.k==='a')mpHost(m);return}
+ if(m.k==='x'&&m.S&&m.u===R.hu){mpTakeover(m);return}
  if(m.k!=='s'||!m.S||m.u!==R.hu)return;const S=m.S;
  if(S.st==='closed'){mpLeave('The host closed the room');return}
  if(!R.in){if(S.seats.some(s=>s.u===uid)){R.in=true}else{if(S.seats.length>=MP.K.max||(S.st!=='lobby'&&!(S.st==='over'&&MP.K.optsOver)))mpLeave('That room is full or already started');return}}
@@ -1206,6 +1215,7 @@ function mpHost(m){const R=MP.R,S=R.S,K=MP.K;let ch=false;const si=S.seats.findI
   case 'join':if(si>=0)ch=true;else if((S.st==='lobby'||(S.st==='over'&&K.optsOver))&&S.seats.length<K.max){S.seats.push({u:m.u,n:String(m.n||'Guest').replace(/[^A-Za-z0-9_]/g,'').slice(0,13)||'Guest',b:0});ch=true}break;
   case 'leave':if(si>0){if(K.leave)ch=K.leave(S,si);else{if(S.st==='lobby')S.seats.splice(si,1);else{S.seats[si].u=null;S.seats[si].b=1}ch=true}}break;
   case 'opt':if(m.u===uid&&(S.st==='lobby'||(S.st==='over'&&K.optsOver))&&K.opt)ch=K.opt(S,m);break;
+  case 'xfer':if(m.u===uid&&K.xfer&&S.seats.length===2&&S.seats[1].u&&!S.seats[1].b&&S.ph!=='load'){const to=S.seats[1].u;K.swap(S);S.v=(S.v||0)+1;mpXfer(to)}return;
   case 'bot':if(m.u===uid&&(S.st==='lobby'||(S.st==='over'&&K.optsOver))&&S.seats.length<K.max){const used=S.seats.map(s=>s.n);S.seats.push({u:null,n:BN.find(n=>!used.includes(n))||'Bot'+rnd(99),b:1});ch=true}break;
   case 'start':case 'again':if(m.u===uid&&S.seats.length>=2&&(S.st==='lobby'||S.st==='over')){K.start(S);ch=true}break;
   default:if(si>=0&&K.act(S,si,m))ch=true}
@@ -1222,9 +1232,9 @@ function mpRender(){const R=MP.R,K=MP.K;if(!R||!R.S||!R.in||!$('#mseats'))return
   setH($('#marena'),`<div class="acol">${S.seats.map((x,i)=>i).filter(i=>i!==me).map(i=>ar(S.seats[i],i)).join('')}</div><div class="acol r">${me>=0?ar(S.seats[me],me):''}</div>`);
   $$('#marena .arow').forEach(e=>e.classList.toggle('turn',S.st==='play'&&+e.dataset.s===S.turn));$('#mlog').textContent=S.st==='play'&&!hold?(S.lg||''):''}
  let c='';
- if(S.st==='lobby')c=R.host?`${K.opts?K.opts(S):''}<div class="ppb" style="margin-top:12px"><button class="btn sm" id="mbot"${S.seats.length>=K.max?' disabled':''}>+ Bot</button><button class="btn pri sm" id="mgo"${S.seats.length<2?' disabled':''}>Start</button></div><p class="mut" style="margin-top:8px">${S.seats.length<2?'Add a bot or wait for players to join':'Ready when you are'}</p>`:'<p class="mut" style="margin-top:8px">Waiting for the host to start…</p>';
+ if(S.st==='lobby')c=R.host?`${K.opts?K.opts(S):''}<div class="ppb" style="margin-top:12px"><button class="btn sm" id="mbot"${S.seats.length>=K.max?' disabled':''}>+ Bot</button><button class="btn pri sm" id="mgo"${S.seats.length<2?' disabled':''}>Start</button></div><p class="mut" style="margin-top:8px">${S.seats.length<2?'Add a bot or wait for players to join':'Ready when you are'}</p>${K.xferBtn?K.xferBtn(S,R):''}`:'<p class="mut" style="margin-top:8px">Waiting for the host to start…</p>';
  else if(S.st==='over')c=`<p style="margin-top:10px"><b>${K.result(S)}</b></p>`+(R.host?(K.optsOver?bsOverCtl(S,K):'<button class="btn pri" id="mag">Rematch</button>'):'<p class="mut">Waiting for the host to start a rematch</p>');
- else if(K.wd)c='';
+ else if(K.wd)c='';else if(K.wc)c=K.xferBtn(S,R);
  else if(K.bs)c=`<p style="margin-top:10px"><b>Match ${S.mn}</b> · ${S.items?'with items':'without items'} · ${esc(S.seats[0].n)} vs ${esc(S.seats[1]?S.seats[1].n:'')}</p>`;
  else{const t=S.seats[S.turn];c=`<p style="margin-top:10px"><b class="un" style="--uh:${uhue(t.n)}">${esc(t.n)}</b>${t.u===uid?' (you)':''}'s turn <span class="mut" id="mtm"></span></p>${K.social?'':K.ctl(S,me)}${K.social||!S.lg||hold?'':`<p class="mut">${esc(S.lg)}</p>`}`}
  setH($('#mctl'),c);setH($('#mdice'),K.social&&S.st==='play'?K.ctl(S,me):'');if(R.dn){R.dn=false;dFace('#sdie',S.die)}
@@ -1441,17 +1451,21 @@ function carDraw(c,t){const cv=c.cv,S=c.S,L=CAR.L,M=CAR.MR,W=L+2*M,cw=Math.round
  g.restore();
  if(pw>0){g.fillStyle='hsl('+(120-120*pw)+' 80% 45%)';g.fillRect(M+8,W-M+12,(W-2*M-16)*pw,10)}}
 KS.cr=CRK;KS.kr=KRK;
-// ---- Word Duel: turn-based Wordle duel (no timer, no dictionary) ----
+// ---- Wordle: turn-based Wordle duel (no timer, no dictionary) ----
 const WD={buf:'',pk:'',sent:0,S:null,me:-1};
 const WDW={4:['BOLT','CAKE','DUSK','FROG','GLOW','HAZE','JUMP','KILN','LAMP','MINT','NEST','OPAL','PINE','QUIZ','RAIN','SAND','TIDE','VINE','WAVE','YARN','ZINC','BEAR','COIN','DOVE','ECHO','FERN','GOLD','HAWK','IRON','JADE','KITE','LION','MOON','NOTE','OVEN','PLUM','BALL','BELL','BOOK','COOL','DOLL','FALL','FOOD','GOOD','HILL','KISS','LOOP','MOSS','NEED','PEEL','POOL','ROOF','SEED','TEST','TOOL','WOOL','ZOOM'],
 5:['APPLE','BRICK','CRANE','DREAM','EAGLE','FLAME','GRAPE','HEART','IVORY','JELLY','KNIFE','LEMON','MANGO','NIGHT','OCEAN','PIANO','QUEEN','RIVER','STORM','TIGER','VIVID','WATER','YACHT','ZEBRA','BLEED','BEARD','BOILS','CLOUD','DANCE','EARTH','FROST','GHOST','HONEY','JOKER','LIGHT','MAGIC','PLANT','SMILE','BREAD','STONE','BELLY','BERRY','BOOST','BOOTH','BUDDY','FLOOD','FUZZY','GLASS','GREEN','HAPPY','KAYAK','LLAMA','MUMMY','PENNY','PUPPY','SHEEP','SKILL','SMELL','SPOON','SWEET','TOOTH'],
 6:['ANCHOR','BRIDGE','CANDLE','DRAGON','ENGINE','FOREST','GARDEN','HAMMER','ISLAND','JUNGLE','KERNEL','LADDER','MARKET','NATURE','ORANGE','PLANET','ROCKET','SILVER','TUNNEL','VIOLET','WINTER','YELLOW','ZIPPER','BUTTON','CASTLE','DOCTOR','FLOWER','GUITAR','HUNTER','MIRROR','BATTLE','BUBBLE','COFFEE','DINNER','PUZZLE','SUMMER','LETTER','BORROW'],7:['BALANCE','CAPTAIN','DOLPHIN','EXPLORE','FREEDOM','GALLERY','HARVEST','JOURNEY','KITCHEN','LANTERN','MACHINE','NETWORK','OUTLOOK','PENGUIN','RAINBOW','SUNRISE','THUNDER','VILLAGE','WEATHER','BALLOON','COTTAGE','DIAMOND','MISSION','PUZZLES','TROUBLE'],8:['ABSOLUTE','BIRTHDAY','CHAMPION','DAYLIGHT','ELEPHANT','FIREWORK','GOLDFISH','HOLIDAYS','INTEREST','KEYBOARD','LANGUAGE','MOUNTAIN','NOTEBOOK','PLATFORM','QUESTION','RAINFALL','SNOWBALL','TREASURE','UMBRELLA','WILDFIRE','BASEBALL','SUNSHINE'],9:['ADVENTURE','BUTTERFLY','CHOCOLATE','DISCOVERY','EXCELLENT','HAPPINESS','IMAGINARY','JELLYFISH','KNOWLEDGE','LIGHTNING','MOONLIGHT','NIGHTMARE','ORCHESTRA','PINEAPPLE','QUICKSAND','RAINSTORM','TELESCOPE','UNIVERSAL','WATERFALL'],10:['BASKETBALL','CHOCOLATES','DANDELIONS','ELECTRICAL','HELICOPTER','JOURNALIST','LANDSCAPES','PLAYGROUND','STRAWBERRY','WATERMELON','GRASSLANDS','ADVENTURER','SUNFLOWERS','BLACKBOARD','FRIENDSHIP']};
 const wdEnc=w=>[...w].map((c,i)=>String.fromCharCode((c.charCodeAt(0)-65+7+3*i)%26+65)).reverse().join('');
 const wdDec=k=>[...k].reverse().map((c,i)=>String.fromCharCode(((c.charCodeAt(0)-65-7-3*i)%26+26)%26+65)).join('');
+// h = half green/half blue (one of a double letter in the right spot, the other still missing)
 // g green = right spot, y yellow = in the word elsewhere, b blue = in the word elsewhere AND appears 2+ times, x grey = not in the word
 function wdCol(sec,g){const n=sec.length,r=Array(n).fill('x'),cnt={},tot={};for(const c of sec)tot[c]=(tot[c]||0)+1;
  for(let i=0;i<n;i++){if(g[i]===sec[i])r[i]='g';else cnt[sec[i]]=(cnt[sec[i]]||0)+1}
  for(let i=0;i<n;i++)if(r[i]!=='g'&&cnt[g[i]]>0){cnt[g[i]]--;r[i]=tot[g[i]]>1?'b':'y'}
+ // double letters: some (not all) placed right = half green / half blue ('h'); all placed right = full green
+ const gc={};for(let i=0;i<n;i++)if(r[i]==='g')gc[g[i]]=(gc[g[i]]||0)+1;
+ for(let i=0;i<n;i++)if(r[i]==='g'&&tot[g[i]]>1&&gc[g[i]]<tot[g[i]])r[i]='h';
  return r.join('')}
 // ===== WORD DUEL SOUNDS =====
 // Buzzer (wdBuzz below) = the giver's mercy / no-mercy buzz. 'correct' (defined in SFX above) = word solved.
@@ -1483,7 +1497,7 @@ function wdDraw(el){const S=WD.S,me=WD.me;if(!S||!el||me<0||!S.seats[1-me])retur
  q('.wdmid').style.setProperty('--n',len);
  setH(q('.wdmid'),`${lb}${vd?`<div class="wdv">${vd}</div>`:''}${rows}<div class="wdm">${m}</div>${x}`);
  let kb='';const dis=WD.sent?' disabled':'';
- if((iG&&ph==='give')||(iU&&ph==='guess')){const st={},p={g:4,b:3,y:3,x:1};gs.forEach(g=>[...g.w].forEach((c,i)=>{const s=g.c[i];if(!st[c]||p[s]>p[st[c]])st[c]=s}));
+ if((iG&&ph==='give')||(iU&&ph==='guess')){const st={},p={g:5,h:4,b:3,y:3,x:1};gs.forEach(g=>[...g.w].forEach((c,i)=>{const s=g.c[i];if(!st[c]||p[s]>p[st[c]])st[c]=s}));
   kb=['QWERTYUIOP','ASDFGHJKL','ZXCVBNM'].map((r,ri)=>`<div class="wdk">${[...r].map(c=>`<button data-wk="${c}"${st[c]?' class="'+st[c]+'"':''}${dis}>${c}</button>`).join('')}${ri===2?`<button data-wa="bk" class="w2"${dis}>⌫</button>`:''}</div>`).join('');
   const full=WD.buf.length===len&&!WD.sent;
   kb+=ph==='give'?`<div class="wdbt"><button class="btn pri" data-wa="ck"${full?'':' disabled'}>Set word</button></div>`:`<div class="wdbt"><button class="btn" data-wa="up"${dis}>Give up</button><button class="btn pri" data-wa="ck"${full?'':' disabled'}>Check</button></div>`}
@@ -1542,7 +1556,222 @@ const WDK={name:'Word Duel',max:2,wd:true,
   setH(el.querySelector('.wdsce'),wdScene());wdDraw(el);wdTh();if(!WD.ti)WD.ti=setInterval(wdTh,100);
   if(el._er!==R.id){el._er=R.id;el._ev=S.ev?S.ev.n:0}else if(S.ev&&S.ev.n!==el._ev){el._ev=S.ev.n;wdAnim(el,S.ev.w===me?'L':'R',S.ev.t)}}};
 KS.wd=WDK;
-V.wordduel={t:'Word Duel · schlerium',h:()=>mpView('Word Duel','Wordle, but head to head. Take turns setting a secret word (4 to 10 letters); your rival gets the number of tries you set, up to 10. Solve it to win a life, fail and lose one. Both start with 6 lives, last one alive wins. Green is the right spot, yellow is in the word elsewhere, blue is in the word elsewhere and appears more than once. Stuck? Give up, and the word-giver chooses mercy or no mercy.'),i(){mpInit('wd')}};
+V['word-duel']={t:'Word Duel · schlerium',h:()=>mpView('Word Duel','Wordle, but head to head. Take turns setting a secret word (4 to 10 letters); your rival gets the number of tries you set, up to 10. Solve it to win a life, fail and lose one. Both start with 6 lives, last one alive wins. Green is the right spot, yellow is in the word elsewhere, blue is in the word elsewhere and appears more than once. Half green, half blue means one of a double letter is in the right spot and the other is still missing; both right turns them fully green. Stuck? Give up, and the word-giver chooses mercy or no mercy.','#/wordduel'),i(){mpInit('wd')}};
+
+// ---- Wordle picker + Word Chase (race to guess a system word, vocab meanings, hints) ----
+V.wordduel={t:'Wordle · schlerium',h:()=>`<div class="wrap ludo"><div class="pagehead"><p class="eyebrow"><span class="live">●</span> Pick a mode</p><h1>Wordle</h1><p>Two ways to play. Choose one, then create or join a live room as usual.</p><a class="btn sm" href="#/games" style="margin-top:16px">‹ All games</a></div><div class="grid" style="grid-template-columns:1fr;margin-top:26px">${[['Duel','Wordle head to head. Set a secret word for your rival, 6 lives each, keep your thermometer from running dry.','word-duel'],['Chase','A fresh word is fetched live from a huge dictionary, common and rare alike, and you both race to guess it. The meaning is shown as your clue, and the hint button reveals one letter. First to solve wins, or the closest guess when tries or time run out.','word-chase']].map(([a,b,h],i)=>`<div class="card rv" style="--d:${i*.1}s"><h3>${a}</h3><p class="mut">${b}</p><a class="btn sm pri" href="#/${h}" style="margin-top:14px;display:inline-flex">Play</a></div>`).join('')}</div></div>`};
+const WCB=(()=>{const raw={
+4:[`HOPE|verb|neutral|to want and expect something good to happen|x`,`LOUD|adj|neutral|making a lot of noise|x`,`WARM|adj|neutral|a little hot, in a pleasant way|x`,`PLAN|noun|neutral|an idea for how to do something|x`,`GAME|noun|neutral|an activity you play for fun|x`,
+`AWRY|adj|neutral|off course; not going as planned|Things go this way when a plan starts to go wrong.`,
+`MEEK|adj|neutral|quiet, gentle and easily led by others|A person who never speaks up or argues and is very mild.`,
+`WANE|verb|formal|to slowly become weaker or smaller|The moon does this after it is full. It is the opposite of grow.`,
+`LURE|verb|neutral|to attract someone with something tempting|A fisherman uses shiny bait to do this to a fish.`,
+`DEFT|adj|formal|quick and skilful, especially with the hands|A magician's fast, clever fingers are like this.`,
+`HALE|adj|formal|healthy and strong, especially when old|Describes an older person who is still strong and in good health.`,
+`CRUX|noun|formal|the most important point of a problem|The heart of the matter, the key part everything depends on.`,
+`GIST|noun|neutral|the main idea of something, without the details|If you do not read all of a text, you still want to get this.`,
+`BANE|noun|formal|a cause of constant trouble or misery|Something that ruins your day again and again, like mosquitoes in summer.`,
+`RIFE|adj|formal|very common or widespread, usually something bad|When rumours are everywhere, they are this.`,
+`FLUB|verb|informal|to do something badly; to mess up|Forgetting your lines in a school play is doing this.`,
+`OMEN|noun|neutral|a sign of something that will happen in the future|A black cat crossing your path is said to be a bad one.`,
+`GAWK|verb|informal|to stare in a rude or silly way|What people do when they stare openly at a stranger with their mouth open.`],
+5:[`HOUSE|noun|neutral|a building where people live|x`,`WORLD|noun|neutral|the earth and all the people and things on it|x`,`MUSIC|noun|neutral|sounds made by voices or instruments that are nice to hear|x`,`CHAIR|noun|neutral|a seat for one person, with a back|x`,`SMART|adj|neutral|quick to learn and understand things|x`,`TRAIN|noun|neutral|a long vehicle that runs on rails|x`,`PAPER|noun|neutral|thin material used for writing or wrapping|x`,`LAUGH|verb|neutral|to make happy sounds because something is funny|x`,`CLEAN|adj|neutral|free from dirt|x`,
+`ASKEW|adj|neutral|not straight; crooked|A picture hanging at a slant on the wall looks like this.`,
+`TERSE|adj|formal|using very few words, sometimes in an unfriendly way|A one-word reply like "Fine." can sound like this.`,
+`BLEAK|adj|neutral|gloomy, empty or without hope|A cold, grey, empty landscape looks like this.`,
+`VAGUE|adj|neutral|not clear or exact|When someone gives an answer with no details, it is this.`,
+`ALOOF|adj|formal|distant, not friendly or interested|A person who stands alone at a party and avoids everyone is like this.`,
+`FEIGN|verb|formal|to pretend to feel or have something|Acting sick to skip school is doing this.`,
+`GLEAN|verb|formal|to gather information bit by bit|You do this when you piece together news from many small clues.`,
+`PLUCK|noun|informal|courage and determination|Someone who stays brave in a tough fight shows this.`,
+`OVERT|adj|formal|done openly, not hidden|It is the opposite of secret.`,
+`SCANT|adj|formal|barely enough; very little|Having only a tiny amount of time or food.`,
+`STOIC|adj|formal|calm and not showing feelings, even in hard times|A person who does not complain or cry about pain.`,
+`INEPT|adj|formal|clumsy and without skill|A person who keeps dropping things and cannot finish the task is like this.`,
+`GAUDY|adj|neutral|too bright and showy, in bad taste|A tacky outfit with too many shiny colours.`,
+`QUIRK|noun|neutral|a strange habit or feature of someone|Always eating cereal at midnight is a small one.`,
+`SNOOP|verb|informal|to secretly look around for private things|Reading someone's messages without asking is doing this.`],
+6:[`FRIEND|noun|neutral|a person you know well and like|x`,`SCHOOL|noun|neutral|a place where children go to learn|x`,`MOTHER|noun|neutral|a female parent|x`,`SIMPLE|adj|neutral|easy to understand or do|x`,`FAMILY|noun|neutral|parents, children and other close relatives|x`,`WONDER|verb|neutral|to want to know something and think about it|x`,
+`BLITHE|adj|formal|cheerful and carefree, sometimes too casual|Someone who skips along and does not worry about anything.`,
+`CANDID|adj|formal|honest and direct, even when it is hard to hear|A friend who tells you the truth about your haircut.`,
+`FICKLE|adj|neutral|often changing one's mind or loyalty|Weather or a friend that keeps changing without warning.`,
+`GRUDGE|noun|neutral|a long-lasting angry feeling about something unfair|When you will not forgive someone for years, you hold one.`,
+`LAVISH|adj|neutral|very rich, generous or expensive|A huge party with endless food and golden decorations.`,
+`RELISH|verb|neutral|to enjoy something very much|What you do to your favourite meal, slowly and happily.`,
+`STURDY|adj|neutral|strong and well built|A table that does not wobble even when you climb on it.`,
+`BABBLE|verb|informal|to talk quickly in a silly or unclear way|What a baby does when it makes sounds that are not real words yet.`,
+`GRUMPY|adj|informal|bad-tempered and easily annoyed|How you feel when you wake up too early and nobody lets you sleep.`,
+`CRAVEN|adj|formal|cowardly, with no courage at all|The opposite of brave: runs away at the first sign of danger.`,
+`SOMBER|adj|formal|serious and sad in mood|The mood at a funeral, or the look of dark grey clothes.`,
+`ZEALOT|noun|formal|a person who is extremely passionate about a belief|Someone so devoted to a cause that they cannot accept other views.`,
+`HUMBLE|adj|neutral|not proud; modest|A champion who says "I was just lucky" is this.`,
+`FRUGAL|adj|neutral|careful with money; avoiding waste|A person who saves every coin and buys only what is needed.`,
+`NUANCE|noun|formal|a very small difference in meaning or feeling|The tiny gap between being angry and being a little annoyed.`,
+`ENIGMA|noun|formal|something or someone mysterious and hard to understand|A puzzle with no obvious answer.`,
+`BANTER|noun|informal|friendly, playful teasing talk|Light joking back and forth between friends.`],
+7:[`PICTURE|noun|neutral|an image made by drawing, painting or a camera|x`,`MORNING|noun|neutral|the early part of the day|x`,`HOLIDAY|noun|neutral|a time away from work or school|x`,`PROBLEM|noun|neutral|something difficult that needs an answer|x`,`CHICKEN|noun|neutral|a farm bird kept for its eggs and meat|x`,
+`MUNDANE|adj|formal|ordinary and boring; everyday|Doing the same dull chores every single day.`,
+`OBSCURE|adj|formal|not well known or hard to understand|A tiny band that almost nobody has heard of.`,
+`PRUDENT|adj|formal|wise and careful about the future|Saving money for a rainy day is this kind of choice.`,
+`TRIVIAL|adj|neutral|of little importance|A tiny problem that does not matter at all.`,
+`DWINDLE|verb|neutral|to slowly become smaller or fewer|Your savings do this if you keep spending and never earn.`,
+`BRUSQUE|adj|formal|rude by being too short and quick|A shopkeeper who answers quickly and coldly is like this.`,
+`AMIABLE|adj|formal|friendly and pleasant|A person with a warm smile who gets along with everyone.`,
+`ELUSIVE|adj|formal|hard to find, catch or remember|A shy animal that always slips away before you can see it.`,
+`ADAMANT|adj|formal|refusing to change your mind|A child who keeps saying "No, I will not!" whatever you say.`,
+`PLACATE|verb|formal|to calm someone who is angry|Giving a crying child a toy to make them stop.`,
+`HAPLESS|adj|formal|unlucky and unfortunate|A person who slips on a banana peel, again.`,
+`GRIMACE|noun|neutral|a twist of the face showing pain or dislike|The face you make when you taste something very sour.`,
+`ARDUOUS|adj|formal|needing a lot of effort; tiring|Climbing a huge mountain with a heavy bag.`,
+`CONCISE|adj|formal|short but covering all the main points|A summary that says a lot in few words.`,
+`BLUNDER|noun|informal|a silly, careless mistake|Sending a private message to the wrong group chat.`],
+8:[`HOSPITAL|noun|neutral|a place where sick or hurt people are treated|x`,
+`ELOQUENT|adj|formal|speaking in a clear, powerful and beautiful way|A speaker whose words move the whole crowd.`,
+`LETHARGY|noun|formal|a state of having no energy or interest|The heavy, sleepy feeling on a hot lazy afternoon.`,
+`TENACITY|noun|formal|refusing to give up; stubborn determination|A climber who keeps trying again and again after falling.`,
+`SCRUTINY|noun|formal|very careful and close examination|A detective looking at a clue under a magnifying glass.`,
+`DILIGENT|adj|formal|hardworking and careful|A student who does all homework neatly and on time.`,
+`MEDIOCRE|adj|formal|only average; not very good|A meal that is neither great nor terrible.`,
+`OBLIVION|noun|formal|the state of being completely forgotten or unaware|Where forgotten things end up, or the state of not knowing anything.`,
+`VIGILANT|adj|formal|watching carefully for danger|A guard who never takes his eyes off the gate.`,
+`SERENITY|noun|formal|a state of being calm and peaceful|The feeling beside a quiet lake on a still morning.`,
+`BEWILDER|verb|formal|to confuse someone completely|A very hard puzzle can leave you in this state.`,
+`TRANQUIL|adj|formal|calm and quiet|A peaceful garden with no noise at all.`],
+9:[`RESILIENT|adj|formal|able to recover quickly from trouble|A rubber ball that bounces back, or a person who recovers after failure.`,
+`PRAGMATIC|adj|formal|dealing with things in a practical, realistic way|Someone who chooses what actually works, not what sounds nice.`,
+`EPHEMERAL|adj|formal|lasting for a very short time|A soap bubble or a rainbow after rain.`,
+`AMBIGUOUS|adj|formal|having more than one possible meaning|A sentence that can be understood in two different ways.`,
+`MALICIOUS|adj|formal|intending to hurt or harm someone|A rumour spread on purpose to hurt someone.`,
+`PERSEVERE|verb|formal|to keep trying despite difficulty|What you do when you do not quit even though it is hard.`,
+`NOSTALGIA|noun|neutral|a warm, sentimental longing for the past|The feeling when an old song brings back childhood memories.`,
+`AUDACIOUS|adj|formal|bold and daring, willing to take risks|A plan so bold that people think it is crazy.`,
+`OBSTINATE|adj|formal|stubbornly refusing to change|A donkey that will not move, however hard you pull.`,
+`FRIVOLOUS|adj|formal|silly and not serious; not important|Spending money on something silly instead of something you need.`],
+10:[`BENEVOLENT|adj|formal|kind and generous, wanting to do good|A rich person who gives money to help others.`,
+`GREGARIOUS|adj|formal|enjoying being with other people|Someone who loves parties and talking to everyone.`,
+`NONCHALANT|adj|formal|calm and relaxed, not seeming to care|Walking in late and shrugging as if nothing happened.`,
+`METICULOUS|adj|formal|very careful about every small detail|Someone who checks every tiny thing three times.`,
+`HARMONIOUS|adj|formal|peaceful and agreeing; sounding pleasant together|A group of friends who never argue, or singers perfectly in tune.`,
+`SCRUPULOUS|adj|formal|very honest and careful to do the right thing|A person who returns extra change even when nobody noticed.`,
+`UNWAVERING|adj|formal|steady and firm; not weakening|Support that never shakes, no matter what happens.`,
+`EXHAUSTIVE|adj|formal|covering absolutely everything; complete|A checklist so full that nothing is left out.`]};
+const o={};for(const L in raw)o[L]=raw[L].map(s=>{const p=s.split('|');return{w:p[0],c:p[1],r:p[2],m:p[3],h:p[4]}}).filter(e=>e.w.length===+L);return o})();
+const wcT=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+const WC={buf:'',pk:'',sent:0,S:null,me:-1,pool:[],pt:0};
+// ---- live word source: Datamuse (free, no key). Falls back to the built-in list if offline ----
+const WCBAD=/offensive|slur|vulgar|derogatory|disparag|obscene|taboo|sexual|genital|vulva|penis|vagina|intercourse|prostitut|pornograph|given name|surname|capital of|abbreviation|acronym|chemical element|symbol for|a city in|a town in|a river in|an island|province|prefecture|county/i;
+const WCPOS={n:'noun',v:'verb',adj:'adj',adv:'adv'};
+function wcParse(j,L,used){const pool=[];
+ for(const e of(Array.isArray(j)?j:[])){const raw=String(e&&e.word||'');if(raw!==raw.toLowerCase()||!/^[a-z]+$/.test(raw)||raw.length!==L)continue;
+  const w=raw.toUpperCase(),ds=(e.defs||[]).slice(0,4);if(!ds.length)continue;let pos='',parts=[];
+  for(const d of ds){const ix=d.indexOf('\t'),ps=ix>0?d.slice(0,ix):'',t=(ix>=0?d.slice(ix+1):d).trim();if(!pos)pos=ps;if(ps!==pos||WCBAD.test(t))continue;
+   let c=t.replace(/\s*\([^)]*\)/g,'').trim();if(c.length<8||new RegExp(raw,'i').test(c))continue;if(parts.length&&parts.some(q=>q.slice(0,12)===c.slice(0,12)))continue;parts.push(c);if(parts.length>=2)break}
+  if(!parts.length)continue;let m=parts.map(q=>q.split(';').slice(0,2).join(';').trim()).join(' / ');
+  if(m.length>200)m=m.slice(0,197).replace(/\s+\S*$/,'')+'…';m=m[0].toUpperCase()+m.slice(1);
+  if(/s$/.test(raw)&&!/(ss|us|is|os|as)$/.test(raw))continue;if(L>=5&&/ed$/.test(raw)&&pos==='v')continue;if(L>=6&&/ing$/.test(raw)&&pos==='v')continue;
+  let f=0;for(const t of(e.tags||[]))if(String(t).startsWith('f:'))f=parseFloat(String(t).slice(2))||0;if(f<.05)continue;
+  pool.push({w,m,t:WCPOS[pos]||'',f})}
+ return pool}
+async function wcFetchWord(L,used){const lets='aaabbbcccdddeefffgghhhiijkkllmmmnnoopppqrrrssstttuvwy';
+ for(let a=0;a<5;a++){const c=lets[rnd(lets.length)];let j;
+  try{const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),6000);const r=await fetch('https://api.datamuse.com/words?sp='+encodeURIComponent(c+'?'.repeat(L-1))+'&md=df&max=1000',{signal:ac.signal});clearTimeout(tm);if(!r.ok)continue;j=await r.json()}catch(e){continue}
+  const pool=wcParse(j,L,used);if(!pool.length)continue;
+  const fresh=pool.filter(x=>!used.includes(L+':'+x.w)),com=fresh.filter(x=>x.f>=4),voc=fresh.filter(x=>x.f<4&&x.f>=1);
+  let from=Math.random()<.9?com:voc;if(!from.length)from=com.length?com:voc;if(!from.length)continue;
+  const p=from[rnd(from.length)];return{w:p.w,m:p.m,t:p.t,r:'',pool:pool.map(x=>x.w)}}
+ return null}
+function wcLocal(L,used){const list=WCB[L]||WCB[5];let p=list.filter(e=>!used.includes(L+':'+e.w));if(!p.length)p=list;const e=p[rnd(p.length)];return{w:e.w,m:e.m,t:e.c,r:e.r,pool:[]}}
+function wcPick(S){const L=S.len,tok=++WC.pt;
+ wcFetchWord(L,S.ud||[]).catch(()=>null).then(r=>r||wcLocal(L,S.ud||[])).then(r=>{const R=MP.R;if(!R||!R.host||R.S!==S||S.ph!=='load'||tok!==WC.pt)return;WCK.begin(S,r);S.v=(S.v||0)+1;mpPub()})}
+// ---- host transfer (Chase only) ----
+function mpXfer(to){const R=MP.R,S=R.S,now=Date.now();S.rem=S.st==='play'&&S.ph==='guess'?Math.max(0,S.lim-(now-S.at)):0;
+ R.host=false;R.hu=to;R.rx=now;R.dl=now+S.rem;Bus.pub(mpTop(MP.k,'r/'+R.id),{k:'x',to,S});mpRender();toast('Host passed to '+(S.seats[1]?S.seats[1].n:'the other player'))}
+function mpTakeover(m){const R=MP.R;R.hu=m.to;R.rx=Date.now();
+ if(m.to!==uid){R.S=m.S;R.in=true;mpRender();return}
+ const S=m.S,now=Date.now();R.host=true;R.S=S;R.in=true;
+ if(S.ph==='guess'){S.at=now-(S.lim-(S.rem||0));if(S.bt)S.bt=S.seats.map(s=>s.b?now+4000+rnd(4000):0)}else S.at=now;
+ R.hb=0;R.ad=0;R.tt=0;R.ov=0;S.v=(S.v||0)+1;mpPub();toast('You are now the host')}
+function wcSfx(S,R){const k=S.ph==='end'?S.rd:0;if(R._wcx===undefined){R._wcx=k;return}if(k&&k!==R._wcx){const me=S.seats.findIndex(s=>s.u===uid);SFX.play(S.ro&&S.ro.w===me?'win':S.ro&&S.ro.w>=0?'lose':'turn')}R._wcx=k}
+function wcBoard(S,i,own,L,mx){const gs=(S.gs&&S.gs[i])||[],act=own&&S.ph==='guess'&&!S.fin[i];
+ let o=`<div class="wcb"><b>${own?'YOU':esc(S.seats[i].n.toUpperCase())}${S.fin[i]?' · DONE':''}</b>`;
+ for(let r=0;r<mx;r++){const g=gs[r];o+=`<div class="wcr${own?'':' o'}" style="--n:${L}">`;
+  if(g)for(let k=0;k<L;k++)o+=`<i class="wct ${g.c[k]}">${own?g.w[k]:''}</i>`;
+  else{const cur=act&&r===gs.length;for(let k=0;k<L;k++)o+=`<i class="wct${cur?' cur':''}">${cur?(WC.buf[k]||''):''}</i>`}
+  o+='</div>'}
+ return o+'</div>'}
+function wcHtml(S,me){const opp=S.seats[1-me];if(!opp)return'';const ph=S.ph,host=me===0;
+ if(ph==='load')return '<div class="wcs"><p class="mut" style="margin:28px 0">Picking a word…</p></div>';
+ const L=S.rl||S.len,mx=S.rmx||S.mx,on=esc(opp.n),gs=(S.gs&&S.gs[me])||[];let o='<div class="wcs">';
+ if(ph!=='setup'){
+  o+=`<div class="wch"><span>Round ${S.rd}</span><span>${L} letters · ${mx} tries</span></div>`;
+  const ch=(S.hu||[]).map((h,i)=>h&&S.seats[i]?`<span class="wcc">💡 ${i===me?'You':esc(S.seats[i].n)} used the hint</span>`:'').join('');if(ch)o+=`<div>${ch}</div>`;
+  if(ph==='end'&&S.ro){const r=S.ro,why=r.why==='time'?'Time is up. ':r.why==='tries'?'All tries used. ':'';
+   const vd=r.t==='solve'?(r.w===me?'You solved it first! +1 point':`${on} solved it first. +1 point for them`):r.t==='draw'?why+'Nobody got closer. No point this round':why+(r.w===me?'You got closest! +1 point':`${on} got closest. +1 point for them`);
+   o+=`<div class="wdv">${vd}</div><div class="wcm"><b>${esc(S.rv)}</b> <span class="mut">${esc(S.mt||'')}${S.rg?' · '+esc(S.rg):''}</span><p>${esc(S.mn||'')}</p></div>`}
+  if(ph==='guess'){o+=`<div class="wcm">📖 <i>${esc(S.mt||'meaning')}</i> · ${esc(S.mn||'')}</div>`;
+   if(S.hl&&S.hl[me])o+=`<div class="wcm">💡 The word contains the letter <b>${esc(S.hl[me])}</b></div>`;
+   o+='<div class="wctm">⏱ <b id="mtm"></b></div>'}
+  o+=wcBoard(S,me,true,L,mx);
+  if(ph==='guess'&&!S.fin[me]){const st={},p={g:5,h:4,b:3,y:3,x:1},dis=WC.sent?' disabled':'';gs.forEach(g=>[...g.w].forEach((c,i)=>{const s=g.c[i];if(!st[c]||p[s]>p[st[c]])st[c]=s}));
+   o+=['QWERTYUIOP','ASDFGHJKL','ZXCVBNM'].map((r,ri)=>`<div class="wdk">${[...r].map(c=>`<button data-ck="${c}"${st[c]?' class="'+st[c]+'"':''}${dis}>${c}</button>`).join('')}${ri===2?`<button data-ca="bk" class="w2"${dis}>⌫</button>`:''}</div>`).join('');
+   o+=`<div class="wdbt">${S.hu[me]?'':'<button class="btn" data-ca="hint">💡 Reveal a letter</button>'}<button class="btn pri" data-ca="ck"${WC.buf.length===L&&!WC.sent?'':' disabled'}>Check</button></div>`}
+  else if(ph==='guess')o+='<p class="mut">You are out of tries. Waiting for the round to finish…</p>';
+  o+=wcBoard(S,1-me,false,L,mx)}
+ if(ph!=='guess'){
+  o+=host?`<div class="wdmid" style="margin-top:14px"><div class="wdbt"><span class="wdcap">Letters</span>${[4,5,6,7,8,9,10].map(n=>`<button class="btn sm${n===S.len?' pri':''}" data-ca="l${n}">${n}</button>`).join('')}</div><div class="wdbt"><span class="wdcap">Tries</span><button class="btn sm" data-ca="m-"${S.mx<=1?' disabled':''}>−</button><b>${S.mx}</b><button class="btn sm" data-ca="m+"${S.mx>=10?' disabled':''}>+</button></div><div class="wdbt"><span class="wdcap">Round time</span><button class="btn sm" data-ca="t-"${S.tm<=30?' disabled':''}>−</button><b>${wcT(S.tm)}</b><button class="btn sm" data-ca="t+"${S.tm>=600?' disabled':''}>+</button></div><div class="wdbt"><button class="btn pri" data-ca="go">${S.rd?'Next round':'Start round'}</button></div></div>`
+   :`<p class="mut" style="margin-top:14px">Next round: ${S.len} letters · ${S.mx} tries · ${wcT(S.tm)}</p><p class="mut">Waiting for the host to start ${S.rd?'the next':'the first'} round…</p>`}
+ return o+'</div>'}
+function wcRedraw(){const el=$('#mboard');if(el&&WC.S)setH(el,wcHtml(WC.S,WC.me))}
+function wcType(ch){const S=WC.S,me=WC.me;if(!S||S.st!=='play'||S.ph!=='guess'||WC.sent||S.fin[me])return;if(ch==='BK')WC.buf=WC.buf.slice(0,-1);else if(WC.buf.length<S.rl)WC.buf+=ch;wcRedraw()}
+function wcSubmit(){const S=WC.S,me=WC.me;if(!S||S.st!=='play'||S.ph!=='guess'||WC.sent||S.fin[me]||WC.buf.length!==S.rl)return;WC.sent=1;mpAct({t:'guess',w:WC.buf});setTimeout(()=>{WC.sent=0;wcRedraw()},2500);wcRedraw()}
+function wcClick(e){const R=MP.R;if(!R||!R.S||!MP.K||!MP.K.wc)return;const k=e.target.closest('[data-ck],[data-ca]');if(!k||k.disabled)return;const S=R.S;
+ if(k.dataset.ck)return wcType(k.dataset.ck);const a=k.dataset.ca;
+ if(a==='bk')wcType('BK');else if(a==='ck')wcSubmit();else if(a==='hint')mpAct({t:'hint'});else if(a==='go')mpAct({t:'go'});else if(a[0]==='l')mpAct({t:'len',n:+a.slice(1)});else if(a==='m-'||a==='m+')mpAct({t:'mx',n:S.mx+(a==='m+'?1:-1)});else if(a==='t-'||a==='t+')mpAct({t:'tm',n:S.tm+(a==='t+'?30:-30)})}
+addEventListener('keydown',e=>{if(!MP.K||!MP.K.wc||!MP.R||!MP.R.S||e.ctrlKey||e.metaKey||e.altKey)return;const t=document.activeElement;if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))return;
+ if(/^[a-zA-Z]$/.test(e.key))wcType(e.key.toUpperCase());else if(e.key==='Backspace'){wcType('BK');e.preventDefault()}else if(e.key==='Enter')wcSubmit()});
+const WCK={name:'Word Chase',max:2,wc:true,xfer:true,
+ init(S){S.lim=36e5;S.len=5;S.mx=6;S.tm=120;S.turn=-1},
+ opts(){return '<p class="mut" style="margin-top:10px">A fresh word is fetched live from a huge dictionary (common everyday words and rarer vocabulary), and both of you race to guess it. The meaning of the word is shown as your clue. The host chooses the letters, tries and round time before every round, and can hand over the host role at any time. First to solve it wins the round. If nobody does before tries or time run out, whoever got the most letters in the right place wins. You can see how the other player\'s guesses scored (green = right spot, yellow = in the word elsewhere, blue = in the word elsewhere and appears more than once, half green/half blue = one of a double letter is in the right spot, the other still missing) but never their letters. The hint button reveals one random letter of the word to you only, and everyone sees that you used it.</p>'},
+ start(S){S.sc=S.seats.map(()=>0);S.rd=0;S.st='play';S.ph='setup';S.win=-1;S.lg='';S.ud=[];S.gs=[[],[]];S.hu=[0,0];S.hl=['',''];S.fin=[0,0];S.ro=null;S.rv='';S.k='';S.mn='';S.mt='';S.rg='';S.at=Date.now()},
+ begin(S,r){const L=S.len,now=Date.now();S.ud=S.ud||[];S.ud.push(L+':'+r.w);WC.pool=r.pool||[];
+  S.k=wdEnc(r.w);S.mn=r.m;S.mt=r.t||'';S.rg=r.r||'';S.rl=L;S.rmx=S.mx;S.rd++;S.gs=S.seats.map(()=>[]);S.hu=S.seats.map(()=>0);S.hl=S.seats.map(()=>'');S.fin=S.seats.map(()=>0);S.ro=null;S.rv='';S.ph='guess';S.lim=S.tm*1000;S.at=now;S.bt=S.seats.map(s=>s.b?now+3500+rnd(4000):0)},
+ xferBtn(S,R){if(!R.host||S.ph==='load'||S.seats.length!==2||!S.seats[1].u||S.seats[1].b)return'';return `<div class="ppb" style="margin-top:10px"><button class="btn sm" id="mxf">Make ${esc(S.seats[1].n)} the host</button></div>`},
+ swap(S){[S.seats,S.sc,S.gs,S.hu,S.hl,S.fin,S.bt].forEach(a=>{if(Array.isArray(a)&&a.length>1){const t=a[0];a[0]=a[1];a[1]=t}});if(/'s room$/.test(S.nm||''))S.nm=S.seats[0].n+"'s room"},
+ best(S,i){let b=0;S.gs[i].forEach(g=>{let a=0,o=0;for(const ch of g.c){if(ch==='g'||ch==='h')a++;else if(ch!=='x')o++}b=Math.max(b,a*20+o)});return b},
+ end(S,ro){S.ro=ro;S.rv=wdDec(S.k);S.ph='end';S.at=Date.now();if(ro.w>=0)S.sc[ro.w]++},
+ close(S,why){const a=this.best(S,0),b=this.best(S,1);this.end(S,{t:a===b?'draw':'close',w:a===b?-1:(a>b?0:1),why})},
+ act(S,si,m){if(!m||S.st!=='play')return false;const cfg=S.ph==='setup'||S.ph==='end';
+  if(cfg&&si===0){if(m.t==='len'&&Number.isInteger(m.n)&&m.n>=4&&m.n<=10){S.len=m.n;return true}
+   if(m.t==='mx'&&Number.isInteger(m.n)&&m.n>=1&&m.n<=10){S.mx=m.n;return true}
+   if(m.t==='tm'&&Number.isInteger(m.n)&&m.n>=30&&m.n<=600){S.tm=m.n;return true}
+   if(m.t==='go'){S.ph='load';S.at=Date.now();wcPick(S);return true}}
+  if(S.ph!=='guess')return false;
+  if(m.t==='hint'){if(S.hu[si])return false;const sec=wdDec(S.k),known=new Set();S.gs[si].forEach(g=>[...g.w].forEach((c,i)=>{if(g.c[i]!=='x')known.add(c)}));
+   let c=[...new Set(sec)].filter(x=>!known.has(x));if(!c.length)c=[...new Set(sec)];S.hl[si]=c[rnd(c.length)];S.hu[si]=1;return true}
+  if(m.t==='guess'&&!S.fin[si]){const w=String(m.w||'').toUpperCase();if(!/^[A-Z]+$/.test(w)||w.length!==S.rl||S.gs[si].length>=S.rmx)return false;const sec=wdDec(S.k);
+   S.gs[si].push({w,c:wdCol(sec,w)});
+   if(w===sec){S.fin[si]=1;this.end(S,{t:'solve',w:si})}
+   else if(S.gs[si].length>=S.rmx){S.fin[si]=1;if(S.fin.every(x=>x))this.close(S,'tries')}
+   return true}
+  return false},
+ tick(S,now){if(S.st!=='play')return false;
+  if(S.ph==='load'){if(now-S.at>14000){this.begin(S,wcLocal(S.len,S.ud||[]));return true}return false}
+  if(S.ph!=='guess')return false;
+  if(now-S.at>S.lim+800){this.close(S,'time');return true}
+  for(let i=0;i<S.seats.length;i++){const s=S.seats[i];if(!s.b||S.fin[i]||!S.bt||now<S.bt[i])continue;
+   const gs=S.gs[i],L=S.rl,used=new Set(gs.map(x=>x.w)),pool=[...new Set([...(WC.pool||[]),...(WCB[L]||[]).map(e=>e.w),...(WDW[L]||[])])].filter(w=>w.length===L&&!used.has(w)),cand=pool.filter(w=>gs.every(x=>wdCol(w,x.w)===x.c)),p=(cand.length&&Math.random()<.85)?cand:pool;
+   S.bt[i]=now+4000+rnd(6000);if(!p.length)continue;
+   return this.act(S,i,{t:'guess',w:p[rnd(p.length)]})}
+  return false},
+ score(S,i){return S.sc?S.sc[i]+' wins':''},
+ result(S){return ''},
+ ctl(){return ''},
+ render(S,R,el,me){wcSfx(S,R);if(!el._wcl){el._wcl=1;el.addEventListener('click',wcClick)}
+  WC.S=S;WC.me=me;const key=S.rd+'|'+S.ph+'|'+((S.gs&&S.gs[me])||[]).length;if(WC.pk!==key){WC.pk=key;WC.buf='';WC.sent=0}
+  setH(el,wcHtml(S,me))}};
+KS.wc=WCK;
+V['word-chase']={t:'Word Chase · schlerium',h:()=>mpView('Word Chase','The system picks a word and you both race to guess it. First to solve wins the round, or the closest guess when tries or time run out. You see how the other player is doing, but not their letters. Learn the meaning after every round, and use a hint if you are stuck.','#/wordduel'),i(){mpInit('wc')}};
+
 
 V.carrom={t:'Carrom · schlerium',h:()=>`<div class="wrap ludo"><div class="pagehead"><p class="eyebrow"><span class="live">●</span> Pick a variant</p><h1>Carrom</h1><p>Two ways to flick. Choose one, then create or join a live room as usual.</p><a class="btn sm" href="#/games" style="margin-top:16px">‹ All games</a></div><div class="grid" style="grid-template-columns:1fr;margin-top:26px">${[['Carrom','The classic board. Quick, snappy, lively coins.','carrom-classic'],['Karrom','Pakistani style: a bigger polished marble board that fills the screen, a hollow ring striker, a slower striker and slippery coins.','karrom']].map(([a,b,h],i)=>`<div class="card rv" style="--d:${i*.1}s"><h3>${a}</h3><p class="mut">${b}</p><a class="btn sm pri" href="#/${h}" style="margin-top:14px;display:inline-flex">Play</a></div>`).join('')}</div></div>`};
 V['carrom-classic']={t:'Carrom · schlerium',h:()=>mpView('Carrom','Flick the striker to pocket your coins. Slide the striker along your line, drag back anywhere and release: the longer the pull, the harder the shot (up to a limit). Cover the queen with one of your coins, a striker in the pocket is a foul. 2 players, or 4 as partners (a bot fills a third seat).','#/carrom'),i(){carCfg('c');mpInit('cr')}};
@@ -1551,7 +1780,7 @@ V.karrom={t:'Karrom · schlerium',h:()=>mpView('Karrom','Pakistani-style carrom:
 let first=true;
 function reveal(){const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;io.unobserve(e.target);e.target.classList.add('on');const n=$('[data-n]',e.target);if(n){const T=+n.dataset.n,d=+n.dataset.d;tween(1400,t=>n.textContent=(T*(1-Math.pow(1-t,3))).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d}))}}),{threshold:.15});$$('.rv',app).forEach(e=>io.observe(e))}
 // ---- global presence (shown on the Games tab) ----
-const PRES='schlerium/v1/presence',PGN={ludo:'Ludo',killudo:'Killudo',dice:'Dice',pipopipette:'La Pipopipette',snake:'Snake & Ladder',buckshot:'Buckshot Roulette',carrom:'Carrom','carrom-classic':'Carrom',karrom:'Karrom',wordduel:'Word Duel'};
+const PRES='schlerium/v1/presence',PGN={ludo:'Ludo',killudo:'Killudo',dice:'Dice',pipopipette:'La Pipopipette',snake:'Snake & Ladder',buckshot:'Buckshot Roulette',carrom:'Carrom','carrom-classic':'Carrom',karrom:'Karrom',wordduel:'Wordle','word-duel':'Word Duel','word-chase':'Word Chase'};
 const Pres={m:new Map(),on:false,k:'',last:'',lt:0,tm:0,
  st(){const k=this.k;if(!PGN[k])return{g:'',p:0};const lu=['ludo','killudo','dice'].includes(k),p=lu?!!R:!!MP.R;let rid='',o=0;
   try{if(lu){if(R&&R.host&&R.S&&R.S.st==='lobby'&&R.S.seats.length<4){rid=R.id;o=1}}else{const r=MP.R;if(r&&r.host&&r.S&&MP.K&&(r.S.st==='lobby'||(r.S.st==='over'&&MP.K.optsOver))&&r.S.seats.length<MP.K.max){rid=r.id;o=1}}}catch(e){}
@@ -1575,7 +1804,7 @@ const Pres={m:new Map(),on:false,k:'',last:'',lt:0,tm:0,
 Bus.ups.add(()=>{if(Pres.on){Bus.pub(PRES,{k:'q'});Pres.pub(true)}});addEventListener('pagehide',()=>{if(Pres.on)Pres.bye()});
 function route(instant){const k=location.hash.replace(/^#\/?/,''),v=V[k]||V[404];app.classList.add('out');
   setTimeout(()=>{ludoStop();mpStop();timers.forEach(clearInterval);timers=[];app.innerHTML=v.h();document.title=v.t;v.i&&v.i();Pres.route(k);document.body.classList.toggle('crm',k==='carrom-classic'||k==='karrom');document.body.classList.toggle('krm',k==='karrom');scrollTo(0,0);app.classList.remove('out');reveal();metalize(k,v.t);holoize(k);aeroize(k);
-   const tk=['ludo','dice','killudo','pipopipette','snake','buckshot','carrom','carrom-classic','karrom','wordduel'].includes(k)?'games':k;$$('#nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#/'+tk));$('#nav').classList.remove('open')},instant||first?0:180);first=false}
+   const tk=['ludo','dice','killudo','pipopipette','snake','buckshot','carrom','carrom-classic','karrom','wordduel','word-duel','word-chase'].includes(k)?'games':k;$$('#nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#/'+tk));$('#nav').classList.remove('open')},instant||first?0:180);first=false}
 addEventListener('hashchange',()=>route());route();
 $('#burger').onclick=()=>$('#nav').classList.toggle('open');
 
