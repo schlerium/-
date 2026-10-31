@@ -93,6 +93,7 @@ details{border-bottom:2px solid var(--ink);padding:16px 0}summary{font-weight:70
 footer{margin-top:60px;border-top:2px solid var(--ink);background:#fff;padding:36px 0 calc(24px + env(safe-area-inset-bottom,0px))}
 .fg{display:grid;grid-template-columns:2fr repeat(3,1fr);gap:26px}.fg a{display:block;text-decoration:none;color:var(--mut);padding:3px 0}.fg a:hover{color:var(--ink)}.fg h4{margin:0 0 8px}
 .small{font-size:13px;color:var(--mut);margin-top:26px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+#sfxb{position:fixed;left:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:60;width:38px;height:38px;padding:0;border-radius:50%;border:2px solid #123;background:rgba(255,255,255,.88);color:#123;font-size:17px;line-height:1;cursor:pointer;opacity:.85}
 #toasts{position:fixed;right:16px;bottom:16px;z-index:90;display:grid;gap:8px;pointer-events:none}.t.cp{display:flex;align-items:center;gap:8px;max-width:min(320px,86vw);word-break:break-word}.t{background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font-weight:600;animation:ti .4s var(--e),to .4s 2.6s forwards}
 @keyframes ti{from{opacity:0;transform:translateX(30px)}}@keyframes to{to{opacity:0;transform:translateY(10px)}}
 #cookie{position:fixed;left:16px;bottom:16px;z-index:80;max-width:340px;animation:pop .6s 1s both}
@@ -499,7 +500,7 @@ html,body{overscroll-behavior-y:none}
 .wdm{font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin:12px 0 4px;min-height:1.5em}
 .wdr .wdt.rv{animation:wdrv .3s both}@keyframes wdrv{from{opacity:0;scale:.4}to{opacity:1;scale:1}}
 .wdit{animation:wdfade .4s both}@keyframes wdfade{from{opacity:0}to{opacity:1}}
-.wdbody{display:flex;align-items:stretch;min-height:310px}.wdbody .wdmid{flex:1;min-width:0}.wdbody .wdt{width:clamp(26px,8.6vw,42px)}.wdbody .wdr{gap:4px}
+.wdbody{display:flex;align-items:stretch;min-height:310px}.wdbody .wdmid{flex:1;min-width:0}.wdbody .wdt{width:min(42px,calc((100% - (var(--n,5) - 1)*3px)/var(--n,5)));flex:none;font-size:clamp(9px,calc(130px/var(--n,5)),22px);border-width:clamp(2px,calc(18px/var(--n,5)),3px)}.wdbody .wdr{gap:3px}
 .wdth{--tc:#4cd964;flex:none;width:40px;margin:14px 2px 0 0;display:flex;flex-direction:column;align-items:center}.wdth.off{visibility:hidden}.wdth.none{display:none}.wdth.wdop{margin:14px 0 0 2px}.wdop .wdbulb{pointer-events:none;cursor:default}
 .wdtube{position:relative;flex:1;width:18px;margin-bottom:-8px;border:3px solid currentColor;border-bottom:0;border-radius:14px 14px 0 0;overflow:hidden;background:rgba(255,255,255,.35)}
 .wdfl{position:absolute;left:0;right:0;bottom:0;height:100%;background:var(--tc);transition:height .12s linear,background .3s}
@@ -507,7 +508,7 @@ html,body{overscroll-behavior-y:none}
 .wdbulb:active{transform:scale(.88)}button.wdbulb{font:800 11px/1 inherit;letter-spacing:.04em;color:#111}
 .wdth.low .wdbulb{animation:wdlow .45s infinite alternate}@keyframes wdlow{to{transform:scale(1.12)}}.wdw{margin:2px 0 6px}
 .wdk{display:flex;gap:4px;justify-content:center;margin:5px 0}.wdk button{flex:1;max-width:34px;min-width:0;height:42px;padding:0;border:2px solid currentColor;border-radius:8px;background:transparent;color:inherit;font:700 14px inherit}.wdk button.w2{max-width:52px}.wdk button:disabled{opacity:.5}
-.wdbt{display:flex;gap:14px;justify-content:center;margin:10px 0 4px}
+.wdbt{display:flex;flex-wrap:wrap;align-items:center;gap:8px;justify-content:center;margin:10px 0 4px}.wdcap{font-weight:800;text-transform:uppercase;letter-spacing:.05em;font-size:.8em}.wdbt b{min-width:2ch;text-align:center}
 .krm .crc{width:min(100vw,calc(100dvh - 230px));max-width:none;margin-left:calc(50% - min(50vw,calc(50dvh - 115px)));border-radius:0}
 .crc{display:block;width:100%;height:auto;aspect-ratio:1/1;margin-top:12px;border-radius:14px;touch-action:none;user-select:none;-webkit-user-select:none;cursor:crosshair}.crs{display:block;width:100%;margin-top:8px;accent-color:currentColor}
 #pick{--cw:min(64vw,calc(40vh*.79),300px);gap:0}
@@ -664,6 +665,52 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms)),rnd=n=>Math.floor(Math.random()*
 const tween=(ms,fn)=>new Promise(r=>{const t0=performance.now();(function f(n){const k=Math.min(1,(n-t0)/ms);fn(k);k<1?requestAnimationFrame(f):r()})(t0)});
 const store={get:k=>{try{return localStorage.getItem(k)}catch{return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch{}},del:k=>{try{localStorage.removeItem(k)}catch{}}};
 const toast=m=>{const t=document.createElement('div');t.className='t';t.textContent=m;$('#toasts').append(t);setTimeout(()=>t.remove(),3100)};
+
+// ---- sound effects (Web Audio synth, no files). Word Duel and Buckshot keep their own sounds. ----
+const SFX=(()=>{let ac=null,mu=false;const last={};try{mu=localStorage.getItem('sfx-mute')==='1'}catch(e){}
+ const ctx=()=>{if(mu)return null;try{const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ac=ac||new A();if(ac.state==='suspended')ac.resume();return ac}catch(e){return null}};
+ const tone=(f,d,o={})=>{const c=ctx();if(!c)return;const t=c.currentTime+(o.at||0),os=c.createOscillator(),g=c.createGain(),v=o.v==null?.12:o.v;os.type=o.type||'sine';os.frequency.setValueAtTime(f,t);if(o.to)os.frequency.exponentialRampToValueAtTime(o.to,t+d);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.0002,v),t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+d);os.connect(g);g.connect(c.destination);os.start(t);os.stop(t+d+.03)};
+ const noise=(d,o={})=>{const c=ctx();if(!c)return;const t=c.currentTime+(o.at||0),n=Math.max(1,c.sampleRate*d|0),b=c.createBuffer(1,n,c.sampleRate),a=b.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n);const s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();s.buffer=b;f.type=o.f||'bandpass';f.frequency.value=o.hz||1800;g.gain.value=o.v==null?.2:o.v;s.connect(f);f.connect(g);g.connect(c.destination);s.start(t)};
+ const FX={
+  // ===== DICE: Ludo, Killudo, Dice, Snake & Ladder =====
+  roll(){for(let i=0;i<7;i++)noise(.05,{at:i*.09,hz:900+Math.random()*1800,v:.2});tone(190,.12,{type:'triangle',to:90,v:.2,at:.78})},
+  // ===== MOVEMENT: a pawn stepping one square =====
+  step(){tone(520,.07,{type:'square',to:640,v:.05})},
+  // ===== LA PIPOPIPETTE: line drawn, box completed =====
+  line(){tone(430,.09,{type:'triangle',to:260,v:.18});noise(.03,{hz:2500,v:.08})},
+  box(){tone(660,.14,{v:.14});tone(880,.18,{at:.09,v:.14});tone(1175,.26,{at:.19,v:.12})},
+  // ===== SHARED: your turn, game won, game lost =====
+  turn(){tone(740,.07,{v:.07});tone(988,.1,{at:.07,v:.07})},
+  win(){[523,659,784,1047].forEach((f,i)=>tone(f,i===3?.5:.16,{type:'triangle',at:i*.13,v:.16}))},
+  lose(){[392,330,262].forEach((f,i)=>tone(f,.22,{type:'sawtooth',at:i*.18,v:.07}))},
+  // ===== LUDO FAMILY: pawn captured, pawn reaches home =====
+  capture(){tone(320,.28,{type:'sawtooth',to:80,v:.13});noise(.15,{hz:600,v:.22})},
+  home(){tone(784,.1,{v:.12});tone(1047,.1,{at:.08,v:.12});tone(1319,.2,{at:.16,v:.11})},
+  // ===== SNAKE & LADDER: ladder climb, snake slide =====
+  up(){tone(300,.4,{type:'triangle',to:900,v:.14})},
+  down(){tone(700,.5,{type:'sawtooth',to:120,v:.1});noise(.4,{f:'highpass',hz:4000,v:.1})},
+  // ===== CARROM / KARROM: collisions, wall bounce, pocketed, striker flick =====
+  hit(v){v=v==null?.5:v;tone(1100+Math.random()*300,.05,{type:'triangle',to:700,v:.05+.2*v});noise(.03,{hz:3000,v:.06+.14*v})},
+  wall(v){v=v==null?.5:v;tone(300,.06,{to:200,v:.05+.12*v})},
+  pocket(){tone(520,.2,{to:150,v:.2});noise(.1,{hz:500,v:.15});tone(260,.06,{type:'triangle',at:.22,v:.1})},
+  flick(){noise(.06,{hz:2500,v:.2});tone(240,.08,{type:'triangle',to:120,v:.2})},
+  // ===== WORD DUEL: secret word guessed correctly (bright rising ding-ding-ding-DING) =====
+  correct(){[659,784,988,1319].forEach((f,i)=>tone(f,i===3?.4:.1,{type:'triangle',at:i*.09,v:.15}));tone(1319,.5,{at:.36,v:.05})}};
+ const GAP={hit:30,wall:45,step:70,pocket:80};
+ const api={play(n,a){if(mu||!FX[n])return;const t=Date.now();if(t-(last[n]||0)<(GAP[n]||0))return;last[n]=t;try{FX[n](a)}catch(e){}},
+  get muted(){return mu},toggle(){mu=!mu;try{localStorage.setItem('sfx-mute',mu?'1':'0')}catch(e){}if(!mu)ctx();return mu}};
+ addEventListener('pointerdown',()=>{ctx()},{once:true,passive:true});return api})();
+(()=>{const b=document.createElement('button');b.id='sfxb';b.type='button';b.setAttribute('aria-label','Sound on or off');const u=()=>{b.textContent=SFX.muted?'🔇':'🔊'};u();b.onclick=()=>{SFX.toggle();u();if(!SFX.muted)SFX.play('turn')};document.body.append(b)})();
+function sfxMp(S,R,me,K){const p=R._sx,sg=a=>a.reduce((n,r)=>n+r.filter(v=>v>=0).length,0),pp=K&&K.name==='La Pipopipette',car=K===CRK||K===KRK;
+ const cur={st:S.st,turn:S.turn,ln:pp&&S.H?sg(S.H)+sg(S.V):0,bx:pp&&S.O?sg(S.O):0};R._sx=cur;if(!p||K.wd||K.bs||me<0)return;
+ if(p.st==='play'&&cur.st==='over'){const won=car?me%2===S.win:(typeof S.win==='number'&&S.win>=0)?S.win===me:S.sc?S.sc[me]===Math.max(...S.sc):true;SFX.play(won?'win':'lose');return}
+ if(cur.st!=='play')return;
+ if(pp&&cur.bx>p.bx)SFX.play('box');else if(pp&&cur.ln>p.ln)SFX.play('line');
+ else if(!car&&cur.turn!==p.turn&&cur.turn===me)SFX.play('turn')}
+function sfxLudo(S,me){const sn=R.sx,cur={st:S.st,tn:S.tn,tk:S.tk?JSON.stringify(S.tk):''};R.sx=cur;if(!sn)return;
+ if(S.st==='done'&&sn.st!=='done'){if(me)SFX.play(S.wn===me.c?'win':'lose');return}
+ if(cur.tk&&sn.tk&&cur.tk!==sn.tk){let cap=0,home=0,mv=0;const o=JSON.parse(sn.tk);for(const c in S.tk)S.tk[c].forEach((p,i)=>{const q=o[c]&&o[c][i];if(q===undefined||p===q)return;if(p<0&&q>=0)cap++;else if(p>=56&&q<56)home++;else mv++});SFX.play(cap?'capture':home?'home':mv?'step':'turn');return}
+ if(S.st==='play'&&me&&cur.tn!==sn.tn&&S.tn===me.c)SFX.play('turn')}
 const hue=s=>[...s].reduce((a,c)=>a+c.charCodeAt(0)*7,0)%360;
 let timers=[];
 
@@ -754,7 +801,7 @@ ludo:{t:'Ludo · schlerium',h:()=>`<div class="wrap ludo"><div class="pagehead">
 <div class="gside"><div class="card"><h3>Players</h3><div id="gpl" class="lst" style="margin-top:12px"></div></div><div class="card"><h3>Room chat</h3><p class="mut sm2" style="margin:4px 0 10px">Temporary: wiped when you leave.</p><div class="chat" id="chat"></div><form id="chf" class="crow"><input type="text" id="chi" maxlength="120" placeholder="Say something…" autocomplete="off"><button class="btn sm pri">Send</button></form></div></div></div></div></div>`,
  i(){ludoInit()}},
 games:{t:'Games · schlerium',h:()=>`<div class="wrap"><div class="pagehead"><p class="eyebrow">Play</p><h1>Games</h1><p>Pick a game. Every game has live public rooms. Join one or start your own, bots can fill empty seats.</p></div>
-<details class="card" id="plv" style="margin-top:22px"><summary><b>Players online (<span id="plcnt">0</span>)</b></summary><div id="plbox" class="lst" style="margin-top:12px"></div></details><div class="grid" style="grid-template-columns:1fr;margin-top:26px">${[['Ludo','Race four pawns home. Live public rooms.','ludo'],['Killudo','Capture a pawn to unlock your gate, then race home.','killudo'],['Dice','Roll to hit the target first.','dice'],['La Pipopipette','Dots and boxes. Live rooms for 2 to 4 players.','pipopipette'],['Snake & Ladder','Race to 100. Live rooms for 2 to 4 players.','snake'],['Buckshot Roulette','Shotgun, shells and items. Survive the dealer.','buckshot'],['Carrom','Classic or Karrom (Pakistani style). Pull back and flick the striker, 2 or 4 players.','carrom'],['Word Duel','Wordle head to head. Set a word, they get 10 tries. 6 lives each. Keep your thermometer from running dry.','wordduel']].map(([a,b,h],i)=>`<div class="card rv" style="--d:${i*.1}s"><h3>${a}</h3><p class="mut">${b}</p><a class="btn sm pri" href="#/${h}" style="margin-top:14px;display:inline-flex">Play</a></div>`).join('')}</div></div>`,i(){Pres.draw()}},
+<details class="card" id="plv" style="margin-top:22px"><summary><b>Players online (<span id="plcnt">0</span>)</b></summary><div id="plbox" class="lst" style="margin-top:12px"></div></details><div class="grid" style="grid-template-columns:1fr;margin-top:26px">${[['Ludo','Race four pawns home. Live public rooms.','ludo'],['Killudo','Capture a pawn to unlock your gate, then race home.','killudo'],['Dice','Roll to hit the target first.','dice'],['La Pipopipette','Dots and boxes. Live rooms for 2 to 4 players.','pipopipette'],['Snake & Ladder','Race to 100. Live rooms for 2 to 4 players.','snake'],['Buckshot Roulette','Shotgun, shells and items. Survive the dealer.','buckshot'],['Carrom','Classic or Karrom (Pakistani style). Pull back and flick the striker, 2 or 4 players.','carrom'],['Word Duel','Wordle head to head. Set a word (4 to 10 letters) and how many tries they get. 6 lives each. Keep your thermometer from running dry.','wordduel']].map(([a,b,h],i)=>`<div class="card rv" style="--d:${i*.1}s"><h3>${a}</h3><p class="mut">${b}</p><a class="btn sm pri" href="#/${h}" style="margin-top:14px;display:inline-flex">Play</a></div>`).join('')}</div></div>`,i(){Pres.draw()}},
 convert:{t:'Convert · schlerium',h:()=>`<div class="wrap"><div class="pagehead"><p class="eyebrow">Pretend-powered</p><h1>Convert anything</h1><p>Pick a tool, drop a file, watch the flow. Nothing leaves your device.</p></div><div class="chips rv" style="margin-top:24px">${['PDF to Word','Word to PDF','Image to PDF','Merge PDFs','Compress'].map((c,i)=>`<button class="chip${i?'':' on'}" data-m="${c}">${c}</button>`).join('')}</div>
 <div id="stage" class="rv" style="--d:.1s"><div id="dz" tabindex="0"><span class="ic">⬆</span><h3 id="dzt" style="margin:10px 0 6px">Drop a file to PDF to Word</h3><p class="mut">or click to browse · up to 50 MB (not enforced)</p><input type="file" id="fi" hidden></div>
 <div id="run" class="card hidden"><div class="row"><b id="rn"></b><span id="rp" class="mut">0%</span></div><div class="bar"><i id="rb"></i></div><ul class="steps" id="rs"></ul></div>
@@ -968,7 +1015,7 @@ function updateBoard(){const S=R.S,svg=$('#bwrap svg');if(!svg||!R.tg)return;con
   const el=R.tg[t.c][t.i];el.style.display='';el.style.transform=`translate(${t.x+dx}px,${t.y+dy}px) scale(${sc})`;el.classList.toggle('go',!!me&&t.c===me.c&&go.includes(t.i))});
  svg.querySelectorAll('.hc').forEach(e=>e.classList.toggle('shut',shut(S,+e.dataset.c)));svg.querySelectorAll('.base').forEach((b,c)=>{b.classList.toggle('on',S.st==='play'&&S.tn===c);b.classList.toggle('off',!S.seats.some(s=>s.c===c))});
  if(svg.classList.contains('nt'))setTimeout(()=>svg.classList.remove('nt'),80)}
-function dFace(sel,v,r){const d=$(sel);if(!d)return;d.classList.remove('drop');void d.offsetWidth;d.classList.add('drop');d.innerHTML=pips(1+rnd(6));let n=0;const iv=setInterval(()=>{const e=$(sel);if(!e||++n>7){clearInterval(iv);return}e.innerHTML=pips(1+rnd(6))},100);
+function dFace(sel,v,r){const d=$(sel);if(!d)return;SFX.play('roll');d.classList.remove('drop');void d.offsetWidth;d.classList.add('drop');d.innerHTML=pips(1+rnd(6));let n=0;const iv=setInterval(()=>{const e=$(sel);if(!e||++n>7){clearInterval(iv);return}e.innerHTML=pips(1+rnd(6))},100);
  setTimeout(()=>{clearInterval(iv);const e=$(sel);if(e)e.innerHTML=pips(v)},900);setTimeout(()=>{const e=$(sel);if(e)e.classList.remove('drop')},1050)}
 function dDrop(v){const r=R;r.dh=Date.now()+1300;dFace('#die',v);clearTimeout(r.dt);r.dt=setTimeout(()=>{if(R===r){r.dh=0;onState()}},1330)}
 function dAnim(v){const r=R;dFace('#die',v);setTimeout(()=>{if(R!==r)return;r.hold=false;r.snap=null;onState()},1400)}
@@ -977,7 +1024,7 @@ function onState(){if(!R||!R.S||!$('#game'))return;const N=R.S;
  R.prv=N.rv;const S=R.hold&&R.snap?R.snap:N,me=S.seats.find(s=>s.u===uid);
  if(!R.host){if(me){R.in=true;clearTimeout(R.jt);clearInterval(R.jr)}else if(R.in)return leaveRoom('You were removed from the room');else if(S.st!=='lobby'||S.seats.length>=4)return leaveRoom('Room is full or already started')}
  $('#gt').textContent=S.nm;$('#gs').textContent=S.st==='lobby'?'Waiting · '+S.seats.length+'/4':S.st==='play'?'In game':'Finished';
- updateBoard();if(S.g==='dice')renderScores(S);
+ updateBoard();if(S.g==='dice')renderScores(S);sfxLudo(S,me);
  const my=!!me&&S.st==='play'&&S.tn===me.c,d=$('#die');
  if(S.g==='dice'){if(!R.hold){R.rv=S.rv;d.innerHTML=pips(S.r)}}
  else{if(R.rv!==S.rv){const first=R.rv===undefined;R.rv=S.rv;if(S.rv&&!first&&S.st==='play')dDrop(S.r)}if(!(R.dh>Date.now()))d.innerHTML=pips(S.r)}
@@ -1097,8 +1144,8 @@ const SLK={name:'Snake & Ladder',max:4,social:true,
    if(k._p===undefined){k.style.transitionDuration='0s';place(k,i,tgt);k._p=tgt;k._g=tgt;return}
    if(hold||k._g===tgt)return;
    clearTimeout(k._t);k._g=tgt;const cur=k._p;
-   if(tgt>cur&&tgt-cur<=6){let p=cur;k.style.transitionDuration='.2s';const step=()=>{p++;k._p=p;place(k,i,p);k.classList.remove('hp');void k.offsetWidth;k.classList.add('hp');if(p<tgt)k._t=setTimeout(step,250)};step()}
-   else{k.style.transitionDuration='.9s';k._p=tgt;place(k,i,tgt)}})}};
+   if(tgt>cur&&tgt-cur<=6){let p=cur;k.style.transitionDuration='.2s';const step=()=>{p++;k._p=p;place(k,i,p);k.classList.remove('hp');void k.offsetWidth;k.classList.add('hp');SFX.play('step');if(p<tgt)k._t=setTimeout(step,250)};step()}
+   else{if(tgt>0)SFX.play(tgt>cur?'up':'down');k.style.transitionDuration='.9s';k._p=tgt;place(k,i,tgt)}})}};
 const KS={pp:PPK,sl:SLK};
 
 const EMO={n:12,url:n=>`https://raw.githubusercontent.com/schlerium/MyHostingImages/main/${n}moji.png`};
@@ -1181,6 +1228,7 @@ function mpRender(){const R=MP.R,K=MP.K;if(!R||!R.S||!R.in||!$('#mseats'))return
  else if(K.bs)c=`<p style="margin-top:10px"><b>Match ${S.mn}</b> · ${S.items?'with items':'without items'} · ${esc(S.seats[0].n)} vs ${esc(S.seats[1]?S.seats[1].n:'')}</p>`;
  else{const t=S.seats[S.turn];c=`<p style="margin-top:10px"><b class="un" style="--uh:${uhue(t.n)}">${esc(t.n)}</b>${t.u===uid?' (you)':''}'s turn <span class="mut" id="mtm"></span></p>${K.social?'':K.ctl(S,me)}${K.social||!S.lg||hold?'':`<p class="mut">${esc(S.lg)}</p>`}`}
  setH($('#mctl'),c);setH($('#mdice'),K.social&&S.st==='play'?K.ctl(S,me):'');if(R.dn){R.dn=false;dFace('#sdie',S.die)}
+ if(S.st!=='lobby')sfxMp(S,R,me,K);
  if(S.st==='lobby')sh('#mboard',false);else{sh('#mboard',true);K.render(S,R,$('#mboard'),me)}}
 function mpLeave(msg){const R=MP.R;if(!R)return;MP.rt.forEach(clearInterval);MP.rt=[];clearInterval(R.jr);clearTimeout(R.jt);const tp=mpTop(MP.k,'r/'+R.id);
  if(R.host){R.S.st='closed';Bus.pub(tp,{k:'s',S:R.S});Bus.pub(mpTop(MP.k,'lobby'),{k:'rx',id:R.id})}else if(R.in)Bus.pub(tp,{k:'a',t:'leave'});
@@ -1232,6 +1280,7 @@ addEventListener('message',e=>{const b=MP.bs,d=e.data;if(!b||!d||!d.bs||e.source
 KS.bs=BSK;
 V.buckshot={t:'Buckshot Roulette · schlerium',h:()=>mpView('Buckshot Roulette','Two players, one shotgun each. Choose with or without items when you create the room, and change it between matches. Nobody online? Add the bot.'),i(){mpInit('bs')}};
 // ---- Carrom: turn-based, host-resolved deterministic physics; every client replays the shot locally ----
+let CARSND=false;
 const CAR={DT:1/240};
 const CAR_C={mode:'c',L:740,RC:16,RS:20,PR:32,VMAX:2600,BASE:105,BX0:150,MAXSTEP:2900,PULL:230,MR:34,FK:.9953,FC:.6,WR:.78,CE:1.9,SM:2.6,PO:12,CW:600,hollow:0,marble:0,nf:0};
 // Karrom (Pakistani style): bigger polished marble board, hollow ring striker, slower striker, slipperier everything
@@ -1247,14 +1296,14 @@ function carStep(P,out){const dt=CAR.DT,L=CAR.L,n=P.length;let mv=false;
  for(let i=0;i<n;i++){const a=P[i];if(!a.on)continue;a.x+=a.vx*dt;a.y+=a.vy*dt;
   if(!(CAR.nf&&a.id===99))for(let k=0;k<4;k++){const dx=a.x-CAR.PK[k][0],dy=a.y-CAR.PK[k][1];if(dx*dx+dy*dy<CAR.PR*CAR.PR){a.on=0;a.vx=0;a.vy=0;out.push(a.id);break}}
   if(!a.on)continue;const r=a.r;
-  if(a.x<r){a.x=r;a.vx=Math.abs(a.vx)*CAR.WR}else if(a.x>L-r){a.x=L-r;a.vx=-Math.abs(a.vx)*CAR.WR}
-  if(a.y<r){a.y=r;a.vy=Math.abs(a.vy)*CAR.WR}else if(a.y>L-r){a.y=L-r;a.vy=-Math.abs(a.vy)*CAR.WR}
+  if(a.x<r){a.x=r;a.vx=Math.abs(a.vx)*CAR.WR;CARSND&&SFX.play('wall',Math.min(1,a.vx/CAR.VMAX*2))}else if(a.x>L-r){a.x=L-r;a.vx=-Math.abs(a.vx)*CAR.WR;CARSND&&SFX.play('wall',Math.min(1,-a.vx/CAR.VMAX*2))}
+  if(a.y<r){a.y=r;a.vy=Math.abs(a.vy)*CAR.WR;CARSND&&SFX.play('wall',Math.min(1,a.vy/CAR.VMAX*2))}else if(a.y>L-r){a.y=L-r;a.vy=-Math.abs(a.vy)*CAR.WR;CARSND&&SFX.play('wall',Math.min(1,-a.vy/CAR.VMAX*2))}
   const s2=a.vx*a.vx+a.vy*a.vy;if(s2>0){const s=Math.sqrt(s2),q=s*CAR.FK-CAR.FC;if(q<=5){a.vx=0;a.vy=0}else{const f=q/s;a.vx*=f;a.vy*=f;mv=true}}}
  for(let i=0;i<n;i++){const a=P[i];if(!a.on)continue;for(let j=i+1;j<n;j++){const b=P[j];if(!b.on||(a.vx===0&&a.vy===0&&b.vx===0&&b.vy===0))continue;
   const dx=b.x-a.x,dy=b.y-a.y,rr=a.r+b.r,d2=dx*dx+dy*dy;if(d2>=rr*rr)continue;
   let d=Math.sqrt(d2),nx=1,ny=0;if(d>1e-6){nx=dx/d;ny=dy/d}
   const ia=1/a.m,ib=1/b.m,ov=rr-d,sm=ia+ib;a.x-=nx*ov*ia/sm;a.y-=ny*ov*ia/sm;b.x+=nx*ov*ib/sm;b.y+=ny*ov*ib/sm;
-  const rv=(b.vx-a.vx)*nx+(b.vy-a.vy)*ny;if(rv<0){const J=-CAR.CE*rv/sm;a.vx-=J*nx*ia;a.vy-=J*ny*ia;b.vx+=J*nx*ib;b.vy+=J*ny*ib;mv=true}}}
+  const rv=(b.vx-a.vx)*nx+(b.vy-a.vy)*ny;if(rv<0){CARSND&&SFX.play('hit',Math.min(1,-rv/CAR.VMAX*2));const J=-CAR.CE*rv/sm;a.vx-=J*nx*ia;a.vy-=J*ny*ia;b.vx+=J*nx*ib;b.vy+=J*ny*ib;mv=true}}}
  return mv}
 function carRun(P){const out=[];let n=0;while(n<CAR.MAXSTEP){n++;if(!carStep(P,out))break}P.forEach(p=>{p.vx=0;p.vy=0});return{n,out}}
 function carTry(pcs,x,y,vx,vy){const P=carMk(pcs);P.push(carStk(x,y,vx,vy));return carRun(P).out}
@@ -1333,7 +1382,7 @@ function carAimDraw(g,S,s,dx,dy){const L=CAR.L,ln=Math.sqrt(dx*dx+dy*dy);if(!(ln
  g.strokeStyle='hsl('+(120-120*pw)+' 80% 40%)';g.lineWidth=7;g.lineCap='round';g.beginPath();g.moveTo(s[0],s[1]);g.lineTo(s[0]-ux*pw*110,s[1]-uy*pw*110);g.stroke();g.restore();return pw}
 function carStrikerPos(c){const sl=document.getElementById('cslide'),f=sl?(+sl.value)/1000:.5;return carRot(CAR.BX0+(CAR.L-2*CAR.BX0)*f,CAR.L-CAR.BASE,c.sd)}
 function carHeld(c){return !!c.held&&c.hs===c.S.sn}
-function carFire(c,m){const S=c.S;m.q=uid.slice(0,4)+Date.now().toString(36);c.sent=Date.now();
+function carFire(c,m){const S=c.S;SFX.play('flick');m.q=uid.slice(0,4)+Date.now().toString(36);c.sent=Date.now();
  const sp=Math.sqrt(m.vx*m.vx+m.vy*m.vy),f=sp>CAR.VMAX?CAR.VMAX/sp:1,vx=m.vx*f,vy=m.vy*f,mk=()=>carMk(S.pcs).concat([carStk(m.x,m.y,vx,vy)]);
  c.an={P:mk(),out:[],n:0,tot:carRun(mk()).n,acc:0,si:c.me,pre:S.sn};c.pre={sn:S.sn,x:m.x,y:m.y,vx,vy};c.held=null;c.dirty=true;
  let tries=0;const chk=()=>{if(!c.pre||c.S.sn!==c.pre.sn)return;if(++tries>3){c.an=null;c.pre=null;c.held=null;c.dirty=true;toast('Shot was not received, try again');return}mpAct(m);setTimeout(chk,700)};
@@ -1353,7 +1402,7 @@ function carMount(el){el.innerHTML='<canvas class="crc" width="600" height="600"
  const loop=t=>{if(!cv.isConnected)return;requestAnimationFrame(loop);const w=c.rw||0;
   if(c.dirty||c.an||c.aim||c.fx.length||(c.rp&&Date.now()-c.rp.t<1700)){c.dirty=false;c.lw=w;carFrame(c,t)}c.last=t};requestAnimationFrame(loop)}
 function carFrame(c,t){if(!c.S)return;const dtr=Math.min(.05,Math.max(0,(t-(c.last||t))/1000));const an=c.an;
- if(an){an.acc+=dtr;while(an.acc>=CAR.DT&&an.n<an.tot){const k=an.out.length;carStep(an.P,an.out);an.n++;an.acc-=CAR.DT;for(let i=k;i<an.out.length;i++){const p=an.P.find(q=>q.id===an.out[i]);if(p)c.fx.push({x:p.x,y:p.y,t:p.t,a:t})}}if(an.n>=an.tot){c.an=null;c.dirty=true;if(an.pre!==undefined){c.held=an.P.filter(p=>p.on&&p.id!==99).map(p=>({id:p.id,t:p.t,x:p.x,y:p.y}));c.hs=an.pre}}}
+ if(an){an.acc+=dtr;while(an.acc>=CAR.DT&&an.n<an.tot){const k=an.out.length;CARSND=true;carStep(an.P,an.out);CARSND=false;an.n++;an.acc-=CAR.DT;for(let i=k;i<an.out.length;i++){const p=an.P.find(q=>q.id===an.out[i]);if(p){c.fx.push({x:p.x,y:p.y,t:p.t,a:t});SFX.play('pocket')}}}if(an.n>=an.tot){c.an=null;c.dirty=true;if(an.pre!==undefined){c.held=an.P.filter(p=>p.on&&p.id!==99).map(p=>({id:p.id,t:p.t,x:p.x,y:p.y}));c.hs=an.pre}}}
  carDraw(c,t)}
 function carDot(g,x,y,r,t,col){if(CAR.hollow&&t===3){g.beginPath();g.arc(x+1.5,y+2.5,r,0,7);g.arc(x+1.5,y+2.5,r*.62,0,7,true);g.fillStyle='rgba(0,0,0,.3)';g.fill('evenodd');
   g.beginPath();g.arc(x,y,r,0,7);g.arc(x,y,r*.62,0,7,true);g.fillStyle=col;g.fill('evenodd');
@@ -1396,7 +1445,7 @@ KS.cr=CRK;KS.kr=KRK;
 const WD={buf:'',pk:'',sent:0,S:null,me:-1};
 const WDW={4:['BOLT','CAKE','DUSK','FROG','GLOW','HAZE','JUMP','KILN','LAMP','MINT','NEST','OPAL','PINE','QUIZ','RAIN','SAND','TIDE','VINE','WAVE','YARN','ZINC','BEAR','COIN','DOVE','ECHO','FERN','GOLD','HAWK','IRON','JADE','KITE','LION','MOON','NOTE','OVEN','PLUM','BALL','BELL','BOOK','COOL','DOLL','FALL','FOOD','GOOD','HILL','KISS','LOOP','MOSS','NEED','PEEL','POOL','ROOF','SEED','TEST','TOOL','WOOL','ZOOM'],
 5:['APPLE','BRICK','CRANE','DREAM','EAGLE','FLAME','GRAPE','HEART','IVORY','JELLY','KNIFE','LEMON','MANGO','NIGHT','OCEAN','PIANO','QUEEN','RIVER','STORM','TIGER','VIVID','WATER','YACHT','ZEBRA','BLEED','BEARD','BOILS','CLOUD','DANCE','EARTH','FROST','GHOST','HONEY','JOKER','LIGHT','MAGIC','PLANT','SMILE','BREAD','STONE','BELLY','BERRY','BOOST','BOOTH','BUDDY','FLOOD','FUZZY','GLASS','GREEN','HAPPY','KAYAK','LLAMA','MUMMY','PENNY','PUPPY','SHEEP','SKILL','SMELL','SPOON','SWEET','TOOTH'],
-6:['ANCHOR','BRIDGE','CANDLE','DRAGON','ENGINE','FOREST','GARDEN','HAMMER','ISLAND','JUNGLE','KERNEL','LADDER','MARKET','NATURE','ORANGE','PLANET','ROCKET','SILVER','TUNNEL','VIOLET','WINTER','YELLOW','ZIPPER','BUTTON','CASTLE','DOCTOR','FLOWER','GUITAR','HUNTER','MIRROR','BATTLE','BUBBLE','COFFEE','DINNER','PUZZLE','SUMMER','LETTER','BORROW']};
+6:['ANCHOR','BRIDGE','CANDLE','DRAGON','ENGINE','FOREST','GARDEN','HAMMER','ISLAND','JUNGLE','KERNEL','LADDER','MARKET','NATURE','ORANGE','PLANET','ROCKET','SILVER','TUNNEL','VIOLET','WINTER','YELLOW','ZIPPER','BUTTON','CASTLE','DOCTOR','FLOWER','GUITAR','HUNTER','MIRROR','BATTLE','BUBBLE','COFFEE','DINNER','PUZZLE','SUMMER','LETTER','BORROW'],7:['BALANCE','CAPTAIN','DOLPHIN','EXPLORE','FREEDOM','GALLERY','HARVEST','JOURNEY','KITCHEN','LANTERN','MACHINE','NETWORK','OUTLOOK','PENGUIN','RAINBOW','SUNRISE','THUNDER','VILLAGE','WEATHER','BALLOON','COTTAGE','DIAMOND','MISSION','PUZZLES','TROUBLE'],8:['ABSOLUTE','BIRTHDAY','CHAMPION','DAYLIGHT','ELEPHANT','FIREWORK','GOLDFISH','HOLIDAYS','INTEREST','KEYBOARD','LANGUAGE','MOUNTAIN','NOTEBOOK','PLATFORM','QUESTION','RAINFALL','SNOWBALL','TREASURE','UMBRELLA','WILDFIRE','BASEBALL','SUNSHINE'],9:['ADVENTURE','BUTTERFLY','CHOCOLATE','DISCOVERY','EXCELLENT','HAPPINESS','IMAGINARY','JELLYFISH','KNOWLEDGE','LIGHTNING','MOONLIGHT','NIGHTMARE','ORCHESTRA','PINEAPPLE','QUICKSAND','RAINSTORM','TELESCOPE','UNIVERSAL','WATERFALL'],10:['BASKETBALL','CHOCOLATES','DANDELIONS','ELECTRICAL','HELICOPTER','JOURNALIST','LANDSCAPES','PLAYGROUND','STRAWBERRY','WATERMELON','GRASSLANDS','ADVENTURER','SUNFLOWERS','BLACKBOARD','FRIENDSHIP']};
 const wdEnc=w=>[...w].map((c,i)=>String.fromCharCode((c.charCodeAt(0)-65+7+3*i)%26+65)).reverse().join('');
 const wdDec=k=>[...k].reverse().map((c,i)=>String.fromCharCode(((c.charCodeAt(0)-65-7-3*i)%26+26)%26+65)).join('');
 // g green = right spot, y yellow = in the word elsewhere, b blue = in the word elsewhere AND appears 2+ times, x grey = not in the word
@@ -1404,6 +1453,11 @@ function wdCol(sec,g){const n=sec.length,r=Array(n).fill('x'),cnt={},tot={};for(
  for(let i=0;i<n;i++){if(g[i]===sec[i])r[i]='g';else cnt[sec[i]]=(cnt[sec[i]]||0)+1}
  for(let i=0;i<n;i++)if(r[i]!=='g'&&cnt[g[i]]>0){cnt[g[i]]--;r[i]=tot[g[i]]>1?'b':'y'}
  return r.join('')}
+// ===== WORD DUEL SOUNDS =====
+// Buzzer (wdBuzz below) = the giver's mercy / no-mercy buzz. 'correct' (defined in SFX above) = word solved.
+// wdSfx runs from WDK.render: plays 'correct' once per round for both players when the guesser solves the word.
+// The first render in a room is silent so rejoining a finished round does not replay it.
+function wdSfx(S,R){const k=S.ph==='end'&&S.ro&&S.ro.t==='win'?S.rd:0;if(R._wsx===undefined){R._wsx=k;return}if(k&&k!==R._wsx)SFX.play('correct');R._wsx=k}
 function wdBuzz(t){try{const A=window.AudioContext||window.webkitAudioContext;if(!A)return;const c=WD.ac||(WD.ac=new A()),o=c.createOscillator(),g=c.createGain(),m=t==='mercy';o.type=m?'sine':'square';o.frequency.value=m?660:150;g.gain.value=.05;o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+(m?.18:.35))}catch(e){}}
 const wdScene=()=>`<svg class="wdsc" viewBox="0 0 400 190" role="img" aria-label="Two players facing each other with a buzzer each"><path d="M16 14C90 9 150 14 210 11C290 8 350 13 384 18C386 60 378 100 372 150C370 168 350 178 330 178L70 181C36 181 18 172 18 150C16 100 14 60 16 14Z"/>
 <g><circle cx="70" cy="58" r="26"/><circle class="f" cx="80" cy="54" r="3.4"/><path d="M70 74q4-5 8 0t8 0"/><path d="M42 178C40 124 52 98 72 90C92 98 100 126 100 178"/></g>
@@ -1414,18 +1468,19 @@ const wdScene=()=>`<svg class="wdsc" viewBox="0 0 400 190" role="img" aria-label
 const wdChain=n=>{let o='<svg class="wdch" viewBox="0 0 230 28">';for(let i=0;i<5;i++)o+=`<path d="M${25+i*40} 14H${43+i*40}" stroke="${i<n-1?'#ff5a5a':'currentColor'}" stroke-width="3.4"/>`;for(let i=0;i<6;i++)o+=`<circle cx="${14+i*40}" cy="14" r="9" fill="${i<n?'#ff6b6b':'transparent'}" stroke="currentColor" stroke-width="3.4"/>`;return o+'</svg>'};
 function wdAnim(el,side,t){const a=el.querySelector('#arm'+side),b=el.querySelector('#bz'+side);[a,b].forEach(x=>{if(x){x.classList.remove('on');x.getBoundingClientRect();x.classList.add('on')}});setTimeout(()=>{a&&a.classList.remove('on');b&&b.classList.remove('on')},1700);wdBuzz(t)}
 function wdDraw(el){const S=WD.S,me=WD.me;if(!S||!el||me<0||!S.seats[1-me])return;const q=s=>el.querySelector(s);if(!q('.wd'))return;
- const gv=S.gv,iG=me===gv,iU=me===1-gv,opp=S.seats[1-me],on=esc(opp.n),len=S.len,ph=S.ph,gs=S.gs||[];WD.buf=WD.buf.slice(0,len);
+ const gv=S.gv,iG=me===gv,iU=me===1-gv,opp=S.seats[1-me],on=esc(opp.n),len=S.len,mx=S.mx||10,ph=S.ph,gs=S.gs||[];WD.buf=WD.buf.slice(0,len);
  setH(q('.wdlv'),`<div>${wdChain(S.lv[me])}<b>YOU</b></div><div>${wdChain(S.lv[1-me])}<b>${on.toUpperCase()}</b></div>`);
  const tile=(c,cl)=>`<i class="wdt ${cl}">${c}</i>`;let rows='';
  if(ph==='give'){const b=iG?WD.buf:'';rows=`<div class="wdr">${Array.from({length:len},(_,i)=>tile(b[i]||'','cur'+(b[i]?' f':''))).join('')}</div>`}
- else for(let r=0;r<10;r++){const g=gs[r];if(!g&&ph==='end'&&S.ro&&S.rv&&r===gs.length&&S.ro.t!=='win'&&S.ro.t!=='lose')rows+=`<div class="wdr">${[...S.rv].map((c,i)=>`<i class="wdt g rv" style="animation-delay:${(i*.28).toFixed(2)}s">${c}</i>`).join('')}</div>`;else if(g)rows+=`<div class="wdr">${[...g.w].map((c,i)=>tile(c,g.c[i])).join('')}</div>`;else{const act=iU&&ph==='guess'&&r===gs.length;rows+=`<div class="wdr">${Array.from({length:len},(_,i)=>tile((act&&WD.buf[i])||'',act?'cur'+(WD.buf[i]?' f':''):'')).join('')}</div>`}}
+ else for(let r=0;r<mx;r++){const g=gs[r];if(!g&&ph==='end'&&S.ro&&S.rv&&r===gs.length&&S.ro.t!=='win'&&S.ro.t!=='lose')rows+=`<div class="wdr">${[...S.rv].map((c,i)=>`<i class="wdt g rv" style="animation-delay:${(i*.28).toFixed(2)}s">${c}</i>`).join('')}</div>`;else if(g)rows+=`<div class="wdr">${[...g.w].map((c,i)=>tile(c,g.c[i])).join('')}</div>`;else{const act=iU&&ph==='guess'&&r===gs.length;rows+=`<div class="wdr">${Array.from({length:len},(_,i)=>tile((act&&WD.buf[i])||'',act?'cur'+(WD.buf[i]?' f':''):'')).join('')}</div>`}}
  let m='',x='',lb='',vd='';
- if(ph==='give'){m=iG?'Your turn, give a word':`${on} is choosing a word…`;if(iG)lb=`<div class="wdbt">${[4,5,6].map(n=>`<button class="btn sm${n===len?' pri':''}" data-wa="l${n}">${n} letter</button>`).join('')}</div>`}
- else if(ph==='guess'){m=iU?`Guess the word · ${gs.length}/10`:`${on} is guessing · ${gs.length}/10`;if(iG)x=`<div class="wdw">Your word: <b>${esc(wdDec(S.k))}</b></div>`}
+ if(ph==='give'){m=iG?'Your turn, give a word':`${on} is choosing a word…`;if(iG)lb=`<div class="wdbt"><span class="wdcap">Letters</span>${[4,5,6,7,8,9,10].map(n=>`<button class="btn sm${n===len?' pri':''}" data-wa="l${n}">${n}</button>`).join('')}</div><div class="wdbt"><span class="wdcap">Tries</span><button class="btn sm" data-wa="m-"${mx<=1?' disabled':''}>−</button><b>${mx}</b><button class="btn sm" data-wa="m+"${mx>=10?' disabled':''}>+</button></div>`}
+ else if(ph==='guess'){m=iU?`Guess the word · ${gs.length}/${mx}`:`${on} is guessing · ${gs.length}/${mx}`;if(iG)x=`<div class="wdw">Your word: <b>${esc(wdDec(S.k))}</b></div>`}
  else if(ph==='mercy')m=iG?`${on} gave up!`:'You gave up. Waiting for the verdict…';
  else if(ph==='end'&&S.ro){const o=S.ro,w=esc(S.rv),mine=o.g===me,itw=t=>`<span class="wdit" style="animation-delay:${(len*.28+.15).toFixed(2)}s"> ${t}</span>`;
   m=o.t==='win'?(mine?'Solved it! +1 life':`${on} solved it. +1 life for them`):o.t==='lose'?(mine?`Out of tries. It was ${w}. −1 life`:`${on} ran out of tries. It was ${w}`):o.t==='mercy'?(mine?`Mercy! No life lost.${itw(`It was ${w}`)}`:`You showed mercy.${itw(`It was ${w}`)}`):(mine?`No mercy!${itw(`It was ${w}. −1 life`)}`:`No mercy! ${on} loses a life.${itw(`It was ${w}`)}`);
   vd=m;m='';if(S.st==='play')x='<div class="mut sm2">Next round starting…</div>'}
+ q('.wdmid').style.setProperty('--n',len);
  setH(q('.wdmid'),`${lb}${vd?`<div class="wdv">${vd}</div>`:''}${rows}<div class="wdm">${m}</div>${x}`);
  let kb='';const dis=WD.sent?' disabled':'';
  if((iG&&ph==='give')||(iU&&ph==='guess')){const st={},p={g:4,b:3,y:3,x:1};gs.forEach(g=>[...g.w].forEach((c,i)=>{const s=g.c[i];if(!st[c]||p[s]>p[st[c]])st[c]=s}));
@@ -1445,20 +1500,21 @@ function wdType(ch){const S=WD.S,me=WD.me;if(!S||S.st!=='play'||WD.sent)return;i
 function wdSubmit(){const S=WD.S,me=WD.me;if(!S||S.st!=='play'||WD.sent)return;const g=S.ph==='give'&&me===S.gv,u=S.ph==='guess'&&me===1-S.gv;if(!(g||u)||WD.buf.length!==S.len)return;WD.sent=1;mpAct({t:g?'word':'guess',w:WD.buf});setTimeout(()=>{WD.sent=0;wdDraw($('#mboard'))},2500);wdDraw($('#mboard'))}
 function wdClick(e){const R=MP.R;if(!R||!R.S||!MP.K||!MP.K.wd)return;const k=e.target.closest('[data-wk],[data-wa]');if(!k||k.disabled)return;
  if(k.dataset.wk)return wdType(k.dataset.wk);const a=k.dataset.wa;
- if(a==='bk')wdType('BK');else if(a==='ck')wdSubmit();else if(a==='up')mpAct({t:'giveup'});else if(a==='mc')mpAct({t:'mercy'});else if(a==='nm')mpAct({t:'nomercy'});else if(a[0]==='l')mpAct({t:'len',n:+a.slice(1)})}
+ if(a==='bk')wdType('BK');else if(a==='ck')wdSubmit();else if(a==='up')mpAct({t:'giveup'});else if(a==='mc')mpAct({t:'mercy'});else if(a==='nm')mpAct({t:'nomercy'});else if(a[0]==='l')mpAct({t:'len',n:+a.slice(1)});else if(a==='m-'||a==='m+')mpAct({t:'mx',n:(R.S.mx||10)+(a==='m+'?1:-1)})}
 addEventListener('keydown',e=>{if(!MP.K||!MP.K.wd||!MP.R||!MP.R.S||e.ctrlKey||e.metaKey||e.altKey)return;const t=document.activeElement;if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))return;
  if(/^[a-zA-Z]$/.test(e.key))wdType(e.key.toUpperCase());else if(e.key==='Backspace'){wdType('BK');e.preventDefault()}else if(e.key==='Enter')wdSubmit()});
 const WDK={name:'Word Duel',max:2,wd:true,
  init(S){S.lim=36e5},
- opts(){return '<p class="mut" style="margin-top:10px">Take turns: one of you sets a secret word, the other gets 10 tries. Solve it: +1 life. Fail: −1 life. Both start with 6 lives and the first to reach 0 loses. On each turn the player gets a 60-second thermometer that drains, and both players can watch it live. Tap your bulb to add a second. If it runs dry before your turn ends, you lose on the spot.</p>'},
- start(S){S.lv=[6,6];S.gv=0;S.rd=1;S.st='play';S.lg='';S.win=-1;S.ev=null;S.len=5;const n0=Date.now();S.td=S.seats.map(x=>x.b?null:0);S.th=S.seats.map(x=>x.b?null:6e4);S.tl=0;S.dth=-1;WDK.round(S)},
+ opts(){return '<p class="mut" style="margin-top:10px">Take turns: one of you sets a secret word, the other gets the number of tries they set (1 to 10). Solve it: +1 life. Fail: −1 life. Both start with 6 lives and the first to reach 0 loses. On each turn the player gets a 60-second thermometer that drains, and both players can watch it live. Tap your bulb to add a second. If it runs dry before your turn ends, you lose on the spot.</p>'},
+ start(S){S.lv=[6,6];S.gv=0;S.rd=1;S.st='play';S.lg='';S.win=-1;S.ev=null;S.len=5;S.mx=10;const n0=Date.now();S.td=S.seats.map(x=>x.b?null:0);S.th=S.seats.map(x=>x.b?null:6e4);S.tl=0;S.dth=-1;WDK.round(S)},
  round(S){S.ph='give';S.k='';S.gs=[];S.rv='';S.ro=null;S.turn=S.gv;S.at=Date.now()},
  end(S,t){const gu=1-S.gv,d=t==='win'?1:t==='mercy'?0:-1;S.lv[gu]=Math.max(0,Math.min(6,S.lv[gu]+d));S.rv=wdDec(S.k);S.ro={t,g:gu,d};S.ph='end';S.turn=gu;S.at=Date.now();if(S.lv[gu]<=0){S.st='over';S.win=S.gv}},
  act(S,si,m){if(!m||S.st!=='play')return false;const gv=S.gv,gu=1-gv,now=Date.now();
   if(m.t==='tap'){if(!S.td||!(S.td[si]>0))return false;S.td[si]=Math.min(now+6e4,S.td[si]+1000);return true}
-  if(m.t==='len'&&S.ph==='give'&&si===gv&&[4,5,6].includes(m.n)){S.len=m.n;S.at=now;return true}
+  if(m.t==='len'&&S.ph==='give'&&si===gv&&Number.isInteger(m.n)&&m.n>=4&&m.n<=10){S.len=m.n;S.at=now;return true}
+  if(m.t==='mx'&&S.ph==='give'&&si===gv&&Number.isInteger(m.n)&&m.n>=1&&m.n<=10){S.mx=m.n;S.at=now;return true}
   if(m.t==='word'&&S.ph==='give'&&si===gv){const w=String(m.w||'').toUpperCase();if(!/^[A-Z]+$/.test(w)||w.length!==S.len)return false;S.k=wdEnc(w);S.gs=[];S.ph='guess';S.turn=gu;S.at=now;return true}
-  if(m.t==='guess'&&S.ph==='guess'&&si===gu){const w=String(m.w||'').toUpperCase();if(!/^[A-Z]+$/.test(w)||w.length!==S.len||S.gs.length>=10)return false;const sec=wdDec(S.k);S.gs.push({w,c:wdCol(sec,w)});S.at=now;if(w===sec)WDK.end(S,'win');else if(S.gs.length>=10)WDK.end(S,'lose');return true}
+  if(m.t==='guess'&&S.ph==='guess'&&si===gu){const w=String(m.w||'').toUpperCase();if(!/^[A-Z]+$/.test(w)||w.length!==S.len||S.gs.length>=(S.mx||10))return false;const sec=wdDec(S.k);S.gs.push({w,c:wdCol(sec,w)});S.at=now;if(w===sec)WDK.end(S,'win');else if(S.gs.length>=(S.mx||10))WDK.end(S,'lose');return true}
   if(m.t==='giveup'&&S.ph==='guess'&&si===gu){S.ph='mercy';S.turn=gv;S.at=now;S.ev={w:gu,t:'up',n:(S.ev?S.ev.n:0)+1};return true}
   if((m.t==='mercy'||m.t==='nomercy')&&S.ph==='mercy'&&si===gv){S.ev={w:gv,t:m.t,n:(S.ev?S.ev.n:0)+1};WDK.end(S,m.t);return true}
   return false},
@@ -1467,7 +1523,7 @@ const WDK={name:'Word Duel',max:2,wd:true,
   if(S.td){const gp=S.tl?now-S.tl:0;S.tl=now;if(gp>5000)S.td=S.td.map(d=>d>0?d+gp:d);
    for(let i=0;i<S.td.length;i++)if(S.td[i]>0&&now>S.td[i]+800){S.lv[i]=0;S.st='over';S.win=1-i;S.dth=i;S.at=now;return true}}
   const gv=S.gv,gu=1-gv,G=S.seats[gv],U=S.seats[gu];if(!G||!U)return false;
-  if(S.ph==='give'&&G.b&&now-S.at>1300){const L=[4,5,6][rnd(3)],l=WDW[L],d=l.filter(w=>/(.).*\1/.test(w)),p=Math.random()<.5?d:l;S.len=L;return WDK.act(S,gv,{t:'word',w:p[rnd(p.length)]})}
+  if(S.ph==='give'&&G.b&&now-S.at>1300){const L=[4,5,6,7,8,9,10][rnd(7)],l=WDW[L],d=l.filter(w=>/(.).*\1/.test(w)),p=Math.random()<.5?d:l;S.len=L;return WDK.act(S,gv,{t:'word',w:p[rnd(p.length)]})}
   if(S.ph==='guess'&&U.b&&now-S.at>1200){const l=WDW[S.len]||[],used=new Set(S.gs.map(x=>x.w)),cand=l.filter(w=>!used.has(w)&&S.gs.every(x=>wdCol(w,x.w)===x.c));
    if(!cand.length&&S.gs.length>=4)return WDK.act(S,gu,{t:'giveup'});
    const pool=cand.length?cand:l.filter(w=>!used.has(w));let w=pool.length?pool[rnd(pool.length)]:'';if(!w)for(let i=0;i<S.len;i++)w+=String.fromCharCode(65+rnd(26));
@@ -1478,7 +1534,7 @@ const WDK={name:'Word Duel',max:2,wd:true,
  score(S,i){return S.lv?S.lv[i]+' lives':''},
  result(S){const w=S.seats[S.win];if(S.dth>=0&&S.seats[S.dth])return esc(S.seats[S.dth].n)+' burned out! '+(w?esc(w.n):'?')+' wins! 🎉';return (w?esc(w.n):'?')+' survives and wins! 🎉'},
  ctl(){return ''},
- render(S,R,el,me){if(!el.querySelector('.wd'))el.innerHTML='<div class="wd"><div class="wdsce"></div><div class="wdlv"></div><div class="wdbody"><div class="wdth off"><div class="wdtube"><i class="wdfl"></i></div><button type="button" class="wdbulb" aria-label="Add one second">TAP</button></div><div class="wdmid"></div><div class="wdth wdop off"><div class="wdtube"><i class="wdfl"></i></div><div class="wdbulb"></div></div></div><div class="wdkb"></div></div>';
+ render(S,R,el,me){wdSfx(S,R);if(!el.querySelector('.wd'))el.innerHTML='<div class="wd"><div class="wdsce"></div><div class="wdlv"></div><div class="wdbody"><div class="wdth off"><div class="wdtube"><i class="wdfl"></i></div><button type="button" class="wdbulb" aria-label="Add one second">TAP</button></div><div class="wdmid"></div><div class="wdth wdop off"><div class="wdtube"><i class="wdfl"></i></div><div class="wdbulb"></div></div></div><div class="wdkb"></div></div>';
   if(!el._wdl){el._wdl=1;el.addEventListener('click',wdClick)}
   if(!el._wtb){el._wtb=1;el.querySelector('.wdbulb').addEventListener('pointerdown',e=>{e.preventDefault();wdTap()})}
   WD.S=S;WD.me=me;WD.el=el;if(WD.ths!==S.th){WD.ths=S.th;const n0=Date.now();WD.dl=(S.th||[]).map(x=>x==null?null:n0+x)}
@@ -1486,7 +1542,7 @@ const WDK={name:'Word Duel',max:2,wd:true,
   setH(el.querySelector('.wdsce'),wdScene());wdDraw(el);wdTh();if(!WD.ti)WD.ti=setInterval(wdTh,100);
   if(el._er!==R.id){el._er=R.id;el._ev=S.ev?S.ev.n:0}else if(S.ev&&S.ev.n!==el._ev){el._ev=S.ev.n;wdAnim(el,S.ev.w===me?'L':'R',S.ev.t)}}};
 KS.wd=WDK;
-V.wordduel={t:'Word Duel · schlerium',h:()=>mpView('Word Duel','Wordle, but head to head. Take turns setting a secret word (4 to 6 letters); your rival gets 10 tries. Solve it to win a life, fail and lose one. Both start with 6 lives, last one alive wins. Green is the right spot, yellow is in the word elsewhere, blue is in the word elsewhere and appears more than once. Stuck? Give up, and the word-giver chooses mercy or no mercy.'),i(){mpInit('wd')}};
+V.wordduel={t:'Word Duel · schlerium',h:()=>mpView('Word Duel','Wordle, but head to head. Take turns setting a secret word (4 to 10 letters); your rival gets the number of tries you set, up to 10. Solve it to win a life, fail and lose one. Both start with 6 lives, last one alive wins. Green is the right spot, yellow is in the word elsewhere, blue is in the word elsewhere and appears more than once. Stuck? Give up, and the word-giver chooses mercy or no mercy.'),i(){mpInit('wd')}};
 
 V.carrom={t:'Carrom · schlerium',h:()=>`<div class="wrap ludo"><div class="pagehead"><p class="eyebrow"><span class="live">●</span> Pick a variant</p><h1>Carrom</h1><p>Two ways to flick. Choose one, then create or join a live room as usual.</p><a class="btn sm" href="#/games" style="margin-top:16px">‹ All games</a></div><div class="grid" style="grid-template-columns:1fr;margin-top:26px">${[['Carrom','The classic board. Quick, snappy, lively coins.','carrom-classic'],['Karrom','Pakistani style: a bigger polished marble board that fills the screen, a hollow ring striker, a slower striker and slippery coins.','karrom']].map(([a,b,h],i)=>`<div class="card rv" style="--d:${i*.1}s"><h3>${a}</h3><p class="mut">${b}</p><a class="btn sm pri" href="#/${h}" style="margin-top:14px;display:inline-flex">Play</a></div>`).join('')}</div></div>`};
 V['carrom-classic']={t:'Carrom · schlerium',h:()=>mpView('Carrom','Flick the striker to pocket your coins. Slide the striker along your line, drag back anywhere and release: the longer the pull, the harder the shot (up to a limit). Cover the queen with one of your coins, a striker in the pocket is a foul. 2 players, or 4 as partners (a bot fills a third seat).','#/carrom'),i(){carCfg('c');mpInit('cr')}};
