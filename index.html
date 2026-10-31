@@ -233,7 +233,7 @@ dialog form{display:grid;gap:12px}
 [data-theme=marine] details{border:0;border-radius:22px;padding:16px 22px;margin-bottom:14px;box-shadow:var(--raise-s);transition:box-shadow .3s}[data-theme=marine] details[open]{box-shadow:var(--press)}[data-theme=marine] summary{font-size:13px;text-transform:uppercase;letter-spacing:.1em}
 [data-theme=marine] .stats>div{box-shadow:var(--raise);border-radius:28px;padding:26px 14px}[data-theme=marine] .stats b{font-family:var(--cond);font-weight:700;text-shadow:2px 2px 0 var(--hl),-2px -2px 0 rgba(150,165,188,.35)}
 [data-theme=marine] .ticker{border:0;background:var(--bg);box-shadow:var(--press);border-radius:99px;color:var(--mut);margin:0 clamp(16px,4vw,40px);font-size:13px;letter-spacing:.1em;text-transform:uppercase}
-[data-theme=marine] footer{border:0;background:none;margin-top:30px;padding-bottom:130px}
+[data-theme=marine] footer{border:0;border-top:3px solid #c89b4b;background:none;margin-top:30px;padding-bottom:130px}
 [data-theme=marine] dialog{border:0;border-radius:34px;background:var(--bg);box-shadow:var(--raise),0 30px 60px rgba(31,45,61,.25)}
 [data-theme=marine] .t{background:var(--bg);color:var(--ink);border-radius:99px;box-shadow:var(--raise);font-weight:700;padding:12px 22px}[data-theme=marine] #toasts{bottom:96px}[data-theme=marine] #cookie{bottom:96px}
 @media(max-width:600px){[data-theme=marine] #nav a{font-size:0;padding:12px 14px;gap:0}[data-theme=marine] #nav a::before{font-size:19px}[data-theme=marine] .brand span{display:none}}
@@ -1104,7 +1104,8 @@ const KS={pp:PPK,sl:SLK};
 const EMO={n:12,url:n=>`https://raw.githubusercontent.com/schlerium/MyHostingImages/main/${n}moji.png`};
 function emoShow(n,si){const p=$('#aem'+si);if(!p)return;clearTimeout(p._a);p.style.transition='none';p.innerHTML=`<img data-emo="${n}" src="${EMO.url(n)}" alt="">`;p.style.opacity='1';p._a=setTimeout(()=>{p.style.transition='opacity 1s linear';p.style.opacity='0'},1500)}
 function mpChat(n,t){const box=$('#mchat');if(!box)return;const d=document.createElement('div');d.className='cm';d.innerHTML=`<b class="un" style="--uh:${uhue(n)}">${esc(n)}</b> ${esc(t)}`;box.append(d);while(box.children.length>60)box.firstChild.remove();box.scrollTop=box.scrollHeight}
-function mpSocial(m){const n=String(m.n||'').replace(/[^A-Za-z0-9_]/g,'').slice(0,13)||'?';if(m.k==='e'){const R=MP.R,si=R&&R.S?R.S.seats.findIndex(x=>x.u===m.u):-1;if(si>=0&&Number.isInteger(m.e)&&m.e>=1&&m.e<=EMO.n)emoShow(m.e,si)}else if(typeof m.t==='string')mpChat(n,m.t.slice(0,120))}
+function mpSocial(m){const n=String(m.n||'').replace(/[^A-Za-z0-9_]/g,'').slice(0,13)||'?';if(m.k==='e'){const R=MP.R,si=R&&R.S?R.S.seats.findIndex(x=>x.u===m.u):-1;if(si>=0&&Number.isInteger(m.e)&&m.e>=1&&m.e<=EMO.n)emoShow(m.e,si)}else if(typeof m.t==='string'){const t=m.t.slice(0,120);mpChat(n,t);mpPop(n,t)}}
+function mpPop(n,t){const w=$('#toasts');if(!w)return;while(w.children.length>=4)w.firstChild.remove();const e=document.createElement('div');e.className='t cp';e.innerHTML=`<b class="un" style="--uh:${uhue(n)}">${esc(n)}</b> ${esc(t)}`;w.append(e);setTimeout(()=>e.remove(),3100)}
 // ==== DUMMY-EMOJI-START: delete from here to DUMMY-EMOJI-END, nothing else needs changing. Shows a numbered placeholder only when the real png from MyHostingImages fails to load ====
 const dummyEmoSvg=n=>'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="hsl(${n*47%360} 85% 60%)" stroke="#0006" stroke-width="3"/><text x="32" y="42" text-anchor="middle" font-size="30" font-weight="800" fill="#fff" font-family="sans-serif">${n}</text></svg>`);
 document.addEventListener('error',e=>{const im=e.target;if(im&&im.tagName==='IMG'&&im.dataset.emo&&!im.dataset.dm){im.dataset.dm='1';im.src=dummyEmoSvg(+im.dataset.emo)}},true);
@@ -1393,9 +1394,9 @@ function carDraw(c,t){const cv=c.cv,S=c.S,L=CAR.L,M=CAR.MR,W=L+2*M,cw=Math.round
 KS.cr=CRK;KS.kr=KRK;
 // ---- Word Duel: turn-based Wordle duel (no timer, no dictionary) ----
 const WD={buf:'',pk:'',sent:0,S:null,me:-1};
-const WDW={4:['BOLT','CAKE','DUSK','FROG','GLOW','HAZE','JUMP','KILN','LAMP','MINT','NEST','OPAL','PINE','QUIZ','RAIN','SAND','TIDE','VINE','WAVE','YARN','ZINC','BEAR','COIN','DOVE','ECHO','FERN','GOLD','HAWK','IRON','JADE','KITE','LION','MOON','NOTE','OVEN','PLUM'],
-5:['APPLE','BRICK','CRANE','DREAM','EAGLE','FLAME','GRAPE','HEART','IVORY','JELLY','KNIFE','LEMON','MANGO','NIGHT','OCEAN','PIANO','QUEEN','RIVER','STORM','TIGER','VIVID','WATER','YACHT','ZEBRA','BLEED','BEARD','BOILS','CLOUD','DANCE','EARTH','FROST','GHOST','HONEY','JOKER','LIGHT','MAGIC','PLANT','SMILE','BREAD','STONE'],
-6:['ANCHOR','BRIDGE','CANDLE','DRAGON','ENGINE','FOREST','GARDEN','HAMMER','ISLAND','JUNGLE','KERNEL','LADDER','MARKET','NATURE','ORANGE','PLANET','ROCKET','SILVER','TUNNEL','VIOLET','WINTER','YELLOW','ZIPPER','BUTTON','CASTLE','DOCTOR','FLOWER','GUITAR','HUNTER','MIRROR']};
+const WDW={4:['BOLT','CAKE','DUSK','FROG','GLOW','HAZE','JUMP','KILN','LAMP','MINT','NEST','OPAL','PINE','QUIZ','RAIN','SAND','TIDE','VINE','WAVE','YARN','ZINC','BEAR','COIN','DOVE','ECHO','FERN','GOLD','HAWK','IRON','JADE','KITE','LION','MOON','NOTE','OVEN','PLUM','BALL','BELL','BOOK','COOL','DOLL','FALL','FOOD','GOOD','HILL','KISS','LOOP','MOSS','NEED','PEEL','POOL','ROOF','SEED','TEST','TOOL','WOOL','ZOOM'],
+5:['APPLE','BRICK','CRANE','DREAM','EAGLE','FLAME','GRAPE','HEART','IVORY','JELLY','KNIFE','LEMON','MANGO','NIGHT','OCEAN','PIANO','QUEEN','RIVER','STORM','TIGER','VIVID','WATER','YACHT','ZEBRA','BLEED','BEARD','BOILS','CLOUD','DANCE','EARTH','FROST','GHOST','HONEY','JOKER','LIGHT','MAGIC','PLANT','SMILE','BREAD','STONE','BELLY','BERRY','BOOST','BOOTH','BUDDY','FLOOD','FUZZY','GLASS','GREEN','HAPPY','KAYAK','LLAMA','MUMMY','PENNY','PUPPY','SHEEP','SKILL','SMELL','SPOON','SWEET','TOOTH'],
+6:['ANCHOR','BRIDGE','CANDLE','DRAGON','ENGINE','FOREST','GARDEN','HAMMER','ISLAND','JUNGLE','KERNEL','LADDER','MARKET','NATURE','ORANGE','PLANET','ROCKET','SILVER','TUNNEL','VIOLET','WINTER','YELLOW','ZIPPER','BUTTON','CASTLE','DOCTOR','FLOWER','GUITAR','HUNTER','MIRROR','BATTLE','BUBBLE','COFFEE','DINNER','PUZZLE','SUMMER','LETTER','BORROW']};
 const wdEnc=w=>[...w].map((c,i)=>String.fromCharCode((c.charCodeAt(0)-65+7+3*i)%26+65)).reverse().join('');
 const wdDec=k=>[...k].reverse().map((c,i)=>String.fromCharCode(((c.charCodeAt(0)-65-7-3*i)%26+26)%26+65)).join('');
 // g green = right spot, y yellow = in the word elsewhere, b blue = in the word elsewhere AND appears 2+ times, x grey = not in the word
@@ -1466,7 +1467,7 @@ const WDK={name:'Word Duel',max:2,wd:true,
   if(S.td){const gp=S.tl?now-S.tl:0;S.tl=now;if(gp>5000)S.td=S.td.map(d=>d>0?d+gp:d);
    for(let i=0;i<S.td.length;i++)if(S.td[i]>0&&now>S.td[i]+800){S.lv[i]=0;S.st='over';S.win=1-i;S.dth=i;S.at=now;return true}}
   const gv=S.gv,gu=1-gv,G=S.seats[gv],U=S.seats[gu];if(!G||!U)return false;
-  if(S.ph==='give'&&G.b&&now-S.at>1300){const L=[4,5,6][rnd(3)],l=WDW[L];S.len=L;return WDK.act(S,gv,{t:'word',w:l[rnd(l.length)]})}
+  if(S.ph==='give'&&G.b&&now-S.at>1300){const L=[4,5,6][rnd(3)],l=WDW[L],d=l.filter(w=>/(.).*\1/.test(w)),p=Math.random()<.5?d:l;S.len=L;return WDK.act(S,gv,{t:'word',w:p[rnd(p.length)]})}
   if(S.ph==='guess'&&U.b&&now-S.at>1200){const l=WDW[S.len]||[],used=new Set(S.gs.map(x=>x.w)),cand=l.filter(w=>!used.has(w)&&S.gs.every(x=>wdCol(w,x.w)===x.c));
    if(!cand.length&&S.gs.length>=4)return WDK.act(S,gu,{t:'giveup'});
    const pool=cand.length?cand:l.filter(w=>!used.has(w));let w=pool.length?pool[rnd(pool.length)]:'';if(!w)for(let i=0;i<S.len;i++)w+=String.fromCharCode(65+rnd(26));
