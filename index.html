@@ -534,6 +534,12 @@ html,body{overscroll-behavior-y:none}
 #pick.inst{transition:none}
 .crm *,.crm *::before,.crm *::after{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;animation-iteration-count:1!important;will-change:auto!important}
 body.crm::before,body.crm::after{animation:none!important;filter:none!important}.crm .tile,.crm .ticker div{animation:none!important}
+
+.cach{position:fixed;left:50%;top:22%;z-index:99999;pointer-events:none;display:grid;justify-items:center;gap:2px;padding:14px 26px 12px;border-radius:20px;background:rgba(18,16,24,.9);border:2px solid var(--ac);box-shadow:0 0 0 4px rgba(255,255,255,.06),0 10px 40px rgba(0,0,0,.5),0 0 40px var(--ac);color:#fff;text-align:center;transform:translateX(-50%);animation:cain .45s cubic-bezier(.34,1.56,.64,1) both;max-width:88vw}
+.cach.out{animation:caout .3s ease-in both}
+.cach .cae{font-size:34px;line-height:1}.cach .cat{font-size:clamp(20px,6vw,30px);letter-spacing:.02em;color:var(--ac);text-shadow:0 0 14px var(--ac);font-weight:900}.cach .cas{font-size:13px;opacity:.8;font-style:normal}
+@keyframes cain{from{opacity:0;transform:translateX(-50%) translateY(30px) scale(.5) rotate(-6deg)}}
+@keyframes caout{to{opacity:0;transform:translateX(-50%) translateY(-24px) scale(.9)}}
 </style>
 </head>
 <body>
@@ -1290,7 +1296,7 @@ addEventListener('message',e=>{const b=MP.bs,d=e.data;if(!b||!d||!d.bs||e.source
 KS.bs=BSK;
 V.buckshot={t:'Buckshot Roulette · schlerium',h:()=>mpView('Buckshot Roulette','Two players, one shotgun each. Choose with or without items when you create the room, and change it between matches. Nobody online? Add the bot.'),i(){mpInit('bs')}};
 // ---- Carrom: turn-based, host-resolved deterministic physics; every client replays the shot locally ----
-let CARSND=false;
+let CARSND=false,CARHK=null;
 const CAR={DT:1/240};
 const CAR_C={mode:'c',L:740,RC:16,RS:20,PR:32,VMAX:2600,BASE:105,BX0:150,MAXSTEP:2900,PULL:230,MR:34,FK:.9953,FC:.6,WR:.78,CE:1.9,SM:2.6,PO:12,CW:600,hollow:0,marble:0,nf:0};
 // Karrom (Pakistani style): bigger polished marble board, hollow ring striker, slower striker, slipperier everything
@@ -1306,14 +1312,14 @@ function carStep(P,out){const dt=CAR.DT,L=CAR.L,n=P.length;let mv=false;
  for(let i=0;i<n;i++){const a=P[i];if(!a.on)continue;a.x+=a.vx*dt;a.y+=a.vy*dt;
   if(!(CAR.nf&&a.id===99))for(let k=0;k<4;k++){const dx=a.x-CAR.PK[k][0],dy=a.y-CAR.PK[k][1];if(dx*dx+dy*dy<CAR.PR*CAR.PR){a.on=0;a.vx=0;a.vy=0;out.push(a.id);break}}
   if(!a.on)continue;const r=a.r;
-  if(a.x<r){a.x=r;a.vx=Math.abs(a.vx)*CAR.WR;CARSND&&SFX.play('wall',Math.min(1,a.vx/CAR.VMAX*2))}else if(a.x>L-r){a.x=L-r;a.vx=-Math.abs(a.vx)*CAR.WR;CARSND&&SFX.play('wall',Math.min(1,-a.vx/CAR.VMAX*2))}
-  if(a.y<r){a.y=r;a.vy=Math.abs(a.vy)*CAR.WR;CARSND&&SFX.play('wall',Math.min(1,a.vy/CAR.VMAX*2))}else if(a.y>L-r){a.y=L-r;a.vy=-Math.abs(a.vy)*CAR.WR;CARSND&&SFX.play('wall',Math.min(1,-a.vy/CAR.VMAX*2))}
+  if(a.x<r){a.x=r;a.vx=Math.abs(a.vx)*CAR.WR;CARHK&&CARHK.w(a);CARSND&&SFX.play('wall',Math.min(1,a.vx/CAR.VMAX*2))}else if(a.x>L-r){a.x=L-r;a.vx=-Math.abs(a.vx)*CAR.WR;CARHK&&CARHK.w(a);CARSND&&SFX.play('wall',Math.min(1,-a.vx/CAR.VMAX*2))}
+  if(a.y<r){a.y=r;a.vy=Math.abs(a.vy)*CAR.WR;CARHK&&CARHK.w(a);CARSND&&SFX.play('wall',Math.min(1,a.vy/CAR.VMAX*2))}else if(a.y>L-r){a.y=L-r;a.vy=-Math.abs(a.vy)*CAR.WR;CARHK&&CARHK.w(a);CARSND&&SFX.play('wall',Math.min(1,-a.vy/CAR.VMAX*2))}
   const s2=a.vx*a.vx+a.vy*a.vy;if(s2>0){const s=Math.sqrt(s2),q=s*CAR.FK-CAR.FC;if(q<=5){a.vx=0;a.vy=0}else{const f=q/s;a.vx*=f;a.vy*=f;mv=true}}}
  for(let i=0;i<n;i++){const a=P[i];if(!a.on)continue;for(let j=i+1;j<n;j++){const b=P[j];if(!b.on||(a.vx===0&&a.vy===0&&b.vx===0&&b.vy===0))continue;
   const dx=b.x-a.x,dy=b.y-a.y,rr=a.r+b.r,d2=dx*dx+dy*dy;if(d2>=rr*rr)continue;
   let d=Math.sqrt(d2),nx=1,ny=0;if(d>1e-6){nx=dx/d;ny=dy/d}
   const ia=1/a.m,ib=1/b.m,ov=rr-d,sm=ia+ib;a.x-=nx*ov*ia/sm;a.y-=ny*ov*ia/sm;b.x+=nx*ov*ib/sm;b.y+=ny*ov*ib/sm;
-  const rv=(b.vx-a.vx)*nx+(b.vy-a.vy)*ny;if(rv<0){CARSND&&SFX.play('hit',Math.min(1,-rv/CAR.VMAX*2));const J=-CAR.CE*rv/sm;a.vx-=J*nx*ia;a.vy-=J*ny*ia;b.vx+=J*nx*ib;b.vy+=J*ny*ib;mv=true}}}
+  const rv=(b.vx-a.vx)*nx+(b.vy-a.vy)*ny;if(rv<0){CARHK&&CARHK.h(a,b);CARSND&&SFX.play('hit',Math.min(1,-rv/CAR.VMAX*2));const J=-CAR.CE*rv/sm;a.vx-=J*nx*ia;a.vy-=J*ny*ia;b.vx+=J*nx*ib;b.vy+=J*ny*ib;mv=true}}}
  return mv}
 function carRun(P){const out=[];let n=0;while(n<CAR.MAXSTEP){n++;if(!carStep(P,out))break}P.forEach(p=>{p.vx=0;p.vy=0});return{n,out}}
 function carTry(pcs,x,y,vx,vy){const P=carMk(pcs);P.push(carStk(x,y,vx,vy));return carRun(P).out}
@@ -1375,10 +1381,58 @@ const CRK={name:'Carrom',max:4,
  render(S,R,el,me){let c=el._c;if(!c||!c.cv.isConnected){carMount(el);c=el._c}
   c.S=S;c.me=me;c.sd=me>=0?carSide(S,me):0;c.dirty=true;
   {const k=carLive(S)&&S.turn===me?S.sn+'|'+S.turn:'';if(c.sk!==k){c.sk=k;el.querySelector('.crsw').innerHTML=k?'<input type="range" id="cslide" class="crs" min="0" max="1000" value="500" aria-label="Striker position">':''}}
-  if(c.sn===undefined||S.sn<c.sn){c.sn=S.sn;c.an=null;c.pre=null;c.held=null}
-  else if(S.sn>c.sn){c.sn=S.sn;const r=S.rec,q=c.pre;if(q&&r&&q.sn===S.sn-1&&q.x===r.x&&q.y===r.y&&q.vx===r.vx&&q.vy===r.vy){c.pre=null;c.held=null;if(c.an)c.an.pre=undefined}else{c.pre=null;c.held=null;c.an=S.rec&&S.ph==='anim'?{P:carMk(S.rec.f).concat([carStk(S.rec.x,S.rec.y,S.rec.vx,S.rec.vy)]),out:[],n:0,tot:S.rec.n,acc:0,si:S.rec.si}:null}}}};
+  if(c.sn===undefined||S.sn<c.sn){c.sn=S.sn;c.asn=S.sn;c.cst=null;c.an=null;c.pre=null;c.held=null}
+  else if(S.sn>c.sn){c.sn=S.sn;const r=S.rec,q=c.pre;if(r&&S.sn-1===c.asn){try{const sh=r.si===c.me,al=carAnalyze(c,S);carAchShow(c,al,sh?'':(S.seats[r.si]||{}).n,r.n*1000/240-(sh&&c.sent?Date.now()-c.sent:0))}catch(e){}}c.asn=S.sn;if(q&&r&&q.sn===S.sn-1&&q.x===r.x&&q.y===r.y&&q.vx===r.vx&&q.vy===r.vy){c.pre=null;c.held=null;if(c.an)c.an.pre=undefined}else{c.pre=null;c.held=null;c.an=S.rec&&S.ph==='anim'?{P:carMk(S.rec.f).concat([carStk(S.rec.x,S.rec.y,S.rec.vx,S.rec.vy)]),out:[],n:0,tot:S.rec.n,acc:0,si:S.rec.si}:null}}}};
 const KRK={...CRK,name:'Karrom'};
 let CRC=null;
+
+// ---- Carrom achievements: re-simulate the shot with tracking, then show badges one by one ----
+const CARACH={
+ combo:n=>({t:'Combo x'+n,s:n>=5?'Unstoppable!':n>=3?'On fire!':'Back to back!',e:n>=5?'🔥':n>=3?'⚡':'✨',c:'#ff9f1c'}),
+ agent:{t:'Double Agent?',s:'That was the enemy\u2019s piece\u2026',e:'🕵️',c:'#7b5cff'},
+ near:{t:'Near Miss',s:'So close to the hole!',e:'😬',c:'#3aa0ff'},
+ romeo:{t:'Romeo Juliet!',s:'Scored, and paid for it',e:'💔',c:'#ff4f87'},
+ fric:{t:'Friction Man',s:'Striker kissed the hole and lived',e:'🧈',c:'#19b394'},
+ bird:{t:'1 Stone 2 Bird',s:'Two coins, one flick',e:'🐦',c:'#2bb24c'},
+ meteor:{t:'1 Meteor All Dinosaur',s:'Extinction event',e:'☄️',c:'#e8431f'},
+ back:{t:'Called Back',s:'Your piece was almost home\u2026 you pushed it away',e:'📞',c:'#3d7bff'},
+ crab:{t:'Crab Mentality',s:'Pulled them back from the hole',e:'🦀',c:'#e5484d'},
+ queen:{t:'Queen Has No Mood',s:'Her Majesty declined the hole',e:'👑',c:'#c026d3'},
+ job:{t:'Inside Job',s:'The enemy\u2019s piece did your dirty work',e:'🕴️',c:'#8a5cf6'},
+ slap:{t:'Got Slapped',s:'The coin came back for revenge',e:'🖐️',c:'#ff6b35'},
+ bull:{t:'Bullzye Poindexter',s:'Bank shot, still in!',e:'🎯',c:'#d4a017'}};
+function carAnalyze(c,S){const r=S.rec;if(!r||!r.f)return[];
+ const T=r.si%2,P=carMk(r.f),stk=carStk(r.x,r.y,r.vx,r.vy);P.push(stk);
+ const st0={};P.forEach(p=>st0[p.id]=[p.x,p.y]);
+ let wallFirst=false,coinHit=false,slap=false;const out=[],mn={},hit={},chain=new Set(),direct=new Set(),dom=new Set(),own=id=>id!==0&&id!==99&&carCol(id)===T;
+ CARHK={w:a=>{if(a===stk){if(!coinHit)wallFirst=true}else if(hit[a.id]===1)hit[a.id]=2},
+  h:(a,b)=>{if(a===stk||b===stk){const o=a===stk?b:a;if(hit[o.id]===2)slap=true;else if(hit[o.id]===undefined)hit[o.id]=1;
+    if(!coinHit&&o.id!==0&&carCol(o.id)!==T)chain.add(o.id);coinHit=true;direct.add(o.id)}
+   else{[[a,b],[b,a]].forEach(([x,y])=>{if(chain.has(x.id)){chain.add(y.id);if(own(y.id)&&!direct.has(y.id))dom.add(y.id)}})}}};
+ try{let n=0;while(n<CAR.MAXSTEP){n++;const mv=carStep(P,out);
+  for(let i=0;i<P.length;i++){const a=P[i];if(!a.on)continue;for(let k=0;k<4;k++){const dx=a.x-CAR.PK[k][0],dy=a.y-CAR.PK[k][1],d=Math.sqrt(dx*dx+dy*dy);if(mn[a.id]===undefined||d<mn[a.id])mn[a.id]=d}}
+  if(!mv)break}}finally{CARHK=null}
+ const pk=out.filter(id=>id!==99),foul=out.includes(99),ownP=pk.filter(id=>carCol(id)===T),qP=pk.includes(0),enemy=pk.filter(id=>id!==0&&carCol(id)!==T);
+ const scored=!foul&&(ownP.length>0||qP),list=[];
+ // combo: consecutive scoring shots by the same player
+ if(scored){const q=c.cst;c.cst={si:r.si,n:q&&q.si===r.si?q.n+1:1};if(c.cst.n>=2)list.push(CARACH.combo(c.cst.n))}else c.cst=null;
+ if(enemy.length)list.push(CARACH.agent);
+ if(pk.length>=3)list.push(CARACH.meteor);else if(pk.length===2)list.push(CARACH.bird);
+ if(foul&&pk.length)list.push(CARACH.romeo);
+ if(scored&&wallFirst&&coinHit)list.push(CARACH.bull);
+ if(ownP.some(id=>dom.has(id)))list.push(CARACH.job);
+ if(slap)list.push(CARACH.slap);
+ if(!ownP.length&&!qP){const th=CAR.PR+CAR.RC*2;let near=false,qn=false;P.forEach(p=>{if(p.id===99||!p.on)return;if(!(p.id===0||carCol(p.id)===T))return;const o=st0[p.id],mvd=Math.hypot(p.x-o[0],p.y-o[1]);if(mvd>8&&mn[p.id]!==undefined&&mn[p.id]<th){if(p.id===0)qn=true;else near=true}});if(qn)list.push(CARACH.queen);if(near)list.push(CARACH.near)}
+ {let bk=false,cb=false;const far=CAR.PR+CAR.RC*5;P.forEach(p=>{if(p.id===99||p.id===0||!p.on)return;const o=st0[p.id];let hi=-1,d0=1e9;CAR.PK.forEach((k,n)=>{const d=Math.hypot(o[0]-k[0],o[1]-k[1]);if(d<d0){d0=d;hi=n}});if(d0>=far)return;const d1=Math.hypot(p.x-CAR.PK[hi][0],p.y-CAR.PK[hi][1]);if(d1-d0>=CAR.RC*2){if(carCol(p.id)===T)bk=true;else cb=true}});if(bk)list.push(CARACH.back);if(cb)list.push(CARACH.crab)}
+ if(!foul&&mn[99]!==undefined&&mn[99]>=CAR.PR&&mn[99]<CAR.PR+CAR.RC*2)list.push(CARACH.fric);
+ return list}
+const CARQ={q:[],busy:0};
+function carAchShow(c,list,who,delay){if(!list.length)return;setTimeout(()=>{if(!c.cv.isConnected)return;list.forEach(a=>CARQ.q.push({a,who}));carAchNext()},Math.max(0,delay))}
+function carAchNext(){if(CARQ.busy)return;const it=CARQ.q.shift();if(!it)return;CARQ.busy=1;
+ const el=document.createElement('div');el.className='cach';el.style.setProperty('--ac',it.a.c);
+ el.innerHTML='<span class="cae"></span><b class="cat"></b><i class="cas"></i>';el.querySelector('.cae').textContent=it.a.e;el.querySelector('.cat').textContent=it.a.t;el.querySelector('.cas').textContent=(it.who?it.who+' · ':'')+it.a.s;
+ document.body.append(el);SFX.play(/Meteor/.test(it.a.t)?'win':'correct');
+ setTimeout(()=>{el.classList.add('out')},1500);setTimeout(()=>{el.remove();CARQ.busy=0;carAchNext()},1800)}
 const carLive=S=>S.st==='play'&&(S.ph==='aim'||S.ph==='anim');
 function carAimIn(m){const c=CRC;if(!c||!c.S||MP.K!==CRK)return;const S=c.S,st=S.seats[S.turn];if(!st||st.u!==m.u||m.sn!==S.sn||!Number.isFinite(m.f))return;
  const a=Array.isArray(m.a)&&Number.isFinite(m.a[0])&&Number.isFinite(m.a[1])?[m.a[0],m.a[1]]:null;c.rp={f:Math.min(1,Math.max(0,m.f)),a,t:Date.now(),sn:m.sn};c.dirty=true}
